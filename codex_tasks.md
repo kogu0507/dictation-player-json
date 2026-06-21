@@ -236,6 +236,13 @@ Status: Implementation
 - [x] キーボード操作とフォーカス
 - [x] モバイル表示
 
+完了記録:
+
+- 完了日: 2026-06-22
+- dictation-player-json commit: `c566145`
+- Space開始、Escape停止・中止
+- 状態・エラー表示、フォーカス復帰、操作ロックを確認
+
 ### T-402 自動テストを完成させる
 
 - [x] 時間変換
@@ -247,12 +254,17 @@ Status: Implementation
 
 完了条件:
 
-- 主要ドメイン処理に正常系と境界値テストがある
-- buildとtestが成功する
+- [x] 主要ドメイン処理に正常系と境界値テストがある
+- [x] buildとtestが成功する
+
+完了記録:
+
+- 自動テスト: 92件成功
+- production build: 成功
 
 ### T-403 実機確認を行う
 
-- [ ] Chromium系PC
+- [x] Chromium系PC
 - [ ] iOS Safari
 - [ ] Android Chrome
 - [ ] バックグラウンド復帰
