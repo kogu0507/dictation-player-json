@@ -258,3 +258,28 @@ chore: prepare dictation player release
 - JSONの必須項目を増減する必要がある
 - 試験手順や画面挙動を変更する必要がある
 - 外部ライブラリやサーバー処理が必要になる
+
+## 5. 現在の追加実装依頼: iOS Safari互換性
+
+```text
+codex_tasks.mdのT-403Aを実装してください。
+
+背景:
+古いiOS Safariで、試験モードへ切り替えると試験開始・中止ボタンが消え、
+練習モードへ戻しても練習UIが復帰しませんでした。
+Android Chromeでは問題ありません。
+音声開始前に起きるため、まずUI/CSS互換性として修正します。
+
+必須対応:
+- .mode-controlsのdisplay: contentsを廃止
+- 通常のGridまたはFlexでレイアウトを維持
+- 練習→試験→練習の往復表示を回帰テスト
+- Vite build targetをbaseline-widely-availableへ変更
+- VITE_DATA_BASE_URL等で検証用データURLを上書き可能にする
+- production buildをLAN配信してsample1を確認できる手順を用意
+- 「iOS Safari 16.4以降推奨」の案内を追加
+
+既存のPC Chromium・Android Chrome・試験sequenceの動作を壊さないでください。
+テストとproduction buildを実行し、独立コミットにしてください。
+完了後はコミットID、テスト件数、production確認手順を報告してください。
+```

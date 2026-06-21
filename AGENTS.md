@@ -21,6 +21,8 @@
 - Vanilla TypeScript、Vite、Web Audio APIを基本構成とする。
 - UIフレームワークや音声ライブラリを無断で追加しない。
 - v1音源はOscillatorNodeによる三角波とサイン波とし、既定値は三角波にする。
+- ブラウザ対象はPC Chromium系、Android Chrome、iOS Safari 16.4以降とする。
+- 古いiOS Safariはベストエフォートとし、専用の大規模ポリフィルを無断で追加しない。
 - 一時停止、採点、履歴保存、和声対応を追加しない。
 - JSON生成ツールは別プロジェクトであり、このリポジトリへ実装しない。
 - 画面文言は日本語にする。
@@ -38,6 +40,8 @@
 - 本番JSONは `/data/dictation/melody/{id}.json` から取得する。
 - 選択中のSVGだけをDOMへ挿入する。
 - インラインSVGは信頼済みの同一オリジンデータだけを扱う。
+- モード切替に関係するコンテナへ `display: contents` を使用しない。
+- Viteのproduction build targetは `baseline-widely-available` を基本とする。
 
 ## JSONの扱い
 
@@ -68,7 +72,7 @@
 - 停止後に古い実行が状態を更新しないこと
 - 不正JSONの拒否
 
-ブラウザ実機確認では、PCに加えてスマートフォンのAudioContext開始制約を確認する。
+ブラウザ実機確認では、PCに加えてAndroid ChromeとiOS Safari 16.4以降のAudioContext開始制約を確認する。古いiOSで問題が出た場合は、音声制限とUI/CSS互換性を切り分ける。
 
 ## 完了報告
 

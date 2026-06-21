@@ -265,11 +265,36 @@ Status: Implementation
 ### T-403 実機確認を行う
 
 - [x] Chromium系PC
-- [ ] iOS Safari
-- [ ] Android Chrome
+- [ ] iOS Safari 16.4以降
+- [x] Android Chrome
 - [ ] バックグラウンド復帰
-- [ ] 低速・高速
+- [x] 低速・高速
 - [ ] 長い試験sequenceの中止
+
+確認記録:
+
+- Android Chrome: 練習・試験とも問題なし
+- 古いiOS Safari: 試験モードで開始・中止ボタンが消え、練習モードへ戻してもUIが復帰しない
+- 上記iOS症状は音声開始前に発生するため、Web Audio制限ではなくUI/CSS互換性を先に疑う
+
+### T-403A iOS Safari互換性を改善する
+
+- [ ] `.mode-controls` の `display: contents` を廃止する
+- [ ] 通常のGridまたはFlexで既存レイアウトを維持する
+- [ ] 練習→試験→練習の往復で各操作ボタンが表示される
+- [ ] 試験開始前・実行中の譜面非表示ルールを維持する
+- [ ] Vite build targetを `baseline-widely-available` にする
+- [ ] `VITE_DATA_BASE_URL` などで検証用データURLを明示的に上書き可能にする
+- [ ] production buildへsample1を検証用に配置し、LAN上で確認できる手順を用意する
+- [ ] 画面または利用案内へ「iOS Safari 16.4以降推奨」を表示する
+- [ ] モード往復の回帰テストを追加する
+
+完了条件:
+
+- 自動テストとproduction buildが成功する
+- Android Chromeの既存動作を壊していない
+- production buildを使ってiOS Safariで再確認できる
+- 古いiOSで未解決でも、iOS Safari 16.4以降を正式な推奨環境として案内できる
 
 ### T-404 配信条件を確認する
 
@@ -292,3 +317,9 @@ Status: Implementation
 - SVGミニ版
 - 回答入力と採点
 - 課題一覧
+
+## 将来候補2（ユーザー案）
+- よくある小節範囲のプリセットボタン
+- C調という表記→C majorなど
+- 表記：旋律聴音 ハ長調/C-Dur/C major 4/4拍子 8小節の４表示
+- 試験再生のプリセットとJSONによる上級者向けカスタマイズ
