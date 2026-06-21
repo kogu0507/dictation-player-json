@@ -4,6 +4,27 @@ Status: Ready for implementation handoff
 
 ## 1. チャットの役割
 
+### 実際のプロジェクト配置
+
+```text
+生成ツール:
+C:\Users\kogu0\OneDrive\ドキュメント\dictation-content
+
+Webアプリ:
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\public_html\app\dictation-player-json
+```
+
+両方とも独立したGitリポジトリとして扱う。生成物を受け渡す場合も、片方のCodexがもう片方のソースコードを同時に変更しない。
+
+### リポジトリ間の受け渡し手順
+
+1. `dictation-content` 側で生成と検証を完了し、同リポジトリへコミットする。
+2. 制作側の完了報告に、コミットハッシュ、検証結果、生成した `sample1.json` の絶対パスを含める。
+3. `dictation-player-json` 側で報告内容を確認し、生成物を `testdata/melody/sample1.json` へコピーする。
+4. アプリ側のスキーマ検証とテストを実行し、差分を確認してからアプリ側リポジトリへコミットする。
+
+制作側はアプリ側のファイルを直接変更せず、アプリ側も制作側の生成物やソースコードを直接修正しない。受け渡したJSONに問題がある場合は、制作側で修正・再生成・再コミットする。
+
 ### このチャット
 
 設計の正本として継続する。
@@ -35,12 +56,33 @@ Status: Ready for implementation handoff
 
 ```text
 dictation-contentの実装を行います。
-設計の正本はdictation-player-json側の
-content_data_contract.md、spec.md、codex_tasks.mdです。
+Webアプリのディレクトリは次です。
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\public_html\app\dictation-player-json
 
-今回はT-002を実装し、sample1をschema_version 1で再生成できるところまで進めてください。
+アプリ側で確定したデータ契約は、上記ディレクトリの
+content_data_contract.md、spec.md、codex_tasks.mdにあります。
+最初にこれらを読み、dictation-content側のspec.md、AGENTS.md、
+codex_tasks.mdをschema_version 1の方針へ整合させてください。
+
+現在のStep 8「Webアプリへの結合」を先に実行せず、
+アプリ側codex_tasks.mdのT-002を先に実装してください。
+
+追加対象は次です。
+- 課題設定ファイル src/config/melody/{id}.json
+- schema_version
+- mode
+- MEI／Verovio由来のmeasure_map
+- SVG生成と同じ実移調量を示すkeys.*.semitones
+- 課題設定由来のsequence
+- 対応する検証とpytest
+
+sample1をschema_version 1で再生成できるところまで進めてください。
 生成物を手修正せず、課題設定ファイルとMEIから再現可能にしてください。
+第4小節は12.0〜16.0であることを確認してください。
+
 完了時は変更内容、検証結果、生成したsample1.jsonの要約を報告してください。
+完了後にコミットしてください。Webアプリ側へのコピーはまだ行わず、
+生成物の絶対パスを報告してください。
 ```
 
 ### 実装チャットB: dictation-player-json
@@ -71,14 +113,7 @@ T-101から順番に実装してください。
 
 ### 現在の状態
 
-2026-06-21時点で、`dictation-player-json` ディレクトリはGitリポジトリではない。
-
-アプリ実装を始める前に、次のどちらかを確定する必要がある。
-
-1. `dictation-player-json` を独立Gitリポジトリにする
-2. 既存の上位リポジトリへ含める
-
-推奨は独立リポジトリである。生成ツールとWebアプリはリリース単位、依存関係、作業履歴が異なるため、それぞれ別Gitリポジトリにする。
+2026-06-21時点で、`dictation-player-json` は独立Gitリポジトリとして初期化済みである。`dictation-content` とWebアプリはリリース単位、依存関係、作業履歴が異なるため、引き続き別々のGitリポジトリとして管理する。
 
 ### 推奨コミット地点
 
@@ -174,10 +209,12 @@ chore: prepare dictation player release
 
 ### 現在必要
 
-- `dictation-content` のプロジェクトディレクトリを指定する
-- `dictation-player-json` を独立Gitリポジトリにするか決める
-- 必要ならGitHub上のリモートリポジトリを作成する
-- 実装チャットAを開始する
+- [x] `dictation-content` のプロジェクトディレクトリを指定する
+- [x] `dictation-player-json` をGit初期化し、初回コミットする
+- `dictation-content` のCodexへ本書の依頼文を渡す
+- `dictation-content` のschema v1対応が終わるまで、アプリ実装は原則待機する
+
+例外として、アプリ実装チャットは `T-101` のVite／TypeScript初期化だけ先行してよい。JSONローダー以降は新しいsample1が生成されてから進める。
 
 ### 後で必要
 
@@ -196,4 +233,3 @@ chore: prepare dictation player release
 - JSONの必須項目を増減する必要がある
 - 試験手順や画面挙動を変更する必要がある
 - 外部ライブラリやサーバー処理が必要になる
-
