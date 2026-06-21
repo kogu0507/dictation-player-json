@@ -124,8 +124,27 @@ h1 {
   margin-left: auto;
 }
 
+.mode-controls {
+  display: contents;
+}
+
+.mode-controls[hidden] {
+  display: none;
+}
+
+.exam-step-status {
+  flex-basis: 100%;
+  margin: 0;
+  color: #44515e;
+  font-weight: 700;
+}
+
 .score-panel {
   padding: 1rem;
+}
+
+.score-panel[hidden] {
+  display: none;
 }
 
 .score-heading {

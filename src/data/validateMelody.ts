@@ -2,8 +2,11 @@ import type {
   MeasureBoundary,
   MelodyData,
   MelodyNote,
-  SequenceStep,
 } from "./types";
+import {
+  ExamSequenceValidationError,
+  validateExamSequence,
+} from "../exam/validateSequence";
 
 type JsonObject = Record<string, unknown>;
 
@@ -99,93 +102,6 @@ function validateNote(
   }
 
   return { pitch, qstamp, duration, measure, velocity };
-}
-
-function validateSequenceStep(
-  value: unknown,
-  index: number,
-  measureCount: number,
-): SequenceStep {
-  const path = `sequence[${index}]`;
-  const step = requireObject(value, path);
-  const stepNumber = requireInteger(step.step, `${path}.step`);
-  if (stepNumber !== index + 1) {
-    fail(`${path}.step は1からの連番である必要があります。`);
-  }
-
-  const type = requireString(step.type, `${path}.type`);
-  if (type === "chord") {
-    const pitches = requireArray(step.pitches, `${path}.pitches`).map(
-      (pitch, pitchIndex) =>
-        requireMidiValue(pitch, `${path}.pitches[${pitchIndex}]`),
-    );
-    if (pitches.length === 0) {
-      fail(`${path}.pitches は1音以上必要です。`);
-    }
-    const durationSec = requireNumber(
-      step.duration_sec,
-      `${path}.duration_sec`,
-    );
-    if (durationSec <= 0) {
-      fail(`${path}.duration_sec は0より大きい必要があります。`);
-    }
-    const label =
-      step.label === undefined
-        ? undefined
-        : requireString(step.label, `${path}.label`);
-    return {
-      step: stepNumber,
-      type,
-      pitches,
-      duration_sec: durationSec,
-      velocity: requireMidiValue(step.velocity, `${path}.velocity`),
-      ...(label === undefined ? {} : { label }),
-    };
-  }
-
-  if (type === "rest") {
-    const durationSec = requireNumber(
-      step.duration_sec,
-      `${path}.duration_sec`,
-    );
-    if (durationSec <= 0) {
-      fail(`${path}.duration_sec は0より大きい必要があります。`);
-    }
-    return { step: stepNumber, type, duration_sec: durationSec };
-  }
-
-  if (type === "play") {
-    const startMeasure = requireInteger(
-      step.start_measure,
-      `${path}.start_measure`,
-    );
-    const endMeasure = requireInteger(
-      step.end_measure,
-      `${path}.end_measure`,
-    );
-    if (
-      startMeasure < 1 ||
-      endMeasure > measureCount ||
-      startMeasure > endMeasure
-    ) {
-      fail(`${path} の小節範囲が課題範囲外です。`);
-    }
-    return {
-      step: stepNumber,
-      type,
-      start_measure: startMeasure,
-      end_measure: endMeasure,
-    };
-  }
-
-  if (type === "signal") {
-    if (step.content !== "end_bell") {
-      fail(`${path}.content は end_bell である必要があります。`);
-    }
-    return { step: stepNumber, type, content: "end_bell" };
-  }
-
-  fail(`${path}.type は未対応です。`);
 }
 
 export function validateMelodyData(
@@ -304,9 +220,15 @@ export function validateMelodyData(
     }
   }
 
-  const sequence = requireArray(root.sequence, "sequence").map(
-    (step, index) => validateSequenceStep(step, index, measures),
-  );
+  let sequence;
+  try {
+    sequence = validateExamSequence(root.sequence, measures);
+  } catch (error) {
+    if (error instanceof ExamSequenceValidationError) {
+      fail(error.message);
+    }
+    throw error;
+  }
   for (const [keyName, key] of Object.entries(keys)) {
     for (const step of sequence) {
       if (step.type !== "chord") {
