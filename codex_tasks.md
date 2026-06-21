@@ -344,18 +344,32 @@ Status: Implementation
 
 ### T-404 配信条件を確認する
 
-- [ ] HTTPSで公開される
-- [ ] Screen Wake Lock APIを利用できる
-- [ ] `/data/dictation/melody/{id}.json` からの取得
-- [ ] Content-Type
-- [ ] キャッシュ更新方法
-- [ ] gzipまたはBrotli
-- [ ] 374KBのsample1転送サイズ
-- [ ] アプリ配置サブパス
+- [ ] 本番サーバーがHTTPSで公開される
+- [ ] 本番HTTPS環境でScreen Wake Lock APIを利用できる
+- [x] `/data/dictation/melody/{id}.json` からの取得構成
+- [x] JSONのContent-Typeを `application/json` として確認
+- [x] キャッシュ方針を決定
+- [x] gzipまたはBrotliの推奨設定を決定
+- [x] sample1の圧縮サイズを測定
+- [x] `/app/dictation-player-json/` のサブパス配置を検証
+- [ ] 実際のホスティングでレスポンスヘッダーを確認
+- [ ] サイト側 `/data/dictation/README.md` を現行スキーマへ更新
 
 完了条件:
 
 - 本番相当URLでsample1を読み込み、全機能を確認できる
+
+確認記録:
+
+- 本番相当ローカル構成でアプリ、ハッシュ付きJS、JSONがすべて200
+- JSON Content-Type: `application/json`
+- sample1: 375,686 bytes
+- gzip level 9: 21,048 bytes
+- Brotli quality 11: 12,083 bytes
+- JSON文字数の約92.3%がSVG
+- 圧縮効率が高いためv1ではSVG分離・ミニファイ不要
+- 公開手順: `DEPLOYMENT.md`
+- サイト側README更新案: `PUBLIC_DATA_README_DRAFT.md`
 
 ## 将来候補
 

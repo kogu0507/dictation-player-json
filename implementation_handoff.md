@@ -319,3 +319,33 @@ Screen Wake Lock APIはHTTPSのsecure contextが必要です。
 テストとproduction buildを実行し、独立コミットにしてください。
 完了後はコミットID、テスト件数、HTTPS実機確認に必要な手順を報告してください。
 ```
+
+## 7. T-404公開準備
+
+ローカルで完了済み:
+
+- production build
+- `/app/dictation-player-json/` サブパス検証
+- `/data/dictation/melody/sample1.json` 取得検証
+- JSON Content-Type確認
+- gzip／Brotliサイズ測定
+- 公開手順 `DEPLOYMENT.md`
+
+ユーザー側の情報・操作が必要:
+
+1. 利用中のホスティングサービス名
+2. 実際のドメイン
+3. `.htaccess` またはレスポンスヘッダー設定の可否
+4. サーバーへのアップロード方法
+5. 公開先へアプリとsample1を配置
+
+公開後に設計チャットで確認する項目:
+
+- HTTPS
+- JSONのContent-Type
+- gzip／Brotli
+- Cache-Control
+- アプリからのJSON取得
+- iOS Safari 16.4以降のScreen Wake Lock
+
+サイト側の `/data/dictation/README.md` は旧スキーマのため、`PUBLIC_DATA_README_DRAFT.md` を基に別作業で更新する。

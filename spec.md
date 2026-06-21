@@ -373,7 +373,7 @@ v1ではOscillatorNodeを使う組み込みシンセを実装する。
 - ファイルサイズ: 375,686 bytes
 - SHA-256: `1D89B41AB178A517B16361922CFF64BD953A8D421145B6FEB842C24C2427B817`
 
-データ生成ツール側の既存目安「120〜150KB」より大きい。機能実装を止める問題ではないが、公開前にHTTP圧縮後サイズとSVG重複量を確認する。
+データ生成ツール側の当初目安「120〜150KB」より大きいが、gzip約21KB、Brotli約12KBまで圧縮できることを確認済みである。
 
 ## 11. v1受け入れ基準
 
@@ -421,3 +421,16 @@ v1ではOscillatorNodeを使う組み込みシンセを実装する。
 6. `sequence` と `chord.pitches` は課題制作者が課題設定ファイルへ記述する。
 7. 生成ツールは課題設定を検証し、生成済みJSONへ統合する。
 8. 詳細は `content_data_contract.md` を正本とする。
+
+## 14. 公開・キャッシュ方針
+
+- アプリ公開先は `/app/dictation-player-json/` とする。
+- 公開するアプリファイルはproduction buildの `dist/` の中身だけとする。
+- 課題JSONは `/data/dictation/melody/{id}.json` へ配置する。
+- production環境はHTTPSを必須とする。
+- HTMLと課題JSONは `Cache-Control: no-cache` を推奨する。
+- ハッシュ付きJS・CSSは `Cache-Control: public, max-age=31536000, immutable` を推奨する。
+- JSON、HTML、JS、CSSはBrotliまたはgzip配信を推奨する。
+- sample1は非圧縮375,686 bytes、gzip約21KB、Brotli約12KBである。
+- 圧縮後サイズが十分小さいため、v1ではSVG分離と独自ミニファイを行わない。
+- 詳細な公開手順は `DEPLOYMENT.md` を正本とする。
