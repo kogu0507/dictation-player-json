@@ -298,6 +298,35 @@ Status: Implementation
 
 完了記録:
 
+- 完了日: 2026-06-22
+- dictation-player-json commit: `62173b3`
+- 自動テスト: 97件成功
+- production buildとLAN build: 成功
+- 古いiOS Safariでモード往復表示: 改善確認済み
+
+### T-403B 試験中の画面消灯を防止する
+
+- [ ] Screen Wake Lock APIを機能検出する
+- [ ] 試験開始のユーザー操作中にWake Lockを要求する
+- [ ] 試験終了、中止、エラー、モード切替でWake Lockを解放する
+- [ ] Wake Lockのreleaseイベントを監視する
+- [ ] 試験中にdocumentがhiddenになった場合はsequenceと発音を中止する
+- [ ] 再表示時に試験やAudioContextを自動再開しない
+- [ ] Wake Lock非対応・取得失敗時の警告を表示する
+- [ ] 「HTTPS環境が必要」であることを利用案内へ表示する
+- [ ] Wake Lockの取得、解放、非表示中止を単体テストする
+
+完了条件:
+
+- Wake Lock対応環境では試験中の自動消灯を防止できる
+- Wake Lock非対応環境でも練習モードは利用できる
+- 画面非表示後にsequenceが進行し続けない
+- 復帰後に `AudioContextが開始されていません` ではなく、中止理由を表示する
+- 自動テストとproduction buildが成功する
+- HTTPSのiOS Safari実機で確認できる状態になる
+
+完了記録:
+
 - 自動テスト: 97件成功
 - 通常production buildとLAN確認用production build: 成功
 - LAN確認用sample1 SHA-256:
@@ -307,6 +336,8 @@ Status: Implementation
 
 ### T-404 配信条件を確認する
 
+- [ ] HTTPSで公開される
+- [ ] Screen Wake Lock APIを利用できる
 - [ ] `/data/dictation/melody/{id}.json` からの取得
 - [ ] Content-Type
 - [ ] キャッシュ更新方法

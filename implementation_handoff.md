@@ -283,3 +283,39 @@ Android Chromeでは問題ありません。
 テストとproduction buildを実行し、独立コミットにしてください。
 完了後はコミットID、テスト件数、production確認手順を報告してください。
 ```
+
+## 6. 現在の追加実装依頼: 試験中の画面消灯防止
+
+```text
+codex_tasks.mdのT-403Bを実装してください。
+
+背景:
+iOS Safariで試験中に画面が自動消灯するとWeb Audioが停止し、
+次のsequence stepで
+「AudioContextが開始されていません」
+というエラーになりました。
+
+方針:
+- バックグラウンド再生はサポートしない
+- Screen Wake Lock APIで試験中の自動消灯を防止する
+- documentが非表示になった場合は試験を安全に中止する
+- 復帰時に試験やAudioContextを自動再開しない
+
+必須対応:
+- Wake Lock処理をUIや試験ランナーから分離したモジュールにする
+- 試験開始時にrequest("screen")
+- 終了、中止、エラー、モード切替時にrelease
+- releaseイベントとvisibilitychangeを処理
+- hidden時はsequenceと発音を中止し、中止理由を表示
+- 非対応・取得失敗時は、自動ロックを無効化する案内を表示
+- 練習モードはWake Lock非対応でも利用可能
+- 対応する単体テスト
+
+注意:
+Screen Wake Lock APIはHTTPSのsecure contextが必要です。
+現在のhttp://192.168...によるLAN確認ではAPI自体を検証できません。
+コードとproduction buildを完成させ、HTTPS環境での実機確認を残してください。
+
+テストとproduction buildを実行し、独立コミットにしてください。
+完了後はコミットID、テスト件数、HTTPS実機確認に必要な手順を報告してください。
+```

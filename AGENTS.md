@@ -42,6 +42,11 @@
 - インラインSVGは信頼済みの同一オリジンデータだけを扱う。
 - モード切替に関係するコンテナへ `display: contents` を使用しない。
 - Viteのproduction build targetは `baseline-widely-available` を基本とする。
+- 試験中の画面消灯防止にはScreen Wake Lock APIを機能検出して使用する。
+- 試験中にdocumentが非表示になった場合は再生を継続せず中止する。
+- 非表示からの復帰時にAudioContextや試験sequenceを自動再開しない。
+- Wake Lock非対応端末でも練習モードは利用可能にする。
+- Wake Lock検証はHTTPS環境で行う。HTTPのLANプレビューだけで未対応と判断しない。
 
 ## JSONの扱い
 
