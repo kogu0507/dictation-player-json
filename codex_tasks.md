@@ -344,7 +344,7 @@ Status: Implementation
 
 ### T-404 配信条件を確認する
 
-- [ ] 本番サーバーがHTTPSで公開される
+- [x] 本番ドメインがHTTPSで公開されている
 - [ ] 本番HTTPS環境でScreen Wake Lock APIを利用できる
 - [x] `/data/dictation/melody/{id}.json` からの取得構成
 - [x] JSONのContent-Typeを `application/json` として確認
@@ -361,6 +361,11 @@ Status: Implementation
 
 確認記録:
 
+- ホスティング: CORESERVER
+- ドメイン: `seegmund-music-labo.com`
+- アップロード: FTP
+- 2026-06-22時点でドメインHTTPS応答200
+- Webサーバー応答: LiteSpeed
 - 本番相当ローカル構成でアプリ、ハッシュ付きJS、JSONがすべて200
 - JSON Content-Type: `application/json`
 - sample1: 375,686 bytes

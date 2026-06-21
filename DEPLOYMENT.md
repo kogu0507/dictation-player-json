@@ -2,6 +2,17 @@
 
 Status: v1 release candidate
 
+## 0. 対象環境
+
+```text
+ホスティング: CORESERVER
+ドメイン: seegmund-music-labo.com
+アップロード: FTP
+Webサーバー応答: LiteSpeed
+```
+
+2026-06-22時点で `https://seegmund-music-labo.com/` がHTTP 200で応答することを確認済み。
+
 ## 1. 公開URL
 
 ```text
@@ -10,6 +21,13 @@ https://<domain>/app/dictation-player-json/?id=sample1
 
 課題データ:
 https://<domain>/data/dictation/melody/sample1.json
+```
+
+今回の確定URL:
+
+```text
+https://seegmund-music-labo.com/app/dictation-player-json/?id=sample1
+https://seegmund-music-labo.com/data/dictation/melody/sample1.json
 ```
 
 production環境はHTTPSを必須とする。Screen Wake Lock APIを使う試験モードでは、HTTP配信を正式対応しない。
@@ -43,6 +61,8 @@ public_html/
 - Git管理情報
 
 課題JSONの正本は `dictation-content/dist/melody/` の生成物とする。アプリ側の `testdata/` を公開データの正本にしない。
+
+FTPでは、`seegmund-music-labo.com` のドキュメントルートを基準に上記構成を作る。FTP接続直後の絶対パス名は契約・サーバー設定により異なるため、既存サイトの `index` がある場所をドキュメントルートとして確認する。
 
 ## 3. 公開前ビルド
 
@@ -142,6 +162,8 @@ JSONの約92.3%は12調分のSVG文字列だが、圧縮効率が高い。v1で�
 
 この設定をそのまま設置することは必須ではない。ホスティング側でBrotli、gzip、キャッシュ制御が自動設定されている場合は重複させない。
 
+CORESERVERの現在の応答はLiteSpeedである。まず設定ファイルを追加せずに公開し、実レスポンスの `Content-Encoding` と `Cache-Control` を確認する。不足が確認された場合だけ、CORESERVERで利用可能な `.htaccess` 設定を追加する。
+
 ## 8. 公開後確認
 
 ブラウザの開発者ツールまたはHTTPヘッダー確認ツールで次を確認する。
@@ -155,6 +177,13 @@ JSONの約92.3%は12調分のSVG文字列だが、圧縮効率が高い。v1で�
 - JSとCSSのファイル名にハッシュがある
 - HTMLとJSONが長期固定キャッシュされていない
 - iOS Safari 16.4以降でWake Lockを利用できる
+
+公開後の確認対象URL:
+
+```text
+https://seegmund-music-labo.com/app/dictation-player-json/?id=sample1
+https://seegmund-music-labo.com/data/dictation/melody/sample1.json
+```
 
 ## 9. 更新手順
 
@@ -173,4 +202,3 @@ JSONの約92.3%は12調分のSVG文字列だが、圧縮効率が高い。v1で�
 4. 本番URLから取得して内容を確認
 
 課題JSON更新後に古い内容が残るサーバーでは、キャッシュヘッダーを修正する。場当たり的な手動キャッシュ削除だけを運用にしない。
-
