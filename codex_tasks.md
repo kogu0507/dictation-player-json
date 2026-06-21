@@ -29,32 +29,50 @@ Status: Planning
 
 担当範囲: 別プロジェクト `dictation-content`
 
-- [ ] `src/config/melody/{id}.json` の読込
-- [ ] `authoring_version` と必須項目の検証
-- [ ] MEIから `mode` と `measure_map` を生成
-- [ ] 最短移調戦略と個別上書き
-- [ ] 各調の `semitones` を出力
-- [ ] 課題設定の `sequence` を検証して統合
-- [ ] `schema_version: 1` を出力
+- [x] `src/config/melody/{id}.json` の読込
+- [x] `authoring_version` と必須項目の検証
+- [x] MEIから `mode` と `measure_map` を生成
+- [x] 最短移調戦略と個別上書き
+- [x] 各調の `semitones` を出力
+- [x] 課題設定の `sequence` を検証して統合
+- [x] `schema_version: 1` を出力
 
 完了条件:
 
-- `content_data_contract.md` の生成時検証を満たす
-- 不正な課題設定では出力ファイルを作らない
-- 同じ入力から同じJSONを再生成できる
+- [x] `content_data_contract.md` の生成時検証を満たす
+- [x] 不正な課題設定では出力ファイルを作らない
+- [x] 同じ入力から同じJSONを再生成できる
+
+完了記録:
+
+- 完了日: 2026-06-21
+- dictation-content commit: `5651ca0`
+- pytest: 24 passed
+- 2回生成のSHA-256一致
+- 生成物: `C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json`
+- 生成物サイズ: 375,686 bytes
 
 ### T-003 sample1を再生成してアプリへ配置する
 
 担当範囲: `dictation-content` で生成後、このプロジェクトのテストデータへ反映
 
+進捗:
+
+- [x] dictation-contentでschema v1のsample1を再生成
+- [x] 生成物の契約項目を設計チャットで確認
+- [ ] `testdata/melody/sample1.json` へコピー
+- [ ] コピー元とコピー先のSHA-256一致確認
+- [ ] アプリ側Gitへコミット
+
 完了条件:
 
-- `schema_version`、`mode`、`measure_map`、`semitones`、`sequence` が存在
-- 12調すべてでSVGと移調後pitchが一致する
-- sample1の半音数が `content_data_contract.md` の期待値と一致する
-- 第4小節が `12.0〜16.0` である
-- sequenceの小節範囲が1〜8内に収まる
-- 再生成で同じ構造を作れる
+- [x] `schema_version`、`mode`、`measure_map`、`semitones`、`sequence` が存在
+- [x] 12調すべてでSVGと移調後pitchが一致する
+- [x] sample1の半音数が `content_data_contract.md` の期待値と一致する
+- [x] 第4小節が `12.0〜16.0` である
+- [x] sequenceの小節範囲が1〜8内に収まる
+- [x] 再生成で同じ構造を作れる
+- [ ] アプリ側テストデータとして配置されている
 
 ## Phase 1: 最小縦断実装
 

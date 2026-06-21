@@ -89,20 +89,45 @@ sample1をschema_version 1で再生成できるところまで進めてくださ
 
 開始タイミング:
 
-1. `T-002` が完了
-2. 新しい `sample1.json` が生成済み
-3. `T-003` のデータ検証が完了
+1. [x] `T-002` が完了
+2. [x] 新しい `sample1.json` が生成済み
+3. [x] `T-003` のデータ契約検証が完了
+
+開始可能日: 2026-06-21
+
+確定した生成物:
+
+```text
+C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json
+```
+
+- dictation-content commit: `5651ca0`
+- size: 375,686 bytes
+- pytest: 24 passed
 
 対象:
 
-- `T-101` 以降のWebアプリ実装
+- 最初に `T-003` のアプリ側配置を完了
+- 続いて `T-101` 以降のWebアプリ実装
 
 実装チャットへ渡す依頼文:
 
 ```text
 dictation-player-jsonの実装を行います。
 spec.md、content_data_contract.md、AGENTS.md、codex_tasks.mdを正本として、
-T-101から順番に実装してください。
+最初にT-003の残作業を行い、その後T-101から順番に実装してください。
+
+schema v1の生成済みsample1は次です。
+C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json
+
+これをこのリポジトリの
+testdata/melody/sample1.json
+へコピーし、コピー前後のSHA-256が一致することを確認してください。
+JSONの内容は手修正しないでください。
+
+T-003の配置完了を独立コミットにしてください。
+推奨コミットメッセージ:
+data: update sample1 to schema v1
 
 まず「JSON読込→譜面表示→三角波で全曲再生→停止」の最小縦断を完成させ、
 各タスクの完了条件を確認しながら進めてください。
