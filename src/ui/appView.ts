@@ -97,6 +97,13 @@ export function renderAppShell(root: HTMLElement): void {
           <p id="exam-step-status" class="exam-step-status" aria-live="polite">
             試験開始前
           </p>
+          <p
+            id="exam-wake-lock-guidance"
+            class="exam-guidance"
+            role="note"
+            aria-live="polite"
+            hidden
+          ></p>
         </div>
       </section>
 
@@ -104,7 +111,7 @@ export function renderAppShell(root: HTMLElement): void {
         キーボード: Spaceで開始、Escapeで停止・中止
       </p>
       <p class="compatibility-note">
-        推奨環境: iOS Safari 16.4以降
+        推奨環境: iOS Safari 16.4以降。試験中の画面消灯防止にはHTTPS環境が必要です。
       </p>
 
       <section id="score-panel" class="score-panel" aria-labelledby="score-title">

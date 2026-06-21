@@ -192,6 +192,20 @@ h1 {
   font-weight: 700;
 }
 
+.exam-guidance {
+  grid-column: 1 / -1;
+  margin: 0;
+  border: 1px solid #d9b45b;
+  border-radius: 8px;
+  background: #fff8e8;
+  color: #6d4d00;
+  padding: 0.7rem 0.85rem;
+}
+
+.exam-guidance[hidden] {
+  display: none;
+}
+
 .score-panel {
   min-width: 0;
   padding: 1rem;

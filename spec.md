@@ -283,7 +283,7 @@ playedPitch = sourcePitch + keys[selectedKey].semitones
 - Wake Lockは試験終了、中止、エラー、練習モードへの切替時に解放する。
 - 試験中にdocumentが非表示になった場合は、sequenceを継続せず安全に中止する。
 - 再表示時にAudioContextや試験を自動再開しない。ユーザーが改めて試験開始を押す。
-- Wake Lockが自動解放され、試験中かつ画面が再び表示された場合は再取得を試みる。
+- Wake Lockが自動解放された場合は試験を中止し、自動再取得・試験再開・AudioContext再開を行わない。
 - Wake Lock非対応または取得失敗時は、試験開始前に「画面の自動ロックを一時的に無効化し、画面を表示したまま使用する」旨を表示する。
 - Wake Lock失敗だけを理由に練習モードを禁止しない。
 - production環境はHTTPSを必須とする。Screen Wake Lock APIは非HTTPSのLAN URLでは利用できない。

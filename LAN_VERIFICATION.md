@@ -49,3 +49,12 @@ Windows Defender Firewallの確認が出た場合は、使用中の
 
 iOSはSafari 16.4以降を推奨する。Safari 16.3以前は
 ベストエフォートであり、完全な動作保証対象外とする。
+
+## Screen Wake Lockの制約
+
+`http://192.168...` のLAN URLはsecure contextではないため、
+Screen Wake Lock API自体は確認できない。このURLでは、試験モードに
+HTTPSが必要という案内が表示されることだけを確認する。
+
+画面消灯防止と非表示時中止の実機確認は
+`HTTPS_WAKE_LOCK_VERIFICATION.md` の手順で行う。

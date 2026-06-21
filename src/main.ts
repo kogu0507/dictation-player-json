@@ -14,6 +14,11 @@ import {
 import { getMelodyKey } from "./domain/transposition";
 import { ExamSequenceRunner } from "./exam/ExamSequenceRunner";
 import { validateExamSequence } from "./exam/validateSequence";
+import {
+  ExamWakeLockController,
+  type ExamInterruptionReason,
+  type WakeLockRequestResult,
+} from "./platform/ExamWakeLockController";
 import "./styles/main.css";
 import { renderAppShell, requireElement } from "./ui/appView";
 import { getKeyboardAction } from "./ui/keyboardShortcuts";
@@ -28,6 +33,7 @@ import {
   getStatusPresentation,
   type AppStatusKind,
 } from "./ui/statusPresentation";
+import { getWakeLockGuidance } from "./ui/wakeLockGuidance";
 
 const root = document.querySelector<HTMLElement>("#app");
 if (root === null) {
@@ -78,12 +84,17 @@ const examStepStatus = requireElement<HTMLElement>(
   appRoot,
   "#exam-step-status",
 );
+const examWakeLockGuidance = requireElement<HTMLElement>(
+  appRoot,
+  "#exam-wake-lock-guidance",
+);
 const scorePanel = requireElement<HTMLElement>(appRoot, "#score-panel");
 const score = requireElement<HTMLElement>(appRoot, "#score");
 const scoreKey = requireElement<HTMLElement>(appRoot, "#score-key");
 
 const audioPlayer = new OscillatorAudioPlayer();
 const examRunner = new ExamSequenceRunner(audioPlayer);
+const examWakeLock = new ExamWakeLockController();
 let melody: MelodyData | undefined;
 let mode: AppMode = "practice";
 let activity: AppActivity = "idle";
@@ -159,12 +170,15 @@ function stopPracticePlayback(message = "停止しました。"): void {
 }
 
 modeSelect.addEventListener("change", () => {
+  void examWakeLock.release();
   mode = modeSelect.value as AppMode;
   if (mode === "exam") {
     examOutcome = "not-started";
     examStepStatus.textContent = "試験開始前";
+    showWakeLockGuidance(examWakeLock.capability);
     updateExamSummary();
   } else {
+    hideWakeLockGuidance();
     updatePracticeSummary();
   }
   applyModeUiState();
@@ -291,7 +305,13 @@ examStartButton.addEventListener("click", async () => {
   examCancelButton.focus();
 
   try {
-    await audioPlayer.resume();
+    const wakeLockRequest = examWakeLock.acquire(
+      handleExamInterruption,
+    );
+    const audioResume = audioPlayer.resume();
+    const wakeLockResult = await wakeLockRequest;
+    updateWakeLockRequestGuidance(wakeLockResult);
+    await audioResume;
     if (currentRequest !== examRequest || activity !== "exam") {
       return;
     }
@@ -318,6 +338,7 @@ examStartButton.addEventListener("click", async () => {
     if (currentRequest !== examRequest) {
       return;
     }
+    await examWakeLock.release();
     activity = "idle";
     examOutcome = result === "completed" ? "completed" : "cancelled";
     examStepStatus.textContent =
@@ -335,6 +356,7 @@ examStartButton.addEventListener("click", async () => {
       return;
     }
     audioPlayer.stopAll();
+    await examWakeLock.release();
     activity = "idle";
     examOutcome = "cancelled";
     examStepStatus.textContent = "試験エラー";
@@ -350,18 +372,7 @@ examStartButton.addEventListener("click", async () => {
 });
 
 examCancelButton.addEventListener("click", () => {
-  if (activity !== "exam") {
-    return;
-  }
-  examRequest += 1;
-  examRunner.cancel();
-  audioPlayer.stopAll();
-  activity = "idle";
-  examOutcome = "cancelled";
-  examStepStatus.textContent = "試験中止";
-  applyModeUiState();
-  setStatus("stopped", "試験を中止しました。");
-  examStartButton.focus();
+  cancelExam("試験を中止しました。");
 });
 
 document.addEventListener("keydown", (event) => {
@@ -518,6 +529,58 @@ function updateExamSummary(): void {
     "ready",
     `${keySelect.value}調・基準${melody.play.bpm} BPM・${scoreState}`,
   );
+}
+
+function handleExamInterruption(reason: ExamInterruptionReason): void {
+  if (activity !== "exam") {
+    return;
+  }
+  const message =
+    reason === "document-hidden"
+      ? "画面が非表示になったため、試験と発音を中止しました。復帰後は自動再開しません。"
+      : "画面消灯防止が解除されたため、試験を中止しました。";
+  cancelExam(message, true);
+}
+
+function cancelExam(message: string, focusStatus = false): void {
+  if (activity !== "exam") {
+    return;
+  }
+  examRequest += 1;
+  examRunner.cancel();
+  audioPlayer.stopAll();
+  void examWakeLock.release();
+  activity = "idle";
+  examOutcome = "cancelled";
+  examStepStatus.textContent = "試験中止";
+  applyModeUiState();
+  setStatus("stopped", message, { focus: focusStatus });
+  if (!focusStatus) {
+    examStartButton.focus();
+  }
+}
+
+function updateWakeLockRequestGuidance(
+  result: WakeLockRequestResult,
+): void {
+  if (result === "acquired") {
+    hideWakeLockGuidance();
+    return;
+  }
+  showWakeLockGuidance(result);
+}
+
+function showWakeLockGuidance(
+  state: Parameters<typeof getWakeLockGuidance>[0],
+): void {
+  const message = getWakeLockGuidance(state);
+  examWakeLockGuidance.hidden = message === undefined;
+  examWakeLockGuidance.textContent = message ?? "";
+}
+
+function hideWakeLockGuidance(): void {
+  examWakeLockGuidance.hidden = true;
+  examWakeLockGuidance.textContent = "";
 }
 
 function focusPrimaryAction(): void {

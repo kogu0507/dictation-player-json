@@ -306,15 +306,15 @@ Status: Implementation
 
 ### T-403B 試験中の画面消灯を防止する
 
-- [ ] Screen Wake Lock APIを機能検出する
-- [ ] 試験開始のユーザー操作中にWake Lockを要求する
-- [ ] 試験終了、中止、エラー、モード切替でWake Lockを解放する
-- [ ] Wake Lockのreleaseイベントを監視する
-- [ ] 試験中にdocumentがhiddenになった場合はsequenceと発音を中止する
-- [ ] 再表示時に試験やAudioContextを自動再開しない
-- [ ] Wake Lock非対応・取得失敗時の警告を表示する
-- [ ] 「HTTPS環境が必要」であることを利用案内へ表示する
-- [ ] Wake Lockの取得、解放、非表示中止を単体テストする
+- [x] Screen Wake Lock APIを機能検出する
+- [x] 試験開始のユーザー操作中にWake Lockを要求する
+- [x] 試験終了、中止、エラー、モード切替でWake Lockを解放する
+- [x] Wake Lockのreleaseイベントを監視する
+- [x] 試験中にdocumentがhiddenになった場合はsequenceと発音を中止する
+- [x] 再表示時に試験やAudioContextを自動再開しない
+- [x] Wake Lock非対応・取得失敗時の警告を表示する
+- [x] 「HTTPS環境が必要」であることを利用案内へ表示する
+- [x] Wake Lockの取得、解放、非表示中止を単体テストする
 
 完了条件:
 
@@ -327,12 +327,16 @@ Status: Implementation
 
 完了記録:
 
-- 自動テスト: 97件成功
+- 完了日: 2026-06-22
+- 自動テスト: 111件成功
 - 通常production buildとLAN確認用production build: 成功
 - LAN確認用sample1 SHA-256:
   `1D89B41AB178A517B16361922CFF64BD953A8D421145B6FEB842C24C2427B817`
-- PC Chromiumのproduction画面で練習→試験→練習、試験開始・中止を確認
-- iOS Safari実機での再確認はT-403として継続
+- PC ChromiumのLAN production画面でHTTPS必須警告、試験開始・中止、
+  練習モード復帰、390px幅の試験操作を確認
+- HTTPSのiOS Safari実機確認手順を
+  `HTTPS_WAKE_LOCK_VERIFICATION.md` に記載
+- HTTPSのiOS Safari実機確認はT-403として継続
 
 ### T-404 配信条件を確認する
 
