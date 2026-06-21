@@ -333,13 +333,16 @@ v1ではOscillatorNodeを使う組み込みシンセを実装する。
 2026-06-21時点:
 
 - JSONとして読み込み可能
+- `schema_version`: 1
 - `id`: `sample1`
-- 原調: G
+- 原調: G、モード: major
 - 4/4、8小節、BPM 80
 - soprano 30音
-- 12調分のSVGあり
-- sequenceなし
-- ファイルサイズ: 374,359 bytes
+- 8小節分の `measure_map` あり
+- 12調分のSVGと `semitones` あり
+- 17ステップの `sequence` あり
+- ファイルサイズ: 375,686 bytes
+- SHA-256: `1D89B41AB178A517B16361922CFF64BD953A8D421145B6FEB842C24C2427B817`
 
 データ生成ツール側の既存目安「120〜150KB」より大きい。機能実装を止める問題ではないが、公開前にHTTP圧縮後サイズとSVG重複量を確認する。
 

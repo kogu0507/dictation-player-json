@@ -1,0 +1,193 @@
+:root {
+  color: #171b20;
+  background: #f1f3f5;
+  font-family:
+    "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", system-ui, sans-serif;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+button,
+select {
+  min-height: 44px;
+  border: 1px solid #aab2bc;
+  border-radius: 8px;
+  background: #fff;
+  color: #171b20;
+}
+
+button {
+  border-color: #164f86;
+  background: #164f86;
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #fff;
+  color: #164f86;
+}
+
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+select {
+  padding: 0.6rem 2.2rem 0.6rem 0.75rem;
+}
+
+.app-shell {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+.app-header {
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: #54616f;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+}
+
+.status {
+  margin-bottom: 0;
+  color: #44515e;
+}
+
+.status.error {
+  color: #9e2525;
+  font-weight: 700;
+}
+
+.controls,
+.score-panel {
+  border: 1px solid #d4d9df;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgb(34 43 53 / 8%);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.controls label {
+  display: grid;
+  gap: 0.35rem;
+  color: #3d4853;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.button-row {
+  display: flex;
+  gap: 0.65rem;
+  margin-left: auto;
+}
+
+.score-panel {
+  padding: 1rem;
+}
+
+.score-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.score-heading h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.key-badge {
+  min-width: 2.25rem;
+  border-radius: 999px;
+  background: #e8f0f8;
+  color: #164f86;
+  padding: 0.25rem 0.7rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.score {
+  min-height: 240px;
+  overflow-x: auto;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.75rem;
+}
+
+.score svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 700px;
+}
+
+.placeholder {
+  color: #687480;
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    width: min(100% - 1rem, 1120px);
+    padding-top: 1rem;
+  }
+
+  .controls {
+    align-items: stretch;
+  }
+
+  .controls label,
+  .controls select,
+  .button-row,
+  .button-row button {
+    width: 100%;
+  }
+
+  .button-row {
+    margin-left: 0;
+  }
+}

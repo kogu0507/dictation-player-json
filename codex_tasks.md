@@ -1,6 +1,6 @@
 # codex_tasks.md
 
-Status: Planning  
+Status: Implementation
 仕様の正本: `spec.md`
 実装チャットとGitの切替: `implementation_handoff.md`
 
@@ -60,9 +60,9 @@ Status: Planning
 
 - [x] dictation-contentでschema v1のsample1を再生成
 - [x] 生成物の契約項目を設計チャットで確認
-- [ ] `testdata/melody/sample1.json` へコピー
-- [ ] コピー元とコピー先のSHA-256一致確認
-- [ ] アプリ側Gitへコミット
+- [x] `testdata/melody/sample1.json` へコピー
+- [x] コピー元とコピー先のSHA-256一致確認
+- [x] アプリ側Gitへコミット
 
 完了条件:
 
@@ -72,16 +72,22 @@ Status: Planning
 - [x] 第4小節が `12.0〜16.0` である
 - [x] sequenceの小節範囲が1〜8内に収まる
 - [x] 再生成で同じ構造を作れる
-- [ ] アプリ側テストデータとして配置されている
+- [x] アプリ側テストデータとして配置されている
+
+完了記録:
+
+- 完了日: 2026-06-21
+- dictation-player-json commit: `5a5f682`
+- SHA-256: `1D89B41AB178A517B16361922CFF64BD953A8D421145B6FEB842C24C2427B817`
 
 ## Phase 1: 最小縦断実装
 
 ### T-101 プロジェクトを初期化する
 
-- [ ] TypeScriptとVite
-- [ ] 開発、ビルド、テスト用コマンド
-- [ ] `src/` の責務別ディレクトリ
-- [ ] 本番配置パスを考慮したビルド設定
+- [x] TypeScriptとVite
+- [x] 開発、ビルド、テスト用コマンド
+- [x] `src/` の責務別ディレクトリ
+- [x] 本番配置パスを考慮したビルド設定
 
 完了条件:
 
@@ -91,11 +97,11 @@ Status: Planning
 
 ### T-102 JSONローダーと検証を作る
 
-- [ ] `id` の検証
-- [ ] 開発用データ基準URL
-- [ ] fetchエラー処理
-- [ ] v1必須項目の検証
-- [ ] 内部モデルへの変換
+- [x] `id` の検証
+- [x] 開発用データ基準URL
+- [x] fetchエラー処理
+- [x] v1必須項目の検証
+- [x] 内部モデルへの変換
 
 完了条件:
 
@@ -104,10 +110,10 @@ Status: Planning
 
 ### T-103 選択中の譜面を表示する
 
-- [ ] 初期調の決定
-- [ ] インラインSVGの挿入
-- [ ] レスポンシブ表示
-- [ ] 調変更時の差し替え
+- [x] 初期調の決定
+- [x] インラインSVGの挿入
+- [x] レスポンシブ表示
+- [x] 調変更時の差し替え
 
 完了条件:
 
@@ -116,14 +122,14 @@ Status: Planning
 
 ### T-104 最小音声エンジンを作る
 
-- [ ] AudioContextの生成とresume
-- [ ] 切替可能な音源インターフェース
-- [ ] 三角波シンセ
-- [ ] サイン波シンセ
-- [ ] 単音発音
-- [ ] 複数音の予約
-- [ ] attack/releaseエンベロープ
-- [ ] 全停止
+- [x] AudioContextの生成とresume
+- [x] 切替可能な音源インターフェース
+- [x] 三角波シンセ
+- [x] サイン波シンセ
+- [x] 単音発音
+- [x] 複数音の予約
+- [x] attack/releaseエンベロープ
+- [x] 全停止
 
 完了条件:
 
