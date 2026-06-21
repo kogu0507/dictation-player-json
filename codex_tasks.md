@@ -276,6 +276,9 @@ Status: Implementation
 - Android Chrome: 練習・試験とも問題なし
 - 古いiOS Safari: 試験モードで開始・中止ボタンが消え、練習モードへ戻してもUIが復帰しない
 - 上記iOS症状は音声開始前に発生するため、Web Audio制限ではなくUI/CSS互換性を先に疑う
+- T-403A適用後、古いiOS Safariで練習・試験モードの往復表示は正常
+- 古いiOS SafariではScreen Wake Lock非対応の警告が正しく表示された
+- iOS Safari 16.4以降のWake Lock実機確認は、対応端末入手時まで保留
 
 ### T-403A iOS Safari互換性を改善する
 
@@ -337,6 +340,7 @@ Status: Implementation
 - HTTPSのiOS Safari実機確認手順を
   `HTTPS_WAKE_LOCK_VERIFICATION.md` に記載
 - HTTPSのiOS Safari実機確認はT-403として継続
+- Cloudflare一時HTTPS URLで古いiOS Safariの非対応警告表示を確認
 
 ### T-404 配信条件を確認する
 
