@@ -103,6 +103,9 @@ export function renderAppShell(root: HTMLElement): void {
       <p class="shortcut-help">
         キーボード: Spaceで開始、Escapeで停止・中止
       </p>
+      <p class="compatibility-note">
+        推奨環境: iOS Safari 16.4以降
+      </p>
 
       <section id="score-panel" class="score-panel" aria-labelledby="score-title">
         <div class="score-heading">

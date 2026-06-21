@@ -23,6 +23,7 @@ import {
   type AppMode,
   type ExamOutcome,
 } from "./ui/modeState";
+import { applyModeVisibility } from "./ui/modeVisibility";
 import {
   getStatusPresentation,
   type AppStatusKind,
@@ -116,9 +117,10 @@ function applyModeUiState(): void {
     hasMelody: melody !== undefined,
   });
 
-  practiceControls.hidden = state.practiceControlsHidden;
-  examControls.hidden = state.examControlsHidden;
-  scorePanel.hidden = state.scoreHidden;
+  applyModeVisibility(
+    { practiceControls, examControls, scorePanel },
+    state,
+  );
   modeSelect.disabled = state.modeDisabled;
   keySelect.disabled = state.commonSettingsDisabled;
   timbreSelect.disabled = state.commonSettingsDisabled;

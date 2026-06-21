@@ -173,7 +173,12 @@ h1 {
 }
 
 .mode-controls {
-  display: contents;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  align-items: end;
+  gap: 1rem;
+  min-width: 0;
 }
 
 .mode-controls[hidden] {
@@ -240,7 +245,13 @@ h1 {
 }
 
 .shortcut-help {
-  margin: -0.25rem 0 1rem;
+  margin: -0.25rem 0 0.35rem;
+  color: #596673;
+  font-size: 0.85rem;
+}
+
+.compatibility-note {
+  margin-bottom: 1rem;
   color: #596673;
   font-size: 0.85rem;
 }
@@ -254,6 +265,10 @@ h1 {
   .controls {
     grid-template-columns: 1fr;
     align-items: stretch;
+  }
+
+  .mode-controls {
+    grid-template-columns: 1fr;
   }
 
   .controls label,

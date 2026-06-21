@@ -279,15 +279,15 @@ Status: Implementation
 
 ### T-403A iOS Safari互換性を改善する
 
-- [ ] `.mode-controls` の `display: contents` を廃止する
-- [ ] 通常のGridまたはFlexで既存レイアウトを維持する
-- [ ] 練習→試験→練習の往復で各操作ボタンが表示される
-- [ ] 試験開始前・実行中の譜面非表示ルールを維持する
-- [ ] Vite build targetを `baseline-widely-available` にする
-- [ ] `VITE_DATA_BASE_URL` などで検証用データURLを明示的に上書き可能にする
-- [ ] production buildへsample1を検証用に配置し、LAN上で確認できる手順を用意する
-- [ ] 画面または利用案内へ「iOS Safari 16.4以降推奨」を表示する
-- [ ] モード往復の回帰テストを追加する
+- [x] `.mode-controls` の `display: contents` を廃止する
+- [x] 通常のGridまたはFlexで既存レイアウトを維持する
+- [x] 練習→試験→練習の往復で各操作ボタンが表示される
+- [x] 試験開始前・実行中の譜面非表示ルールを維持する
+- [x] Vite build targetを `baseline-widely-available` にする
+- [x] `VITE_DATA_BASE_URL` などで検証用データURLを明示的に上書き可能にする
+- [x] production buildへsample1を検証用に配置し、LAN上で確認できる手順を用意する
+- [x] 画面または利用案内へ「iOS Safari 16.4以降推奨」を表示する
+- [x] モード往復の回帰テストを追加する
 
 完了条件:
 
@@ -295,6 +295,15 @@ Status: Implementation
 - Android Chromeの既存動作を壊していない
 - production buildを使ってiOS Safariで再確認できる
 - 古いiOSで未解決でも、iOS Safari 16.4以降を正式な推奨環境として案内できる
+
+完了記録:
+
+- 自動テスト: 97件成功
+- 通常production buildとLAN確認用production build: 成功
+- LAN確認用sample1 SHA-256:
+  `1D89B41AB178A517B16361922CFF64BD953A8D421145B6FEB842C24C2427B817`
+- PC Chromiumのproduction画面で練習→試験→練習、試験開始・中止を確認
+- iOS Safari実機での再確認はT-403として継続
 
 ### T-404 配信条件を確認する
 
