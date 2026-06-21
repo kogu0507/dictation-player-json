@@ -57,4 +57,37 @@ describe("validateMelodyData", () => {
       "対応していないschema_versionです。",
     );
   });
+
+  it("要求IDとの不一致を拒否する", () => {
+    expect(() => validateMelodyData(createValidData(), "other")).toThrow(
+      "JSONのidが要求したidと一致しません。",
+    );
+  });
+
+  it("0以下のBPMを拒否する", () => {
+    const data = createValidData();
+    (data.play as { bpm: number }).bpm = 0;
+    expect(() => validateMelodyData(data, "sample")).toThrow(
+      "play.bpm は0より大きい必要があります。",
+    );
+  });
+
+  it("小節境界外へはみ出す音符を拒否する", () => {
+    const data = createValidData();
+    const play = data.play as {
+      voices: { soprano: Array<{ qstamp: number; duration: number }> };
+    };
+    play.voices.soprano[0] = { ...play.voices.soprano[0], qstamp: 3.5, duration: 1 };
+    expect(() => validateMelodyData(data, "sample")).toThrow(
+      "play.voices.soprano[0] が指定小節の時間範囲外です。",
+    );
+  });
+
+  it("12調不足を拒否する", () => {
+    const data = createValidData();
+    delete (data.keys as Record<string, unknown>).B;
+    expect(() => validateMelodyData(data, "sample")).toThrow(
+      "keys には12調すべてが必要です。",
+    );
+  });
 });

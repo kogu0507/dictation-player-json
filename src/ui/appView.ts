@@ -4,9 +4,17 @@ export function renderAppShell(root: HTMLElement): void {
       <header class="app-header">
         <p class="eyebrow">旋律聴音</p>
         <h1 id="app-title">課題を読み込んでいます</h1>
-        <p id="status" class="status" role="status" aria-live="polite">
-          読み込み中…
-        </p>
+        <div
+          id="status"
+          class="status"
+          data-state="loading"
+          role="status"
+          aria-live="polite"
+          tabindex="-1"
+        >
+          <span id="status-label" class="status-label">読み込み中</span>
+          <span id="status-message">課題データを読み込んでいます。</span>
+        </div>
       </header>
 
       <section class="controls" aria-label="再生設定">
@@ -47,23 +55,40 @@ export function renderAppShell(root: HTMLElement): void {
             <select id="end-measure-select" disabled></select>
           </label>
           <div class="button-row">
-            <button id="play-button" type="button" disabled>
+            <button
+              id="play-button"
+              type="button"
+              aria-keyshortcuts="Space"
+              disabled
+            >
               選択範囲を再生
             </button>
-            <button id="stop-button" class="secondary" type="button" disabled>
+            <button
+              id="stop-button"
+              class="secondary"
+              type="button"
+              aria-keyshortcuts="Escape"
+              disabled
+            >
               停止
             </button>
           </div>
         </div>
         <div id="exam-controls" class="mode-controls" hidden>
           <div class="button-row">
-            <button id="exam-start-button" type="button" disabled>
+            <button
+              id="exam-start-button"
+              type="button"
+              aria-keyshortcuts="Space"
+              disabled
+            >
               試験開始
             </button>
             <button
               id="exam-cancel-button"
               class="secondary"
               type="button"
+              aria-keyshortcuts="Escape"
               disabled
             >
               試験中止
@@ -74,6 +99,10 @@ export function renderAppShell(root: HTMLElement): void {
           </p>
         </div>
       </section>
+
+      <p class="shortcut-help">
+        キーボード: Spaceで開始、Escapeで停止・中止
+      </p>
 
       <section id="score-panel" class="score-panel" aria-labelledby="score-title">
         <div class="score-heading">

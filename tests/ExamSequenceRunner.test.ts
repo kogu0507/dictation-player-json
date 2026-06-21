@@ -5,6 +5,7 @@ import type { PlaybackEvent } from "../src/domain/playbackEvents";
 import {
   ExamSequenceRunner,
   type ExamWait,
+  waitForSeconds,
 } from "../src/exam/ExamSequenceRunner";
 
 const melody = validateMelodyData(sample1Json, "sample1");
@@ -168,5 +169,98 @@ describe("ExamSequenceRunner", () => {
     releaseWait?.();
     await expect(running).resolves.toBe("cancelled");
     expect(onComplete).not.toHaveBeenCalled();
+  });
+
+  it("中止完了後は新しい実行を開始できる", async () => {
+    const audioPlayer = createAudioPlayer();
+    let firstRun = true;
+    const wait: ExamWait = async (_durationSeconds, signal) => {
+      if (!firstRun) {
+        return;
+      }
+      await new Promise<void>((_resolve, reject) => {
+        signal.addEventListener(
+          "abort",
+          () => reject(new Error("aborted")),
+          { once: true },
+        );
+      });
+    };
+    const runner = new ExamSequenceRunner(audioPlayer, wait);
+    const cancelled = runner.run(
+      [{ step: 1, type: "rest", duration_sec: 120 }],
+      { semitones: 0, createPlayEvents: () => [] },
+    );
+
+    runner.cancel();
+    await expect(cancelled).resolves.toBe("cancelled");
+
+    firstRun = false;
+    await expect(
+      runner.run(
+        [{ step: 1, type: "rest", duration_sec: 1 }],
+        { semitones: 0, createPlayEvents: () => [] },
+      ),
+    ).resolves.toBe("completed");
+  });
+
+  it("発音待機中の中止で音を止め、後続stepへ進まない", async () => {
+    const audioPlayer = createAudioPlayer();
+    const wait: ExamWait = (_durationSeconds, signal) =>
+      new Promise((_resolve, reject) => {
+        signal.addEventListener(
+          "abort",
+          () => reject(new Error("aborted")),
+          { once: true },
+        );
+      });
+    const runner = new ExamSequenceRunner(audioPlayer, wait);
+    const onStep = vi.fn();
+    const running = runner.run(
+      [
+        {
+          step: 1,
+          type: "chord",
+          pitches: [60],
+          duration_sec: 2,
+          velocity: 80,
+        },
+        { step: 2, type: "rest", duration_sec: 1 },
+      ],
+      {
+        semitones: 0,
+        createPlayEvents: () => [],
+        onStep,
+      },
+    );
+
+    runner.cancel();
+    await expect(running).resolves.toBe("cancelled");
+    expect(audioPlayer.play).toHaveBeenCalledOnce();
+    expect(audioPlayer.stopAll).toHaveBeenCalledOnce();
+    expect(onStep).toHaveBeenCalledOnce();
+  });
+});
+
+describe("waitForSeconds", () => {
+  it("abort済みsignalを即時拒否する", async () => {
+    const controller = new AbortController();
+    controller.abort();
+    await expect(waitForSeconds(120, controller.signal)).rejects.toThrow(
+      "試験が中止されました。",
+    );
+  });
+
+  it("待機中のabortでタイマーを完了扱いにしない", async () => {
+    vi.useFakeTimers();
+    try {
+      const controller = new AbortController();
+      const waiting = waitForSeconds(120, controller.signal);
+      controller.abort();
+      await expect(waiting).rejects.toThrow("試験が中止されました。");
+      await vi.runAllTimersAsync();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

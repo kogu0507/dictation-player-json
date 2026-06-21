@@ -21,6 +21,13 @@ select {
   font: inherit;
 }
 
+button:focus-visible,
+select:focus-visible,
+.status:focus-visible {
+  outline: 3px solid #f2a900;
+  outline-offset: 3px;
+}
+
 button,
 select {
   min-height: 44px;
@@ -84,11 +91,51 @@ h1 {
 }
 
 .status {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  min-height: 48px;
   margin-bottom: 0;
-  color: #44515e;
+  border: 1px solid #cbd3db;
+  border-left: 5px solid #60758a;
+  border-radius: 8px;
+  background: #fff;
+  color: #35414c;
+  padding: 0.7rem 0.85rem;
 }
 
-.status.error {
+.status-label {
+  flex: 0 0 auto;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.status[data-state="loading"],
+.status[data-state="preparing"],
+.status[data-state="waiting"] {
+  border-left-color: #a86d00;
+  background: #fff8e8;
+}
+
+.status[data-state="playing"] {
+  border-left-color: #164f86;
+  background: #edf5fc;
+}
+
+.status[data-state="completed"],
+.status[data-state="ready"] {
+  border-left-color: #2c7440;
+  background: #edf8f0;
+}
+
+.status[data-state="stopped"] {
+  border-left-color: #6c596e;
+  background: #f6f1f6;
+}
+
+.status[data-state="error"] {
+  border-left-color: #9e2525;
+  background: #fff0f0;
   color: #9e2525;
   font-weight: 700;
 }
@@ -102,8 +149,8 @@ h1 {
 }
 
 .controls {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   align-items: end;
   gap: 1rem;
   padding: 1rem;
@@ -112,6 +159,7 @@ h1 {
 
 .controls label {
   display: grid;
+  min-width: 0;
   gap: 0.35rem;
   color: #3d4853;
   font-size: 0.9rem;
@@ -120,8 +168,8 @@ h1 {
 
 .button-row {
   display: flex;
+  align-self: end;
   gap: 0.65rem;
-  margin-left: auto;
 }
 
 .mode-controls {
@@ -133,13 +181,14 @@ h1 {
 }
 
 .exam-step-status {
-  flex-basis: 100%;
+  grid-column: 1 / -1;
   margin: 0;
   color: #44515e;
   font-weight: 700;
 }
 
 .score-panel {
+  min-width: 0;
   padding: 1rem;
 }
 
@@ -170,6 +219,7 @@ h1 {
 }
 
 .score {
+  max-width: 100%;
   min-height: 240px;
   overflow-x: auto;
   border: 1px solid #e1e5e9;
@@ -189,6 +239,12 @@ h1 {
   color: #687480;
 }
 
+.shortcut-help {
+  margin: -0.25rem 0 1rem;
+  color: #596673;
+  font-size: 0.85rem;
+}
+
 @media (max-width: 640px) {
   .app-shell {
     width: min(100% - 1rem, 1120px);
@@ -196,6 +252,7 @@ h1 {
   }
 
   .controls {
+    grid-template-columns: 1fr;
     align-items: stretch;
   }
 
@@ -207,6 +264,17 @@ h1 {
   }
 
   .button-row {
-    margin-left: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .status {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .score-panel {
+    padding: 0.65rem;
   }
 }

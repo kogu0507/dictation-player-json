@@ -46,6 +46,7 @@ describe("qstampToSeconds", () => {
   it("0以下のBPMまたは速度倍率を拒否する", () => {
     expect(() => qstampToSeconds(1, 0, 1)).toThrow();
     expect(() => qstampToSeconds(1, 80, 0)).toThrow();
+    expect(() => qstampToSeconds(-1, 80, 1)).toThrow();
   });
 });
 
@@ -62,6 +63,11 @@ describe("transposePitch", () => {
     expect(() => transposePitch(127, 1)).toThrow(
       "移調後のpitchがMIDI範囲外です。",
     );
+  });
+
+  it("MIDI境界値0と127を許可する", () => {
+    expect(transposePitch(5, -5)).toBe(0);
+    expect(transposePitch(121, 6)).toBe(127);
   });
 });
 
@@ -136,6 +142,64 @@ describe("createPlaybackEvents", () => {
       },
     );
     expect(event?.velocity).toBe(37);
+  });
+
+  it("範囲開始で終了する音と範囲終了で始まる音を除外する", () => {
+    expect(
+      createPlaybackEvents(
+        [
+          {
+            pitch: 60,
+            qstamp: 2,
+            duration: 2,
+            measure: 1,
+            velocity: 80,
+          },
+          {
+            pitch: 62,
+            qstamp: 8,
+            duration: 1,
+            measure: 3,
+            velocity: 80,
+          },
+        ],
+        {
+          bpm: 60,
+          playbackRate: 1,
+          semitones: 0,
+          startQstamp: 4,
+          endQstamp: 8,
+        },
+      ),
+    ).toEqual([]);
+  });
+
+  it("逆転または負の再生範囲を拒否する", () => {
+    const note = {
+      pitch: 60,
+      qstamp: 0,
+      duration: 1,
+      measure: 1,
+      velocity: 80,
+    };
+    expect(() =>
+      createPlaybackEvents([note], {
+        bpm: 80,
+        playbackRate: 1,
+        semitones: 0,
+        startQstamp: 4,
+        endQstamp: 4,
+      }),
+    ).toThrow("再生範囲のqstampが不正です。");
+    expect(() =>
+      createPlaybackEvents([note], {
+        bpm: 80,
+        playbackRate: 1,
+        semitones: 0,
+        startQstamp: -1,
+        endQstamp: 4,
+      }),
+    ).toThrow("再生範囲のqstampが不正です。");
   });
 });
 

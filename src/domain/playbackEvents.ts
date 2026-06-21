@@ -33,8 +33,10 @@ export function qstampToSeconds(
   bpm: number,
   playbackRate = 1,
 ): number {
-  if (bpm <= 0 || playbackRate <= 0) {
-    throw new Error("BPMと速度倍率は0より大きい必要があります。");
+  if (qstamp < 0 || bpm <= 0 || playbackRate <= 0) {
+    throw new Error(
+      "qstampは0以上、BPMと速度倍率は0より大きい必要があります。",
+    );
   }
   return qstamp * (60 / (bpm * playbackRate));
 }

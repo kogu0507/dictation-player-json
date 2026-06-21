@@ -59,4 +59,49 @@ describe("validateExamSequence", () => {
       ),
     ).toThrow("sequence[1].step は1からの連番である必要があります。");
   });
+
+  it("空のsequenceを拒否する", () => {
+    expect(() => validateExamSequence([], 8)).toThrow(
+      "sequence は1ステップ以上必要です。",
+    );
+  });
+
+  it.each([
+    [
+      {
+        step: 1,
+        type: "chord",
+        pitches: [],
+        duration_sec: 1,
+        velocity: 80,
+      },
+      "sequence[0].pitches は1音以上必要です。",
+    ],
+    [
+      {
+        step: 1,
+        type: "chord",
+        pitches: [60],
+        duration_sec: 0,
+        velocity: 80,
+      },
+      "sequence[0].duration_sec は0より大きい必要があります。",
+    ],
+    [
+      {
+        step: 1,
+        type: "chord",
+        pitches: [60],
+        duration_sec: 1,
+        velocity: 128,
+      },
+      "sequence[0].velocity は0〜127である必要があります。",
+    ],
+    [
+      { step: 1, type: "rest", duration_sec: 0 },
+      "sequence[0].duration_sec は0より大きい必要があります。",
+    ],
+  ])("chord/restの境界値を拒否する", (step, message) => {
+    expect(() => validateExamSequence([step], 8)).toThrow(message);
+  });
 });

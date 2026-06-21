@@ -42,4 +42,28 @@ describe("getMeasureQstampRange", () => {
       }),
     ).toThrow("小節範囲が課題範囲外です。");
   });
+
+  it("0以下と非整数の小節番号を拒否する", () => {
+    expect(() =>
+      getMeasureQstampRange(measureMap, {
+        startMeasure: 0,
+        endMeasure: 1,
+      }),
+    ).toThrow("小節範囲が不正です。");
+    expect(() =>
+      getMeasureQstampRange(measureMap, {
+        startMeasure: 1.5,
+        endMeasure: 2,
+      }),
+    ).toThrow("小節範囲が不正です。");
+  });
+
+  it("空のmeasure_mapを課題範囲外として拒否する", () => {
+    expect(() =>
+      getMeasureQstampRange([], {
+        startMeasure: 1,
+        endMeasure: 1,
+      }),
+    ).toThrow("小節範囲が課題範囲外です。");
+  });
 });

@@ -16,62 +16,70 @@ import { ExamSequenceRunner } from "./exam/ExamSequenceRunner";
 import { validateExamSequence } from "./exam/validateSequence";
 import "./styles/main.css";
 import { renderAppShell, requireElement } from "./ui/appView";
+import { getKeyboardAction } from "./ui/keyboardShortcuts";
 import {
   getModeUiState,
   type AppActivity,
   type AppMode,
   type ExamOutcome,
 } from "./ui/modeState";
+import {
+  getStatusPresentation,
+  type AppStatusKind,
+} from "./ui/statusPresentation";
 
 const root = document.querySelector<HTMLElement>("#app");
 if (root === null) {
   throw new Error("アプリの描画先が見つかりません。");
 }
+const appRoot = root;
 
-renderAppShell(root);
+renderAppShell(appRoot);
 
-const title = requireElement<HTMLElement>(root, "#app-title");
-const status = requireElement<HTMLElement>(root, "#status");
-const modeSelect = requireElement<HTMLSelectElement>(root, "#mode-select");
-const keySelect = requireElement<HTMLSelectElement>(root, "#key-select");
+const title = requireElement<HTMLElement>(appRoot, "#app-title");
+const status = requireElement<HTMLElement>(appRoot, "#status");
+const statusLabel = requireElement<HTMLElement>(appRoot, "#status-label");
+const statusMessage = requireElement<HTMLElement>(appRoot, "#status-message");
+const modeSelect = requireElement<HTMLSelectElement>(appRoot, "#mode-select");
+const keySelect = requireElement<HTMLSelectElement>(appRoot, "#key-select");
 const timbreSelect = requireElement<HTMLSelectElement>(
-  root,
+  appRoot,
   "#timbre-select",
 );
 const playbackRateSelect = requireElement<HTMLSelectElement>(
-  root,
+  appRoot,
   "#playback-rate-select",
 );
 const startMeasureSelect = requireElement<HTMLSelectElement>(
-  root,
+  appRoot,
   "#start-measure-select",
 );
 const endMeasureSelect = requireElement<HTMLSelectElement>(
-  root,
+  appRoot,
   "#end-measure-select",
 );
 const practiceControls = requireElement<HTMLElement>(
-  root,
+  appRoot,
   "#practice-controls",
 );
-const examControls = requireElement<HTMLElement>(root, "#exam-controls");
-const playButton = requireElement<HTMLButtonElement>(root, "#play-button");
-const stopButton = requireElement<HTMLButtonElement>(root, "#stop-button");
+const examControls = requireElement<HTMLElement>(appRoot, "#exam-controls");
+const playButton = requireElement<HTMLButtonElement>(appRoot, "#play-button");
+const stopButton = requireElement<HTMLButtonElement>(appRoot, "#stop-button");
 const examStartButton = requireElement<HTMLButtonElement>(
-  root,
+  appRoot,
   "#exam-start-button",
 );
 const examCancelButton = requireElement<HTMLButtonElement>(
-  root,
+  appRoot,
   "#exam-cancel-button",
 );
 const examStepStatus = requireElement<HTMLElement>(
-  root,
+  appRoot,
   "#exam-step-status",
 );
-const scorePanel = requireElement<HTMLElement>(root, "#score-panel");
-const score = requireElement<HTMLElement>(root, "#score");
-const scoreKey = requireElement<HTMLElement>(root, "#score-key");
+const scorePanel = requireElement<HTMLElement>(appRoot, "#score-panel");
+const score = requireElement<HTMLElement>(appRoot, "#score");
+const scoreKey = requireElement<HTMLElement>(appRoot, "#score-key");
 
 const audioPlayer = new OscillatorAudioPlayer();
 const examRunner = new ExamSequenceRunner(audioPlayer);
@@ -83,9 +91,21 @@ let practiceRun = 0;
 let examRequest = 0;
 let completionTimer: number | undefined;
 
-function setStatus(message: string, isError = false): void {
-  status.textContent = message;
-  status.classList.toggle("error", isError);
+function setStatus(
+  kind: AppStatusKind,
+  message: string,
+  options: { focus?: boolean } = {},
+): void {
+  const presentation = getStatusPresentation(kind);
+  status.dataset.state = kind;
+  status.setAttribute("role", presentation.role);
+  status.setAttribute("aria-live", presentation.ariaLive);
+  statusLabel.textContent = presentation.label;
+  statusMessage.textContent = message;
+  appRoot.setAttribute("aria-busy", String(presentation.busy));
+  if (options.focus) {
+    status.focus();
+  }
 }
 
 function applyModeUiState(): void {
@@ -132,7 +152,8 @@ function stopPracticePlayback(message = "停止しました。"): void {
   audioPlayer.stopAll();
   activity = "idle";
   applyModeUiState();
-  setStatus(message);
+  setStatus("stopped", message);
+  playButton.focus();
 }
 
 modeSelect.addEventListener("change", () => {
@@ -145,6 +166,7 @@ modeSelect.addEventListener("change", () => {
     updatePracticeSummary();
   }
   applyModeUiState();
+  focusPrimaryAction();
 });
 
 keySelect.addEventListener("change", () => {
@@ -178,7 +200,8 @@ playButton.addEventListener("click", async () => {
   const currentRun = ++practiceRun;
   activity = "practice";
   applyModeUiState();
-  setStatus("再生を準備しています…");
+  setStatus("preparing", "再生を準備しています。");
+  stopButton.focus();
 
   try {
     await audioPlayer.resume();
@@ -201,6 +224,7 @@ playButton.addEventListener("click", async () => {
     const scheduledDuration = audioPlayer.play(events);
     const eventDuration = getPlaybackDuration(events);
     setStatus(
+      "playing",
       `再生中（${startMeasure}〜${endMeasure}小節・${playbackRate}倍・約${Math.ceil(eventDuration)}秒）`,
     );
 
@@ -211,7 +235,8 @@ playButton.addEventListener("click", async () => {
       completionTimer = undefined;
       activity = "idle";
       applyModeUiState();
-      setStatus("再生が終了しました。");
+      setStatus("completed", "再生が終了しました。");
+      playButton.focus();
     }, (scheduledDuration + 0.1) * 1000);
   } catch (error) {
     if (currentRun !== practiceRun) {
@@ -221,10 +246,11 @@ playButton.addEventListener("click", async () => {
     activity = "idle";
     applyModeUiState();
     setStatus(
+      "error",
       error instanceof Error
         ? `再生できませんでした: ${error.message}`
         : "再生できませんでした。",
-      true,
+      { focus: true },
     );
   }
 });
@@ -245,10 +271,11 @@ examStartButton.addEventListener("click", async () => {
     );
   } catch (error) {
     setStatus(
+      "error",
       error instanceof Error
         ? `試験手順が不正です: ${error.message}`
         : "試験手順が不正です。",
-      true,
+      { focus: true },
     );
     return;
   }
@@ -258,7 +285,8 @@ examStartButton.addEventListener("click", async () => {
   examOutcome = "not-started";
   examStepStatus.textContent = "試験を準備しています";
   applyModeUiState();
-  setStatus("試験を準備しています…");
+  setStatus("preparing", "試験を準備しています。");
+  examCancelButton.focus();
 
   try {
     await audioPlayer.resume();
@@ -278,7 +306,10 @@ examStartButton.addEventListener("click", async () => {
         const message = formatExamStep(stepState.step);
         examStepStatus.textContent =
           `ステップ ${stepState.index + 1}/${stepState.total}: ${message}`;
-        setStatus(`試験中: ${message}`);
+        setStatus(
+          stepState.step.type === "rest" ? "waiting" : "playing",
+          `試験中: ${message}`,
+        );
       },
     });
 
@@ -291,10 +322,12 @@ examStartButton.addEventListener("click", async () => {
       result === "completed" ? "試験終了" : "試験中止";
     applyModeUiState();
     setStatus(
+      result === "completed" ? "completed" : "stopped",
       result === "completed"
         ? "試験が終了しました。"
         : "試験を中止しました。",
     );
+    examStartButton.focus();
   } catch (error) {
     if (currentRequest !== examRequest) {
       return;
@@ -305,10 +338,11 @@ examStartButton.addEventListener("click", async () => {
     examStepStatus.textContent = "試験エラー";
     applyModeUiState();
     setStatus(
+      "error",
       error instanceof Error
         ? `試験を実行できませんでした: ${error.message}`
         : "試験を実行できませんでした。",
-      true,
+      { focus: true },
     );
   }
 });
@@ -324,13 +358,45 @@ examCancelButton.addEventListener("click", () => {
   examOutcome = "cancelled";
   examStepStatus.textContent = "試験中止";
   applyModeUiState();
-  setStatus("試験を中止しました。");
+  setStatus("stopped", "試験を中止しました。");
+  examStartButton.focus();
+});
+
+document.addEventListener("keydown", (event) => {
+  const target = event.target;
+  const action = getKeyboardAction({
+    code: event.code,
+    targetTagName:
+      target instanceof HTMLElement ? target.tagName : "",
+    mode,
+    activity,
+    hasMelody: melody !== undefined,
+  });
+  if (action === undefined) {
+    return;
+  }
+
+  event.preventDefault();
+  if (action === "start-practice") {
+    playButton.click();
+  } else if (action === "stop-practice") {
+    stopButton.click();
+  } else if (action === "start-exam") {
+    examStartButton.click();
+  } else {
+    examCancelButton.click();
+  }
 });
 
 async function initialize(): Promise<void> {
+  setStatus("loading", "課題データを読み込んでいます。");
   const id = new URLSearchParams(window.location.search).get("id");
   if (id === null || id.length === 0) {
-    setStatus("URLパラメータ id で課題を指定してください。", true);
+    setStatus(
+      "error",
+      "URLパラメータ id で課題を指定してください。",
+      { focus: true },
+    );
     title.textContent = "課題を指定できません";
     score.innerHTML =
       '<p class="placeholder">例: <code>?id=sample1</code></p>';
@@ -386,7 +452,7 @@ async function initialize(): Promise<void> {
     title.textContent = "課題を読み込めません";
     score.innerHTML =
       '<p class="placeholder">課題データを確認して、再読み込みしてください。</p>';
-    setStatus(formatLoadError(error), true);
+    setStatus("error", formatLoadError(error), { focus: true });
   }
 }
 
@@ -435,6 +501,7 @@ function updatePracticeSummary(): void {
     return;
   }
   setStatus(
+    "ready",
     `${keySelect.value}調・${startMeasureSelect.value}〜${endMeasureSelect.value}小節・${playbackRateSelect.value}倍・基準${melody.play.bpm} BPM`,
   );
 }
@@ -446,8 +513,16 @@ function updateExamSummary(): void {
   const scoreState =
     examOutcome === "not-started" ? "譜面非表示" : "譜面表示";
   setStatus(
+    "ready",
     `${keySelect.value}調・基準${melody.play.bpm} BPM・${scoreState}`,
   );
+}
+
+function focusPrimaryAction(): void {
+  const target = mode === "practice" ? playButton : examStartButton;
+  if (!target.disabled) {
+    target.focus();
+  }
 }
 
 function formatLoadError(error: unknown): string {
