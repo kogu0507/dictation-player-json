@@ -2,10 +2,12 @@ import { OscillatorAudioPlayer } from "./audio/OscillatorAudioPlayer";
 import type { SynthTimbre } from "./audio/types";
 import { loadMelody, MelodyLoadError } from "./data/loadMelody";
 import type { MelodyData } from "./data/types";
+import { resolvePlaybackRate } from "./domain/playbackRate";
 import {
-  createFullSongEvents,
+  createMelodyPlaybackEvents,
   getPlaybackDuration,
 } from "./domain/playbackEvents";
+import { getMelodyKey } from "./domain/transposition";
 import "./styles/main.css";
 import { renderAppShell, requireElement } from "./ui/appView";
 
@@ -22,6 +24,18 @@ const keySelect = requireElement<HTMLSelectElement>(root, "#key-select");
 const timbreSelect = requireElement<HTMLSelectElement>(
   root,
   "#timbre-select",
+);
+const playbackRateSelect = requireElement<HTMLSelectElement>(
+  root,
+  "#playback-rate-select",
+);
+const startMeasureSelect = requireElement<HTMLSelectElement>(
+  root,
+  "#start-measure-select",
+);
+const endMeasureSelect = requireElement<HTMLSelectElement>(
+  root,
+  "#end-measure-select",
 );
 const playButton = requireElement<HTMLButtonElement>(root, "#play-button");
 const stopButton = requireElement<HTMLButtonElement>(root, "#stop-button");
@@ -43,6 +57,9 @@ function setPlaying(isPlaying: boolean): void {
   stopButton.disabled = !isPlaying;
   keySelect.disabled = isPlaying || melody === undefined;
   timbreSelect.disabled = isPlaying || melody === undefined;
+  playbackRateSelect.disabled = isPlaying || melody === undefined;
+  startMeasureSelect.disabled = isPlaying || melody === undefined;
+  endMeasureSelect.disabled = isPlaying || melody === undefined;
 }
 
 function renderSelectedScore(): void {
@@ -50,10 +67,7 @@ function renderSelectedScore(): void {
     return;
   }
   const selectedKey = keySelect.value;
-  const key = melody.keys[selectedKey];
-  if (key === undefined) {
-    throw new Error("選択した調の譜面がありません。");
-  }
+  const key = getMelodyKey(melody, selectedKey);
 
   score.replaceChildren();
   score.insertAdjacentHTML("afterbegin", key.svg);
@@ -71,10 +85,23 @@ function stopPlayback(message = "停止しました。"): void {
   setStatus(message);
 }
 
-keySelect.addEventListener("change", renderSelectedScore);
+keySelect.addEventListener("change", () => {
+  renderSelectedScore();
+  updatePracticeSummary();
+});
 
 timbreSelect.addEventListener("change", () => {
   audioPlayer.setTimbre(timbreSelect.value as SynthTimbre);
+});
+
+playbackRateSelect.addEventListener("change", updatePracticeSummary);
+startMeasureSelect.addEventListener("change", () => {
+  updateMeasureRangeOptions();
+  updatePracticeSummary();
+});
+endMeasureSelect.addEventListener("change", () => {
+  updateMeasureRangeOptions();
+  updatePracticeSummary();
 });
 
 playButton.addEventListener("click", async () => {
@@ -92,11 +119,22 @@ playButton.addEventListener("click", async () => {
       return;
     }
 
-    const events = createFullSongEvents(melody, keySelect.value);
+    const startMeasure = Number(startMeasureSelect.value);
+    const endMeasure = Number(endMeasureSelect.value);
+    const playbackRate = resolvePlaybackRate(
+      "practice",
+      Number(playbackRateSelect.value),
+    );
+    const events = createMelodyPlaybackEvents(melody, {
+      selectedKey: keySelect.value,
+      playbackRate,
+      startMeasure,
+      endMeasure,
+    });
     const scheduledDuration = audioPlayer.play(events);
     const eventDuration = getPlaybackDuration(events);
     setStatus(
-      `再生中（${melody.play.bpm} BPM・約${Math.ceil(eventDuration)}秒）`,
+      `再生中（${startMeasure}〜${endMeasure}小節・${playbackRate}倍・約${Math.ceil(eventDuration)}秒）`,
     );
 
     completionTimer = window.setTimeout(() => {
@@ -149,12 +187,29 @@ async function initialize(): Promise<void> {
       }),
     );
 
+    const measureOptions = Array.from(
+      { length: melody.measures },
+      (_, index) => {
+        const option = document.createElement("option");
+        option.value = String(index + 1);
+        option.textContent = String(index + 1);
+        return option;
+      },
+    );
+    startMeasureSelect.replaceChildren(
+      ...measureOptions.map((option) => option.cloneNode(true)),
+    );
+    endMeasureSelect.replaceChildren(
+      ...measureOptions.map((option) => option.cloneNode(true)),
+    );
+    startMeasureSelect.value = "1";
+    endMeasureSelect.value = String(melody.measures);
+    updateMeasureRangeOptions();
+
     audioPlayer.setTimbre("triangle");
     renderSelectedScore();
     setPlaying(false);
-    setStatus(
-      `${melody.time_signature}・${melody.measures}小節・${melody.play.bpm} BPM`,
-    );
+    updatePracticeSummary();
   } catch (error) {
     melody = undefined;
     setPlaying(false);
@@ -163,6 +218,27 @@ async function initialize(): Promise<void> {
       '<p class="placeholder">課題データを確認して、再読み込みしてください。</p>';
     setStatus(formatLoadError(error), true);
   }
+}
+
+function updateMeasureRangeOptions(): void {
+  const startMeasure = Number(startMeasureSelect.value);
+  const endMeasure = Number(endMeasureSelect.value);
+
+  for (const option of startMeasureSelect.options) {
+    option.disabled = Number(option.value) > endMeasure;
+  }
+  for (const option of endMeasureSelect.options) {
+    option.disabled = Number(option.value) < startMeasure;
+  }
+}
+
+function updatePracticeSummary(): void {
+  if (melody === undefined) {
+    return;
+  }
+  setStatus(
+    `${keySelect.value}調・${startMeasureSelect.value}〜${endMeasureSelect.value}小節・${playbackRateSelect.value}倍・基準${melody.play.bpm} BPM`,
+  );
 }
 
 function formatLoadError(error: unknown): string {
