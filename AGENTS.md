@@ -40,6 +40,8 @@
 - 本番JSONは `/data/dictation/melody/{id}.json` から取得する。
 - 公開するアプリ成果物はproduction buildの `dist/` の中身だけとし、ソースや依存パッケージを公開しない。
 - 公開・キャッシュ・圧縮の判断は `DEPLOYMENT.md` に従う。
+- プレイヤーURLはSEO対象にせず、production HTMLへ `noindex` を設定する。
+- FTP公開パッケージはスクリプトで再現可能に作り、手作業で成果物を組み替えない。
 - 選択中のSVGだけをDOMへ挿入する。
 - インラインSVGは信頼済みの同一オリジンデータだけを扱う。
 - モード切替に関係するコンテナへ `display: contents` を使用しない。

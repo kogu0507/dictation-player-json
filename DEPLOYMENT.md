@@ -80,6 +80,22 @@ npm run build
 
 `base: "./"` のため、アプリを `/app/dictation-player-json/` へ配置しても、JSとCSSは同じディレクトリを基準に読み込まれる。
 
+最終公開では `npm run release:ftp` で作る次の構成を使用する。
+
+```text
+release/
+└─ ftp-root/
+   ├─ app/
+   │  └─ dictation-player-json/
+   ├─ data/
+   │  └─ dictation/
+   │     └─ melody/
+   │        └─ sample1.json
+   └─ RELEASE_MANIFEST.txt
+```
+
+FTPソフトでは `ftp-root/` 自体を1つのフォルダとしてアップロードするのではなく、その中の `app/` と `data/` をサーバーの既存ドキュメントルートへ統合する。
+
 ## 4. データ配置
 
 `dictation-content` で生成する。
@@ -177,6 +193,7 @@ CORESERVERの現在の応答はLiteSpeedである。まず設定ファイルを�
 - JSとCSSのファイル名にハッシュがある
 - HTMLとJSONが長期固定キャッシュされていない
 - iOS Safari 16.4以降でWake Lockを利用できる
+- プレイヤーHTMLに `noindex` がある
 
 公開後の確認対象URL:
 

@@ -350,3 +350,38 @@ Screen Wake Lock APIはHTTPSのsecure contextが必要です。
 - iOS Safari 16.4以降のScreen Wake Lock
 
 サイト側の `/data/dictation/README.md` は旧スキーマのため、`PUBLIC_DATA_README_DRAFT.md` を基に別作業で更新する。
+
+## 8. 現在の実装依頼: FTP公開パッケージ
+
+```text
+codex_tasks.mdのT-405を実装してください。
+
+目的:
+CORESERVERへFTPアップロードする最終公開パッケージを、
+毎回同じ手順で安全に生成できるようにします。
+
+必須対応:
+- index.htmlへ meta name="robots" content="noindex" を追加
+- npm run release:ftp を追加
+- production buildを実行
+- release/ftp-root/app/dictation-player-json/ にdistの中身を配置
+- release/ftp-root/data/dictation/melody/sample1.json を配置
+- dictation-content側生成物とのSHA-256一致確認
+- RELEASE_MANIFEST.txtへファイル一覧とSHA-256を出力
+- release/を.gitignoreへ追加
+- 公開パッケージにsrc、tests、node_modules等が含まれないことを検証
+- DEPLOYMENT.mdのFTP手順と整合させる
+- 対応するテストを追加
+
+生成元JSON:
+C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json
+
+注意:
+- サーバーへのFTPアップロード自体は行わない
+- .htaccessはまだ公開パッケージへ含めない
+- 既存の/app/や/data/を削除する設計にしない
+
+テスト、production build、release:ftpを実行し、独立コミットしてください。
+完了後はコミットID、テスト件数、release/ftp-rootのファイル一覧、
+manifestのJSON SHA-256を報告してください。
+```

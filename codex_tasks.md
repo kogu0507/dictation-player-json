@@ -376,6 +376,32 @@ Status: Implementation
 - 公開手順: `DEPLOYMENT.md`
 - サイト側README更新案: `PUBLIC_DATA_README_DRAFT.md`
 
+### T-405 FTP公開パッケージを作成する
+
+- [ ] プレイヤーHTMLへ `meta name="robots" content="noindex"` を追加する
+- [ ] `npm run release:ftp` を追加する
+- [ ] production buildを実行する
+- [ ] `release/ftp-root/app/dictation-player-json/` へアプリ成果物を配置する
+- [ ] `release/ftp-root/data/dictation/melody/sample1.json` を配置する
+- [ ] JSONは `dictation-content/dist/melody/sample1.json` と同一SHA-256であることを確認する
+- [ ] 公開ファイル一覧とSHA-256をmanifestへ出力する
+- [ ] `release/` をGit管理対象外にする
+- [ ] 同じ入力から同じ公開構成を再生成できる
+- [ ] FTPアップロード用チェックリストを更新する
+
+完了条件:
+
+- `release/ftp-root/` の内容をドキュメントルートへアップロードすれば公開構成が完成する
+- ソースコード、テスト、`node_modules` が公開パッケージに含まれない
+- プレイヤーが検索インデックス対象外になっている
+- 自動テストとproduction buildが成功する
+
+FTPアップロード後:
+
+- `release/ftp-root/app/` の中身を本番 `/app/` へ統合する
+- `release/ftp-root/data/` の中身を本番 `/data/` へ統合する
+- 本番既存ファイルを無関係に削除しない
+
 ## 将来候補
 
 - ピアノサンプラー

@@ -434,3 +434,13 @@ v1ではOscillatorNodeを使う組み込みシンセを実装する。
 - sample1は非圧縮375,686 bytes、gzip約21KB、Brotli約12KBである。
 - 圧縮後サイズが十分小さいため、v1ではSVG分離と独自ミニファイを行わない。
 - 詳細な公開手順は `DEPLOYMENT.md` を正本とする。
+
+## 15. 聴音ページとの役割分担
+
+- `/app/dictation-player-json/?id={id}` は操作用プレイヤーとし、検索結果へ掲載しない。
+- プレイヤーHTMLには `meta robots: noindex` を設定する。
+- SEO、課題説明、練習方法、内部リンクは将来の聴音ページ側で扱う。
+- 課題一覧ページは `/dictation/melody/` を想定する。
+- 固有解説が必要な課題は `/dictation/melody/{id}/` を想定する。
+- 親ページからiframeで表示する場合は `allow="screen-wake-lock"` を指定する。
+- 同一ページに多数のiframeを常時読み込まず、選択中の課題だけを読み込む。
