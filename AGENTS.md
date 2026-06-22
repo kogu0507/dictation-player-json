@@ -2,6 +2,8 @@
 
 このリポジトリは、JSON駆動の旋律聴音プレイヤーを実装する。
 
+ローカル配置は `projects/dictation-player-json/` とし、公開用の `public_html/app/dictation-player-json/` にはproduction build成果物だけを置く。
+
 ## 正本
 
 優先順位は次のとおり。

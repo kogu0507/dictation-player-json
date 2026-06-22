@@ -77,7 +77,7 @@ npm run release:ftp
 公開パッケージを再生成する。生成元JSONの既定パスは次である。
 
 ```text
-C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-content\dist\melody\sample1.json
 ```
 
 別の作業環境では `DICTATION_CONTENT_SAMPLE1` に生成済みJSONの
@@ -140,10 +140,18 @@ FTPソフトでは `ftp-root/` 自体を1つのフォルダとしてアップロ
 
 ## 4. データ配置
 
-`dictation-content` で生成する。
+`dictation-content` で生成する。ローカルの開発プロジェクト構成は次とする。
 
 ```text
-C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\
+├─ dictation-content\
+└─ dictation-player-json\
+```
+
+`release:ftp` は、環境変数で上書きしない場合、アプリプロジェクトの隣にある次のファイルを参照する。
+
+```text
+../dictation-content/dist/melody/sample1.json
 ```
 
 生成物を次へ配置する。

@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { resolve } from "node:path";
 import {
@@ -6,17 +7,7 @@ import {
   MANIFEST_NAME,
 } from "./release-ftp-lib.mjs";
 
-const sourceJson = process.env.DICTATION_CONTENT_SAMPLE1?.trim()
-  ? resolve(process.env.DICTATION_CONTENT_SAMPLE1)
-  : resolve(
-      homedir(),
-      "OneDrive",
-      "ドキュメント",
-      "dictation-content",
-      "dist",
-      "melody",
-      "sample1.json",
-    );
+const sourceJson = resolveSourceJson();
 
 await runProductionBuild();
 
@@ -61,4 +52,31 @@ async function runProductionBuild() {
       );
     });
   });
+}
+
+function resolveSourceJson() {
+  const configured = process.env.DICTATION_CONTENT_SAMPLE1?.trim();
+  if (configured) {
+    return resolve(configured);
+  }
+
+  const candidates = [
+    resolve(
+      "..",
+      "dictation-content",
+      "dist",
+      "melody",
+      "sample1.json",
+    ),
+    resolve(
+      homedir(),
+      "OneDrive",
+      "ドキュメント",
+      "dictation-content",
+      "dist",
+      "melody",
+      "sample1.json",
+    ),
+  ];
+  return candidates.find((path) => existsSync(path)) ?? candidates[0];
 }

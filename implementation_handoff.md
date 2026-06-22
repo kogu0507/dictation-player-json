@@ -8,10 +8,10 @@ Status: Ready for implementation handoff
 
 ```text
 生成ツール:
-C:\Users\kogu0\OneDrive\ドキュメント\dictation-content
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-content
 
 Webアプリ:
-C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\public_html\app\dictation-player-json
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-player-json
 ```
 
 両方とも独立したGitリポジトリとして扱う。生成物を受け渡す場合も、片方のCodexがもう片方のソースコードを同時に変更しない。
@@ -57,7 +57,7 @@ C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\public_html\app\dictati
 ```text
 dictation-contentの実装を行います。
 Webアプリのディレクトリは次です。
-C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\public_html\app\dictation-player-json
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-player-json
 
 アプリ側で確定したデータ契約は、上記ディレクトリの
 content_data_contract.md、spec.md、codex_tasks.mdにあります。
@@ -98,7 +98,7 @@ sample1をschema_version 1で再生成できるところまで進めてくださ
 確定した生成物:
 
 ```text
-C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-content\dist\melody\sample1.json
 ```
 
 - dictation-content commit: `5651ca0`
@@ -118,7 +118,7 @@ spec.md、content_data_contract.md、AGENTS.md、codex_tasks.mdを正本とし�
 最初にT-003の残作業を行い、その後T-101から順番に実装してください。
 
 schema v1の生成済みsample1は次です。
-C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-content\dist\melody\sample1.json
 
 これをこのリポジトリの
 testdata/melody/sample1.json
@@ -374,7 +374,7 @@ CORESERVERへFTPアップロードする最終公開パッケージを、
 - 対応するテストを追加
 
 生成元JSON:
-C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-content\dist\melody\sample1.json
 
 注意:
 - サーバーへのFTPアップロード自体は行わない

@@ -49,7 +49,7 @@ Status: Implementation
 - dictation-content commit: `5651ca0`
 - pytest: 24 passed
 - 2回生成のSHA-256一致
-- 生成物: `C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json`
+- 現在の生成物: `C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-content\dist\melody\sample1.json`
 - 生成物サイズ: 375,686 bytes
 
 ### T-003 sample1を再生成してアプリへ配置する
