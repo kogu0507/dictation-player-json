@@ -378,23 +378,36 @@ Status: Implementation
 
 ### T-405 FTP公開パッケージを作成する
 
-- [ ] プレイヤーHTMLへ `meta name="robots" content="noindex"` を追加する
-- [ ] `npm run release:ftp` を追加する
-- [ ] production buildを実行する
-- [ ] `release/ftp-root/app/dictation-player-json/` へアプリ成果物を配置する
-- [ ] `release/ftp-root/data/dictation/melody/sample1.json` を配置する
-- [ ] JSONは `dictation-content/dist/melody/sample1.json` と同一SHA-256であることを確認する
-- [ ] 公開ファイル一覧とSHA-256をmanifestへ出力する
-- [ ] `release/` をGit管理対象外にする
-- [ ] 同じ入力から同じ公開構成を再生成できる
-- [ ] FTPアップロード用チェックリストを更新する
+- [x] プレイヤーHTMLへ `meta name="robots" content="noindex"` を追加する
+- [x] `npm run release:ftp` を追加する
+- [x] production buildを実行する
+- [x] `release/ftp-root/app/dictation-player-json/` へアプリ成果物を配置する
+- [x] `release/ftp-root/data/dictation/melody/sample1.json` を配置する
+- [x] JSONは `dictation-content/dist/melody/sample1.json` と同一SHA-256であることを確認する
+- [x] 公開ファイル一覧とSHA-256をmanifestへ出力する
+- [x] `release/` をGit管理対象外にする
+- [x] 同じ入力から同じ公開構成を再生成できる
+- [x] FTPアップロード用チェックリストを更新する
 
 完了条件:
 
-- `release/ftp-root/` の内容をドキュメントルートへアップロードすれば公開構成が完成する
+- `release/ftp-root/` の `app/` と `data/` を既存ドキュメントルートへ
+  統合すれば公開構成が完成する
 - ソースコード、テスト、`node_modules` が公開パッケージに含まれない
 - プレイヤーが検索インデックス対象外になっている
 - 自動テストとproduction buildが成功する
+
+完了記録:
+
+- 完了日: 2026-06-22
+- 自動テスト: 120件成功
+- production buildと `npm run release:ftp`: 成功
+- 公開パッケージ: アプリ成果物3ファイル、JSON 1ファイル、
+  `RELEASE_MANIFEST.txt`
+- sample1 SHA-256:
+  `1D89B41AB178A517B16361922CFF64BD953A8D421145B6FEB842C24C2427B817`
+- `src/`、`tests/`、`testdata/`、`node_modules/`、
+  `.htaccess` が含まれないことを確認
 
 FTPアップロード後:
 

@@ -48,7 +48,8 @@ public_html/
          └─ sample1.json
 ```
 
-アプリディレクトリへ配置するのは `npm run build` で生成された `dist/` の中身だけとする。
+アプリディレクトリへ配置するのは `npm run release:ftp` が
+production buildから配置した成果物だけとする。
 
 次は公開しない。
 
@@ -69,18 +70,37 @@ FTPでは、`seegmund-music-labo.com` のドキュメントルートを基準に
 ```powershell
 npm ci
 npm test
-npm run build
+npm run release:ftp
 ```
 
-成功後、次を確認する。
+`release:ftp` は内部で `npm run build` を実行し、成功した場合だけ
+公開パッケージを再生成する。生成元JSONの既定パスは次である。
 
-- `dist/index.html`
-- `dist/assets/index-<hash>.js`
-- `dist/assets/index-<hash>.css`
+```text
+C:\Users\kogu0\OneDrive\ドキュメント\dictation-content\dist\melody\sample1.json
+```
+
+別の作業環境では `DICTATION_CONTENT_SAMPLE1` に生成済みJSONの
+絶対パスを指定できる。
+
+```powershell
+$env:DICTATION_CONTENT_SAMPLE1 = "C:\path\to\dictation-content\dist\melody\sample1.json"
+npm run release:ftp
+```
+
+スクリプトは次を自動確認する。
+
+- production HTMLに `meta name="robots" content="noindex"` がある
+- 公開用JSONと生成元JSONのSHA-256が一致する
+- `src/`、`tests/`、`testdata/`、`node_modules/`、`.git/`、
+  `package.json`、`.htaccess` が含まれない
+- 公開先が `app/dictation-player-json/` と
+  `data/dictation/melody/sample1.json` の範囲内である
+- シンボリックリンクや通常ファイル以外を含まない
 
 `base: "./"` のため、アプリを `/app/dictation-player-json/` へ配置しても、JSとCSSは同じディレクトリを基準に読み込まれる。
 
-最終公開では `npm run release:ftp` で作る次の構成を使用する。
+成功後、次の構成が生成される。
 
 ```text
 release/
@@ -94,7 +114,29 @@ release/
    └─ RELEASE_MANIFEST.txt
 ```
 
-FTPソフトでは `ftp-root/` 自体を1つのフォルダとしてアップロードするのではなく、その中の `app/` と `data/` をサーバーの既存ドキュメントルートへ統合する。
+`RELEASE_MANIFEST.txt` は、公開対象ファイルを相対パス順に並べた
+SHA-256一覧である。manifest自身は自己ハッシュできないため一覧対象外とする。
+
+FTPソフトでは `ftp-root/` 自体を1つのフォルダとしてアップロードするのではなく、
+その中の `app/` と `data/` をサーバーの既存ドキュメントルートへ統合する。
+`RELEASE_MANIFEST.txt` はアップロード前後の照合用としてローカルに保持し、
+サーバーへはアップロードしない。
+
+既存の `/app/` や `/data/` 全体を削除・置換しない。
+今回の `app/dictation-player-json/` と
+`data/dictation/melody/sample1.json` だけを追加または更新する。
+`.htaccess` はこの公開パッケージに含めない。
+
+### FTPアップロード用チェックリスト
+
+1. `npm test` が成功している。
+2. `npm run release:ftp` が成功している。
+3. コマンド出力の生成元JSONと公開用JSONのSHA-256が一致している。
+4. `RELEASE_MANIFEST.txt` の全ファイルが `ftp-root/` に存在する。
+5. `app/` と `data/` を既存ドキュメントルートへ統合する設定になっている。
+6. FTPソフトの「同期時に転送元にないファイルを削除する」機能を無効にする。
+7. `.htaccess` と `RELEASE_MANIFEST.txt` をアップロード対象にしない。
+8. アップロード後に「8. 公開後確認」を実施する。
 
 ## 4. データ配置
 
