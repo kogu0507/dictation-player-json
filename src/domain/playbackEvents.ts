@@ -1,4 +1,4 @@
-import type { MelodyData, MelodyNote } from "../data/types";
+import type { ContentData, MelodyNote } from "../data/types";
 import {
   getMeasureQstampRange,
   type MeasureRange,
@@ -91,11 +91,11 @@ export function createPlaybackEvents(
 }
 
 export function createFullSongEvents(
-  melody: MelodyData,
+  melody: ContentData,
   selectedKey: string,
   playbackRate = 1,
 ): PlaybackEvent[] {
-  return createMelodyPlaybackEvents(melody, {
+  return createContentPlaybackEvents(melody, {
     selectedKey,
     playbackRate,
     startMeasure: 1,
@@ -103,8 +103,8 @@ export function createFullSongEvents(
   });
 }
 
-export function createMelodyPlaybackEvents(
-  melody: MelodyData,
+export function createContentPlaybackEvents(
+  melody: ContentData,
   options: MelodyPlaybackOptions,
 ): PlaybackEvent[] {
   const { selectedKey, playbackRate, startMeasure, endMeasure } = options;
@@ -122,6 +122,8 @@ export function createMelodyPlaybackEvents(
     ...range,
   });
 }
+
+export const createMelodyPlaybackEvents = createContentPlaybackEvents;
 
 export function getPlaybackDuration(events: PlaybackEvent[]): number {
   return events.reduce(

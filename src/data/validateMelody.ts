@@ -1,7 +1,15 @@
-import type {
-  MeasureBoundary,
-  MelodyData,
-  MelodyNote,
+import {
+  HARMONY_VOICE_NAMES,
+  TARGET_KEY_NAMES,
+  type ContentData,
+  type ContentType,
+  type HarmonyData,
+  type HarmonyVoiceName,
+  type MeasureBoundary,
+  type MelodyData,
+  type MelodyKey,
+  type MelodyNote,
+  type SequenceStep,
 } from "./types";
 import {
   ExamSequenceValidationError,
@@ -22,6 +30,18 @@ export class MelodyValidationError extends Error {
     super(message);
     this.name = "MelodyValidationError";
   }
+}
+
+interface CommonDataFields {
+  id: string;
+  title: string;
+  base_key: string;
+  mode: "major" | "minor";
+  time_signature: string;
+  measures: number;
+  measure_map: MeasureBoundary[];
+  bpm: number;
+  keys: Record<string, MelodyKey>;
 }
 
 function fail(message: string): never {
@@ -72,6 +92,47 @@ function requireMidiValue(value: unknown, path: string): number {
   return number;
 }
 
+function validateMeasureMap(
+  value: unknown,
+  measures: number,
+): MeasureBoundary[] {
+  let previousEnd: number | undefined;
+  const measureMap = requireArray(value, "measure_map").map(
+    (item, index) => {
+      const path = `measure_map[${index}]`;
+      const boundary = requireObject(item, path);
+      const measure = requireInteger(boundary.measure, `${path}.measure`);
+      const start = requireNumber(
+        boundary.start_qstamp,
+        `${path}.start_qstamp`,
+      );
+      const end = requireNumber(
+        boundary.end_qstamp,
+        `${path}.end_qstamp`,
+      );
+      if (measure !== index + 1) {
+        fail("measure_map は1からの連番である必要があります。");
+      }
+      if (start < 0 || end <= start) {
+        fail(`${path} の時間範囲が不正です。`);
+      }
+      if (previousEnd !== undefined && previousEnd !== start) {
+        fail("measure_map の前後の境界が連続していません。");
+      }
+      previousEnd = end;
+      return {
+        measure,
+        start_qstamp: start,
+        end_qstamp: end,
+      };
+    },
+  );
+  if (measureMap.length !== measures) {
+    fail("measure_map の件数がmeasuresと一致しません。");
+  }
+  return measureMap;
+}
+
 function validateNote(
   value: unknown,
   path: string,
@@ -104,80 +165,32 @@ function validateNote(
   return { pitch, qstamp, duration, measure, velocity };
 }
 
-export function validateMelodyData(
+function validateVoices(
   value: unknown,
-  requestedId: string,
-): MelodyData {
-  const root = requireObject(value, "JSON");
-  if (root.schema_version !== 1) {
-    throw new MelodyValidationError(
-      "unsupported-schema",
-      "対応していないschema_versionです。",
-    );
-  }
+  measureMap: MeasureBoundary[],
+  expectedVoiceNames?: readonly string[],
+): Record<string, MelodyNote[]> {
+  const voicesObject = requireObject(value, "play.voices");
+  const actualVoiceNames = Object.keys(voicesObject);
+  const voiceNames = expectedVoiceNames ?? actualVoiceNames;
 
-  const id = requireString(root.id, "id");
-  if (id !== requestedId) {
-    fail("JSONのidが要求したidと一致しません。");
-  }
-  if (root.type !== "melody") {
-    fail("type は melody である必要があります。");
-  }
-
-  const measures = requireInteger(root.measures, "measures");
-  if (measures < 1) {
-    fail("measures は1以上である必要があります。");
-  }
-
-  let previousEnd: number | undefined;
-  const measureMap = requireArray(root.measure_map, "measure_map").map(
-    (value, index) => {
-      const path = `measure_map[${index}]`;
-      const boundary = requireObject(value, path);
-      const measure = requireInteger(boundary.measure, `${path}.measure`);
-      const start = requireNumber(
-        boundary.start_qstamp,
-        `${path}.start_qstamp`,
-      );
-      const end = requireNumber(
-        boundary.end_qstamp,
-        `${path}.end_qstamp`,
-      );
-      if (measure !== index + 1) {
-        fail("measure_map は1からの連番である必要があります。");
-      }
-      if (start < 0 || end <= start) {
-        fail(`${path} の時間範囲が不正です。`);
-      }
-      if (previousEnd !== undefined && previousEnd !== start) {
-        fail("measure_map の前後の境界が連続していません。");
-      }
-      previousEnd = end;
-      return {
-        measure,
-        start_qstamp: start,
-        end_qstamp: end,
-      };
-    },
-  );
-  if (measureMap.length !== measures) {
-    fail("measure_map の件数がmeasuresと一致しません。");
+  if (expectedVoiceNames !== undefined) {
+    const expected = new Set(expectedVoiceNames);
+    if (
+      actualVoiceNames.length !== expectedVoiceNames.length ||
+      actualVoiceNames.some((voiceName) => !expected.has(voiceName))
+    ) {
+      fail("play.voices は soprano/alto/tenor/bass を含む必要があります。");
+    }
   }
 
   const measureBoundaries = new Map(
     measureMap.map((boundary) => [boundary.measure, boundary]),
   );
-  const play = requireObject(root.play, "play");
-  const bpm = requireNumber(play.bpm, "play.bpm");
-  if (bpm <= 0) {
-    fail("play.bpm は0より大きい必要があります。");
-  }
-
-  const voicesObject = requireObject(play.voices, "play.voices");
   const voices: Record<string, MelodyNote[]> = {};
-  for (const [voiceName, notesValue] of Object.entries(voicesObject)) {
+  for (const voiceName of voiceNames) {
     voices[voiceName] = requireArray(
-      notesValue,
+      voicesObject[voiceName],
       `play.voices.${voiceName}`,
     ).map((note, index) =>
       validateNote(
@@ -187,29 +200,117 @@ export function validateMelodyData(
       ),
     );
   }
+
   if (
     Object.keys(voices).length === 0 ||
     Object.values(voices).every((notes) => notes.length === 0)
   ) {
     fail("play.voices には1音以上必要です。");
   }
+  return voices;
+}
 
-  const keysObject = requireObject(root.keys, "keys");
-  const keys: MelodyData["keys"] = {};
-  for (const [keyName, keyValue] of Object.entries(keysObject)) {
-    const key = requireObject(keyValue, `keys.${keyName}`);
+function validateKeys(value: unknown): Record<string, MelodyKey> {
+  const keysObject = requireObject(value, "keys");
+  const actualKeyNames = Object.keys(keysObject);
+  const expectedKeys = new Set<string>(TARGET_KEY_NAMES);
+  if (
+    actualKeyNames.length !== TARGET_KEY_NAMES.length ||
+    actualKeyNames.some((keyName) => !expectedKeys.has(keyName))
+  ) {
+    fail("keys には12調すべてが必要です。");
+  }
+
+  const keys: Record<string, MelodyKey> = {};
+  for (const keyName of TARGET_KEY_NAMES) {
+    const key = requireObject(keysObject[keyName], `keys.${keyName}`);
+    const svg = requireString(key.svg, `keys.${keyName}.svg`);
+    if (!svg.includes("<svg")) {
+      fail(`keys.${keyName}.svg はSVG文字列である必要があります。`);
+    }
     keys[keyName] = {
       semitones: requireInteger(
         key.semitones,
         `keys.${keyName}.semitones`,
       ),
-      svg: requireString(key.svg, `keys.${keyName}.svg`),
+      svg,
     };
   }
-  if (Object.keys(keys).length !== 12) {
-    fail("keys には12調すべてが必要です。");
+  return keys;
+}
+
+function validateCommonFields(
+  root: JsonObject,
+  requestedId: string,
+  expectedType: ContentType,
+): CommonDataFields {
+  const id = requireString(root.id, "id");
+  if (id !== requestedId) {
+    fail("JSONのidが要求したidと一致しません。");
+  }
+  if (root.type !== expectedType) {
+    fail(`type は ${expectedType} である必要があります。`);
   }
 
+  const measures = requireInteger(root.measures, "measures");
+  if (measures < 1) {
+    fail("measures は1以上である必要があります。");
+  }
+  const measureMap = validateMeasureMap(root.measure_map, measures);
+
+  const play = requireObject(root.play, "play");
+  const bpm = requireNumber(play.bpm, "play.bpm");
+  if (bpm <= 0) {
+    fail("play.bpm は0より大きい必要があります。");
+  }
+
+  const keys = validateKeys(root.keys);
+  const mode = requireString(root.mode, "mode");
+  if (mode !== "major" && mode !== "minor") {
+    fail("mode は major または minor である必要があります。");
+  }
+
+  const baseKey = requireString(root.base_key, "base_key");
+  if (!(baseKey in keys)) {
+    fail("base_key がkeysに存在しません。");
+  }
+
+  return {
+    id,
+    title: requireString(root.title, "title"),
+    base_key: baseKey,
+    mode,
+    time_signature: requireString(root.time_signature, "time_signature"),
+    measures,
+    measure_map: measureMap,
+    bpm,
+    keys,
+  };
+}
+
+function validateSequence(
+  value: unknown,
+  measures: number,
+  allowEmpty: boolean,
+): SequenceStep[] {
+  if (allowEmpty && Array.isArray(value) && value.length === 0) {
+    return [];
+  }
+  try {
+    return validateExamSequence(value, measures);
+  } catch (error) {
+    if (error instanceof ExamSequenceValidationError) {
+      fail(error.message);
+    }
+    throw error;
+  }
+}
+
+function validateTransposedPitches(
+  keys: Record<string, MelodyKey>,
+  voices: Record<string, MelodyNote[]>,
+  sequence: SequenceStep[],
+): void {
   const allNotes = Object.values(voices).flat();
   for (const [keyName, key] of Object.entries(keys)) {
     for (const note of allNotes) {
@@ -218,18 +319,6 @@ export function validateMelodyData(
         fail(`keys.${keyName} の移調後pitchがMIDI範囲外です。`);
       }
     }
-  }
-
-  let sequence;
-  try {
-    sequence = validateExamSequence(root.sequence, measures);
-  } catch (error) {
-    if (error instanceof ExamSequenceValidationError) {
-      fail(error.message);
-    }
-    throw error;
-  }
-  for (const [keyName, key] of Object.entries(keys)) {
     for (const step of sequence) {
       if (step.type !== "chord") {
         continue;
@@ -242,29 +331,99 @@ export function validateMelodyData(
       }
     }
   }
+}
 
-  const mode = requireString(root.mode, "mode");
-  if (mode !== "major" && mode !== "minor") {
-    fail("mode は major または minor である必要があります。");
+function validateHarmonyAnalysis(value: unknown): HarmonyData["harmony"] {
+  const harmony = requireObject(value, "harmony");
+  return {
+    chord_sequence: requireArray(
+      harmony.chord_sequence,
+      "harmony.chord_sequence",
+    ),
+    key_regions: requireArray(harmony.key_regions, "harmony.key_regions"),
+    cadences: requireArray(harmony.cadences, "harmony.cadences"),
+  };
+}
+
+export function validateMelodyData(
+  value: unknown,
+  requestedId: string,
+): MelodyData {
+  const root = requireObject(value, "JSON");
+  if (root.schema_version !== 1) {
+    throw new MelodyValidationError(
+      "unsupported-schema",
+      "対応していないschema_versionです。",
+    );
   }
 
-  const baseKey = requireString(root.base_key, "base_key");
-  if (!(baseKey in keys)) {
-    fail("base_key がkeysに存在しません。");
-  }
+  const common = validateCommonFields(root, requestedId, "melody");
+  const play = requireObject(root.play, "play");
+  const voices = validateVoices(play.voices, common.measure_map);
+  const sequence = validateSequence(root.sequence, common.measures, false);
+  validateTransposedPitches(common.keys, voices, sequence);
 
   return {
     schema_version: 1,
-    id,
+    id: common.id,
     type: "melody",
-    title: requireString(root.title, "title"),
-    base_key: baseKey,
-    mode,
-    time_signature: requireString(root.time_signature, "time_signature"),
-    measures,
-    measure_map: measureMap,
-    play: { bpm, voices },
-    keys,
+    title: common.title,
+    base_key: common.base_key,
+    mode: common.mode,
+    time_signature: common.time_signature,
+    measures: common.measures,
+    measure_map: common.measure_map,
+    play: { bpm: common.bpm, voices },
+    keys: common.keys,
     sequence,
   };
+}
+
+export function validateHarmonyData(
+  value: unknown,
+  requestedId: string,
+): HarmonyData {
+  const root = requireObject(value, "JSON");
+  if (root.schema_version !== 2) {
+    throw new MelodyValidationError(
+      "unsupported-schema",
+      "対応していないschema_versionです。",
+    );
+  }
+
+  const common = validateCommonFields(root, requestedId, "harmony");
+  const play = requireObject(root.play, "play");
+  const voices = validateVoices(
+    play.voices,
+    common.measure_map,
+    HARMONY_VOICE_NAMES,
+  ) as Record<HarmonyVoiceName, MelodyNote[]>;
+  const sequence = validateSequence(root.sequence, common.measures, true);
+  validateTransposedPitches(common.keys, voices, sequence);
+
+  return {
+    schema_version: 2,
+    id: common.id,
+    type: "harmony",
+    title: common.title,
+    base_key: common.base_key,
+    mode: common.mode,
+    time_signature: common.time_signature,
+    measures: common.measures,
+    measure_map: common.measure_map,
+    play: { bpm: common.bpm, voices },
+    harmony: validateHarmonyAnalysis(root.harmony),
+    keys: common.keys,
+    sequence,
+  };
+}
+
+export function validateContentData(
+  value: unknown,
+  requestedId: string,
+  contentType: ContentType,
+): ContentData {
+  return contentType === "harmony"
+    ? validateHarmonyData(value, requestedId)
+    : validateMelodyData(value, requestedId);
 }

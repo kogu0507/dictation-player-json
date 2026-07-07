@@ -1,7 +1,7 @@
 # dictation-content → dictation-player-json データ契約
 
-Status: Draft v0.1  
-出力スキーマ: `schema_version: 1`
+Status: Draft v0.2
+出力スキーマ: `schema_version: 1` / `schema_version: 2`
 
 ## 1. 目的
 
@@ -21,11 +21,15 @@ MEI変換ツール `dictation-content` とWebアプリ `dictation-player-json` �
 ```text
 src/
 ├─ mei/
-│  └─ melody/
-│     └─ M001.mei
+│  ├─ melody/
+│  │  └─ M001.mei
+│  └─ harmony/
+│     └─ H001.mei
 └─ config/
-   └─ melody/
-      └─ M001.json
+   ├─ melody/
+   │  └─ M001.json
+   └─ harmony/
+      └─ H001.json
 ```
 
 ファイル名のIDは一致させる。
@@ -165,6 +169,44 @@ src/
 | `sequence` | 課題設定 | 検証後、そのまま出力 |
 
 同じ値をMEIと課題設定の両方へ重複して持たせない。例外的に検証用として重複させる場合は、不一致をエラーにする。
+
+### schema_version 2 / harmony
+
+和声聴音用の生成済みJSONは次の最小契約とする。
+
+```json
+{
+  "schema_version": 2,
+  "id": "sample_harmony1",
+  "type": "harmony",
+  "title": "和声聴音サンプル1",
+  "base_key": "G",
+  "mode": "major",
+  "time_signature": "4/4",
+  "measures": 8,
+  "measure_map": [],
+  "play": {
+    "bpm": 80,
+    "voices": {
+      "soprano": [],
+      "alto": [],
+      "tenor": [],
+      "bass": []
+    }
+  },
+  "harmony": {
+    "chord_sequence": [],
+    "key_regions": [],
+    "cadences": []
+  },
+  "keys": {},
+  "sequence": []
+}
+```
+
+v2 harmonyでは `play.voices.soprano/alto/tenor/bass` の各noteをWebアプリが同じ再生イベント列へflattenして再生する。各noteの形式はv1 melodyと同じく `pitch`、`qstamp`、`duration`、`measure`、`velocity` とする。休符はnote配列に含めない。
+
+Webアプリは `harmony.chord_sequence`、`key_regions`、`cadences` を読み込み時に配列として検証するが、現段階では画面表示や採点には使用しない。`sequence` は空配列を許可する。
 
 ## 4. 移調量
 
@@ -353,9 +395,13 @@ Webアプリは生成済みJSONを信用しきらず、読み込み時にもス�
 - `measure_map`
 - `sequence`
 - `chord.pitches`
+- `harmony.chord_sequence`
+- `harmony.key_regions`
+- `harmony.cadences`
+
+v2 harmonyの再生では、`play.voices.soprano/alto/tenor/bass` のnoteをWebアプリが単一の再生イベント列へflattenする。`harmony.chord_sequence` から再生イベントを生成しない。
 
 制作側とアプリ側で同じ検証項目を持つ部分は、目的が異なる。
 
 - 制作側: 不正データを公開しない
 - アプリ側: 配信ミスや未対応バージョンで誤動作しない
-

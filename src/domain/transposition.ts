@@ -1,7 +1,7 @@
-import type { MelodyData, MelodyKey } from "../data/types";
+import type { ContentData, MelodyKey } from "../data/types";
 
 export function getMelodyKey(
-  melody: MelodyData,
+  melody: ContentData,
   selectedKey: string,
 ): MelodyKey {
   const key = melody.keys[selectedKey];

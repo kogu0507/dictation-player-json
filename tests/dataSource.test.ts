@@ -9,6 +9,12 @@ describe("resolveDataBaseUrl", () => {
     expect(resolveDataBaseUrl(undefined, false)).toBe(
       "/data/dictation/melody",
     );
+    expect(resolveDataBaseUrl(undefined, true, "harmony")).toBe(
+      "./testdata/harmony",
+    );
+    expect(resolveDataBaseUrl(undefined, false, "harmony")).toBe(
+      "/data/dictation/harmony",
+    );
   });
 
   it("VITE_DATA_BASE_URL相当の設定値を優先する", () => {
@@ -20,6 +26,12 @@ describe("resolveDataBaseUrl", () => {
     ).toBe("http://192.168.1.20:9000/melody");
     expect(resolveDataBaseUrl("./data/dictation/melody", false)).toBe(
       "./data/dictation/melody",
+    );
+    expect(
+      resolveDataBaseUrl("./data/dictation/melody", false, "harmony"),
+    ).toBe("./data/dictation/harmony");
+    expect(resolveDataBaseUrl("./data/dictation", false, "harmony")).toBe(
+      "./data/dictation/harmony",
     );
   });
 

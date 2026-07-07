@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import sampleHarmonyJson from "../testdata/harmony/sample_harmony1.json";
 import sample1Json from "../testdata/melody/sample1.json";
-import { loadMelody, MelodyLoadError } from "../src/data/loadMelody";
+import {
+  loadContent,
+  loadMelody,
+  MelodyLoadError,
+} from "../src/data/loadMelody";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -34,6 +39,43 @@ describe("loadMelody", () => {
       code: "invalid-id",
     } satisfies Partial<MelodyLoadError>);
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("type省略時はmelodyとして読み込む", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockResolvedValue(sample1Json),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(loadContent({ id: "sample1" })).resolves.toMatchObject({
+      schema_version: 1,
+      type: "melody",
+    });
+    expect(fetchMock.mock.calls[0]?.[0]).toContain(
+      "/testdata/melody/sample1.json",
+    );
+  });
+
+  it("harmony type指定時はharmony pathからschema v2を読み込む", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockResolvedValue(sampleHarmonyJson),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(
+      loadContent({ id: "sample_harmony1", type: "harmony" }),
+    ).resolves.toMatchObject({
+      schema_version: 2,
+      type: "harmony",
+      id: "sample_harmony1",
+    });
+    expect(fetchMock.mock.calls[0]?.[0]).toContain(
+      "/testdata/harmony/sample_harmony1.json",
+    );
   });
 
   it("404を課題なしとして区別する", async () => {

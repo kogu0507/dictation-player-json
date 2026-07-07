@@ -1,12 +1,14 @@
-import { DATA_BASE_URL } from "../config/dataSource";
-import type { MelodyData } from "./types";
+import { getDataBaseUrl } from "../config/dataSource";
+import type { ContentData, ContentType, MelodyData } from "./types";
 import {
   MelodyValidationError,
+  validateContentData,
   validateMelodyData,
 } from "./validateMelody";
 
 export type MelodyLoadErrorCode =
   | "invalid-id"
+  | "invalid-type"
   | "not-found"
   | "http-error"
   | "network-error"
@@ -33,9 +35,27 @@ export function validateMelodyId(id: string): void {
   }
 }
 
-export async function loadMelody(id: string): Promise<MelodyData> {
+export function validateContentType(contentType: string): ContentType {
+  if (contentType === "melody" || contentType === "harmony") {
+    return contentType;
+  }
+  throw new MelodyLoadError(
+    "invalid-type",
+    "課題typeは melody または harmony を指定してください。",
+  );
+}
+
+export interface LoadContentOptions {
+  id: string;
+  type?: ContentType;
+}
+
+export async function loadContent(
+  options: LoadContentOptions,
+): Promise<ContentData> {
+  const { id, type = "melody" } = options;
   validateMelodyId(id);
-  const url = `${DATA_BASE_URL}/${id}.json`;
+  const url = `${getDataBaseUrl(type)}/${id}.json`;
 
   let response: Response;
   try {
@@ -70,11 +90,16 @@ export async function loadMelody(id: string): Promise<MelodyData> {
   }
 
   try {
-    return validateMelodyData(json, id);
+    return validateContentData(json, id, type);
   } catch (error) {
     if (error instanceof MelodyValidationError) {
       throw new MelodyLoadError(error.code, error.message);
     }
     throw error;
   }
+}
+
+export async function loadMelody(id: string): Promise<MelodyData> {
+  const content = await loadContent({ id, type: "melody" });
+  return validateMelodyData(content, id);
 }

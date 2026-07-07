@@ -415,6 +415,30 @@ FTPアップロード後:
 - `release/ftp-root/data/` の中身を本番 `/data/` へ統合する
 - 本番既存ファイルを無関係に削除しない
 
+### T-406 harmony schema_version 2 読み込み・練習再生対応
+
+- [x] `ContentData = MelodyData | HarmonyData` を追加する
+- [x] `schema_version: 2` / `type: "harmony"` の検証を追加する
+- [x] `?type=harmony&id=sample_harmony1` で `testdata/harmony/{id}.json` を取得する
+- [x] `type` 省略時は従来どおり melody とする
+- [x] 4声 `play.voices.soprano/alto/tenor/bass` をflattenして練習再生イベントを作る
+- [x] harmonyでも12調SVG表示と `keys.*.semitones` を利用する
+- [x] `sequence: []` を読み込み時に許可する
+- [ ] FTP release scriptで `/data/dictation/harmony/` を公開パッケージへ含める
+
+完了条件:
+
+- [x] `npm test` が成功する
+- [x] `npm run build` が成功する
+- [x] `?id=sample1` のmelody v1互換を維持する
+- [x] `?type=harmony&id=sample_harmony1` のloader pathをテストする
+
+メモ:
+
+- dictation-content commit: `62df742`
+- harmony testdata: `testdata/harmony/sample_harmony1.json`
+- roman numeral入力、cadence判定、chord_sequenceからの再生生成は対象外
+
 ## 将来候補
 
 - ピアノサンプラー

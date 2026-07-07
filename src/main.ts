@@ -1,14 +1,18 @@
 import { OscillatorAudioPlayer } from "./audio/OscillatorAudioPlayer";
 import type { SynthTimbre } from "./audio/types";
-import { loadMelody, MelodyLoadError } from "./data/loadMelody";
+import {
+  loadContent,
+  MelodyLoadError,
+  validateContentType,
+} from "./data/loadMelody";
 import type {
-  MelodyData,
+  ContentData,
   PlaySequenceStep,
   SequenceStep,
 } from "./data/types";
 import { resolvePlaybackRate } from "./domain/playbackRate";
 import {
-  createMelodyPlaybackEvents,
+  createContentPlaybackEvents,
   getPlaybackDuration,
 } from "./domain/playbackEvents";
 import { getMelodyKey } from "./domain/transposition";
@@ -95,7 +99,7 @@ const scoreKey = requireElement<HTMLElement>(appRoot, "#score-key");
 const audioPlayer = new OscillatorAudioPlayer();
 const examRunner = new ExamSequenceRunner(audioPlayer);
 const examWakeLock = new ExamWakeLockController();
-let melody: MelodyData | undefined;
+let melody: ContentData | undefined;
 let mode: AppMode = "practice";
 let activity: AppActivity = "idle";
 let examOutcome: ExamOutcome = "not-started";
@@ -231,7 +235,7 @@ playButton.addEventListener("click", async () => {
       "practice",
       Number(playbackRateSelect.value),
     );
-    const events = createMelodyPlaybackEvents(melody, {
+    const events = createContentPlaybackEvents(melody, {
       selectedKey: keySelect.value,
       playbackRate,
       startMeasure,
@@ -412,13 +416,18 @@ async function initialize(): Promise<void> {
     );
     title.textContent = "課題を指定できません";
     score.innerHTML =
-      '<p class="placeholder">例: <code>?id=sample1</code></p>';
+      '<p class="placeholder">例: <code>?id=sample1</code> / ' +
+      '<code>?type=harmony&amp;id=sample_harmony1</code></p>';
     applyModeUiState();
     return;
   }
 
   try {
-    melody = await loadMelody(id);
+    const typeParameter = new URLSearchParams(
+      window.location.search,
+    ).get("type");
+    const contentType = validateContentType(typeParameter ?? "melody");
+    melody = await loadContent({ id, type: contentType });
     title.textContent = melody.title;
 
     const keyNames = Object.keys(melody.keys);
@@ -470,10 +479,10 @@ async function initialize(): Promise<void> {
 }
 
 function createExamPlayEvents(
-  currentMelody: MelodyData,
+  currentMelody: ContentData,
   step: PlaySequenceStep,
 ) {
-  return createMelodyPlaybackEvents(currentMelody, {
+  return createContentPlaybackEvents(currentMelody, {
     selectedKey: keySelect.value,
     playbackRate: resolvePlaybackRate(
       "exam",

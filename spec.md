@@ -1,7 +1,7 @@
 # dictation-player-json 仕様書
 
-Status: Draft v0.3
-対象: 旋律聴音 Web アプリ v1
+Status: Draft v0.4
+対象: 旋律聴音 Web アプリ v1 / 和声聴音 JSON v2 読み込み
 
 ## 1. 目的
 
@@ -14,7 +14,7 @@ v1 では次の2用途を扱う。
 
 アプリは静的ホスティングで動作し、サーバー側処理を前提にしない。
 
-## 2. v1 の範囲
+## 2. v1 / v2 の範囲
 
 ### 対象
 
@@ -30,13 +30,24 @@ v1 では次の2用途を扱う。
 
 ### 対象外
 
-- 和声聴音、複数声部の個別操作
+- 和声聴音のローマ数字入力、採点、カデンツ判定
+- 複数声部の個別操作
 - 楽譜編集、採譜、回答入力、採点
 - ユーザー登録、学習履歴保存
 - オフライン対応
 - 任意URLからのJSON読み込み
 - MEIからJSONを生成する機能
 - iOS Safari 16.3以前の完全な動作保証
+
+### v2 harmony 追加対象
+
+- `?type=harmony&id={id}` による和声聴音JSONの読み込み
+- `schema_version: 2` / `type: "harmony"` の検証
+- `play.voices.soprano/alto/tenor/bass` をflattenした4声再生
+- melody v1 と同じ12調SVG表示、`keys.*.semitones` による移調
+- 練習モードでの小節範囲再生
+
+v2 harmonyの `harmony.chord_sequence`、`key_regions`、`cadences` は読み込み検証だけ行い、画面表示・採点・再生生成には使わない。初期サンプルでは `sequence: []` を許可する。試験モードでのharmony sequence実行は今回の必須範囲外とする。
 
 ### ブラウザ対応方針
 
@@ -89,8 +100,10 @@ v1の音源はWeb Audio APIの組み込みシンセとする。
 │  ├─ ui/
 │  └─ styles/
 ├─ testdata/
-│  └─ melody/
-│     └─ sample1.json
+│  ├─ melody/
+│  │  └─ sample1.json
+│  └─ harmony/
+│     └─ sample_harmony1.json
 └─ tests/
 ```
 
@@ -110,16 +123,19 @@ v1の音源はWeb Audio APIの組み込みシンセとする。
 
 ```text
 https://example.com/app/dictation-player-json/?id=M001
+https://example.com/app/dictation-player-json/?type=harmony&id=H001
 ```
 
 JSONの取得先:
 
-- 開発時: `./testdata/melody/{id}.json`
-- 公開時: `/data/dictation/melody/{id}.json`
+- 開発時 melody: `./testdata/melody/{id}.json`
+- 公開時 melody: `/data/dictation/melody/{id}.json`
+- 開発時 harmony: `./testdata/harmony/{id}.json`
+- 公開時 harmony: `/data/dictation/harmony/{id}.json`
 
 データ基準URLは1か所の設定値として管理し、機能コード内へ直書きしない。
 
-本番URL構造は `/data/dictation/melody/{id}.json` で確定とする。同一オリジンの絶対パスを使用し、画面の配置ディレクトリには依存させない。
+本番URL構造は `type` ごとに `/data/dictation/{type}/{id}.json` とする。同一オリジンの絶対パスを使用し、画面の配置ディレクトリには依存させない。`type` 省略時は `melody` とする。
 
 ### IDの制約
 
@@ -130,6 +146,8 @@ A-Z a-z 0-9 _ -
 ```
 
 不正なID、未指定、HTTPエラー、JSON不正、必須項目不足は、画面上へ日本語でエラー表示する。任意URLをパラメータとして受け取らない。
+
+`type` は `melody` または `harmony` のみ許可する。不正な `type` はfetch前に拒否する。
 
 ## 6. JSONデータ契約 v1
 
@@ -232,6 +250,53 @@ A-Z a-z 0-9 _ -
 - 移調後の全pitchが0〜127
 - sequenceの小節範囲が課題内
 
+## 6A. JSONデータ契約 v2 harmony
+
+```json
+{
+  "schema_version": 2,
+  "id": "sample_harmony1",
+  "type": "harmony",
+  "title": "和声聴音サンプル1",
+  "base_key": "G",
+  "mode": "major",
+  "time_signature": "4/4",
+  "measures": 8,
+  "measure_map": [
+    { "measure": 1, "start_qstamp": 0.0, "end_qstamp": 4.0 }
+  ],
+  "play": {
+    "bpm": 80,
+    "voices": {
+      "soprano": [],
+      "alto": [],
+      "tenor": [],
+      "bass": []
+    }
+  },
+  "harmony": {
+    "chord_sequence": [],
+    "key_regions": [],
+    "cadences": []
+  },
+  "keys": {},
+  "sequence": []
+}
+```
+
+v2 harmonyの共通項目、`measure_map`、`keys`、note形式はv1 melodyと同じ規則で検証する。`play.voices` は `soprano`、`alto`、`tenor`、`bass` の4キーを必須とする。各noteは `pitch`、`qstamp`、`duration`、`measure`、`velocity` を持ち、休符は含めない。
+
+読み込み時には次も検証する。
+
+- `schema_version === 2`
+- `type === "harmony"`
+- 4声キーが過不足なく存在する
+- 全声部の全noteがMIDI範囲、時間範囲、小節範囲に収まる
+- 12調すべての `svg` と整数 `semitones` が存在する
+- 全noteの移調後pitchが0〜127に収まる
+- `harmony.chord_sequence`、`key_regions`、`cadences` が配列である
+- `sequence` は配列であり、空配列を許可する
+
 ## 7. 再生仕様
 
 ### 時間計算
@@ -259,6 +324,8 @@ noteStart < rangeEnd && noteEnd > rangeStart
 ```
 
 境界をまたぐ音は範囲内へ切り詰め、選択範囲の先頭を再生時刻0として再配置する。
+
+v2 harmonyでは4声すべてのnoteを同じ小節範囲条件で抽出し、単一の再生イベント列へflattenして再生する。声部ごとのミュート、音量調整、表示切替は対象外とする。
 
 ### 移調
 
