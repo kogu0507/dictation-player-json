@@ -20,6 +20,48 @@ describe("validateHarmonyData", () => {
     expect(Object.keys(harmony.play.voices)).toEqual(HARMONY_VOICE_NAMES);
   });
 
+  it("3声のschema v2 harmonyデータも受け入れる", () => {
+    const threePartHarmonyJson = {
+      ...sampleHarmonyJson,
+      play: {
+        ...sampleHarmonyJson.play,
+        voices: {
+          soprano: sampleHarmonyJson.play.voices.soprano,
+          alto: sampleHarmonyJson.play.voices.alto,
+          bass: sampleHarmonyJson.play.voices.bass,
+        },
+      },
+    };
+
+    const harmony = validateHarmonyData(
+      threePartHarmonyJson,
+      "sample_harmony1",
+    );
+
+    expect(Object.keys(harmony.play.voices)).toEqual([
+      "soprano",
+      "alto",
+      "bass",
+    ]);
+  });
+
+  it("2声以下または5声以上のharmonyデータを拒否する", () => {
+    const twoPartHarmonyJson = {
+      ...sampleHarmonyJson,
+      play: {
+        ...sampleHarmonyJson.play,
+        voices: {
+          soprano: sampleHarmonyJson.play.voices.soprano,
+          bass: sampleHarmonyJson.play.voices.bass,
+        },
+      },
+    };
+
+    expect(() =>
+      validateHarmonyData(twoPartHarmonyJson, "sample_harmony1"),
+    ).toThrow("play.voices は3声または4声である必要があります。");
+  });
+
   it("4声すべてのnoteに再生用フィールドがある", () => {
     const harmony = validateHarmonyData(
       sampleHarmonyJson,

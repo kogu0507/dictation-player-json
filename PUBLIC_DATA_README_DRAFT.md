@@ -57,7 +57,7 @@ dist/harmony/{id}.json
 - 課題ID、タイトル、原調、モード、拍子、小節数
 - `measure_map`
 - 原調のMIDIノートとqstamp
-- harmony v2ではsoprano/alto/tenor/bassの4声note
+- harmony v2では3声または4声のnote
 - 12調分のSVGと半音移調量
 - 試験再生用sequence
 
