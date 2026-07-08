@@ -18,16 +18,20 @@ Webサーバー応答: LiteSpeed
 ```text
 アプリ:
 https://<domain>/app/dictation-player-json/?id=sample1
+https://<domain>/app/dictation-player-json/?type=harmony&id=sample_harmony1
 
 課題データ:
 https://<domain>/data/dictation/melody/sample1.json
+https://<domain>/data/dictation/harmony/sample_harmony1.json
 ```
 
 今回の確定URL:
 
 ```text
 https://seegmund-music-labo.com/app/dictation-player-json/?id=sample1
+https://seegmund-music-labo.com/app/dictation-player-json/?type=harmony&id=sample_harmony1
 https://seegmund-music-labo.com/data/dictation/melody/sample1.json
+https://seegmund-music-labo.com/data/dictation/harmony/sample_harmony1.json
 ```
 
 production環境はHTTPSを必須とする。Screen Wake Lock APIを使う試験モードでは、HTTP配信を正式対応しない。
@@ -44,8 +48,10 @@ public_html/
 │        └─ index-<hash>.css
 └─ data/
    └─ dictation/
-      └─ melody/
-         └─ sample1.json
+      ├─ melody/
+      │  └─ sample1.json
+      └─ harmony/
+         └─ sample_harmony1.json
 ```
 
 アプリディレクトリへ配置するのは `npm run release:ftp` が
@@ -61,7 +67,7 @@ production buildから配置した成果物だけとする。
 - 設計資料
 - Git管理情報
 
-課題JSONの正本は `dictation-content/dist/melody/` の生成物とする。アプリ側の `testdata/` を公開データの正本にしない。
+課題JSONの正本は `dictation-content/dist/melody/` と `dictation-content/dist/harmony/` の生成物とする。アプリ側の `testdata/` を公開データの正本にしない。
 
 FTPでは、`seegmund-music-labo.com` のドキュメントルートを基準に上記構成を作る。FTP接続直後の絶対パス名は契約・サーバー設定により異なるため、既存サイトの `index` がある場所をドキュメントルートとして確認する。
 
@@ -78,24 +84,27 @@ npm run release:ftp
 
 ```text
 C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-content\dist\melody\sample1.json
+C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-content\dist\harmony\sample_harmony1.json
 ```
 
-別の作業環境では `DICTATION_CONTENT_SAMPLE1` に生成済みJSONの
-絶対パスを指定できる。
+別の作業環境では `DICTATION_CONTENT_SAMPLE1` と
+`DICTATION_CONTENT_HARMONY_SAMPLE1` に生成済みJSONの絶対パスを指定できる。
 
 ```powershell
 $env:DICTATION_CONTENT_SAMPLE1 = "C:\path\to\dictation-content\dist\melody\sample1.json"
+$env:DICTATION_CONTENT_HARMONY_SAMPLE1 = "C:\path\to\dictation-content\dist\harmony\sample_harmony1.json"
 npm run release:ftp
 ```
 
 スクリプトは次を自動確認する。
 
 - production HTMLに `meta name="robots" content="noindex"` がある
-- 公開用JSONと生成元JSONのSHA-256が一致する
+- melody/harmony両方の公開用JSONと生成元JSONのSHA-256が一致する
 - `src/`、`tests/`、`testdata/`、`node_modules/`、`.git/`、
   `package.json`、`.htaccess` が含まれない
-- 公開先が `app/dictation-player-json/` と
-  `data/dictation/melody/sample1.json` の範囲内である
+- 公開先が `app/dictation-player-json/`、
+  `data/dictation/melody/*.json`、
+  `data/dictation/harmony/*.json` の範囲内である
 - シンボリックリンクや通常ファイル以外を含まない
 
 `base: "./"` のため、アプリを `/app/dictation-player-json/` へ配置しても、JSとCSSは同じディレクトリを基準に読み込まれる。
@@ -109,8 +118,10 @@ release/
    │  └─ dictation-player-json/
    ├─ data/
    │  └─ dictation/
-   │     └─ melody/
-   │        └─ sample1.json
+   │     ├─ melody/
+   │     │  └─ sample1.json
+   │     └─ harmony/
+   │        └─ sample_harmony1.json
    └─ RELEASE_MANIFEST.txt
 ```
 
@@ -123,15 +134,16 @@ FTPソフトでは `ftp-root/` 自体を1つのフォルダとしてアップロ
 サーバーへはアップロードしない。
 
 既存の `/app/` や `/data/` 全体を削除・置換しない。
-今回の `app/dictation-player-json/` と
-`data/dictation/melody/sample1.json` だけを追加または更新する。
+今回の `app/dictation-player-json/`、
+`data/dictation/melody/sample1.json`、
+`data/dictation/harmony/sample_harmony1.json` だけを追加または更新する。
 `.htaccess` はこの公開パッケージに含めない。
 
 ### FTPアップロード用チェックリスト
 
 1. `npm test` が成功している。
 2. `npm run release:ftp` が成功している。
-3. コマンド出力の生成元JSONと公開用JSONのSHA-256が一致している。
+3. コマンド出力のmelody/harmony生成元JSONと公開用JSONのSHA-256が一致している。
 4. `RELEASE_MANIFEST.txt` の全ファイルが `ftp-root/` に存在する。
 5. `app/` と `data/` を既存ドキュメントルートへ統合する設定になっている。
 6. FTPソフトの「同期時に転送元にないファイルを削除する」機能を無効にする。
@@ -152,12 +164,14 @@ C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\
 
 ```text
 ../dictation-content/dist/melody/sample1.json
+../dictation-content/dist/harmony/sample_harmony1.json
 ```
 
 生成物を次へ配置する。
 
 ```text
 /data/dictation/melody/sample1.json
+/data/dictation/harmony/sample_harmony1.json
 ```
 
 生成済みJSONをサーバー上で手作業修正しない。
@@ -240,6 +254,7 @@ CORESERVERの現在の応答はLiteSpeedである。まず設定ファイルを�
 - JSONの `Content-Type` が `application/json`
 - JSONへgzipまたはBrotliが適用されている
 - アプリが `/data/dictation/melody/sample1.json` を取得している
+- harmony URLでは `/data/dictation/harmony/sample_harmony1.json` を取得している
 - JSとCSSのファイル名にハッシュがある
 - HTMLとJSONが長期固定キャッシュされていない
 - iOS Safari 16.4以降でWake Lockを利用できる
@@ -249,7 +264,9 @@ CORESERVERの現在の応答はLiteSpeedである。まず設定ファイルを�
 
 ```text
 https://seegmund-music-labo.com/app/dictation-player-json/?id=sample1
+https://seegmund-music-labo.com/app/dictation-player-json/?type=harmony&id=sample_harmony1
 https://seegmund-music-labo.com/data/dictation/melody/sample1.json
+https://seegmund-music-labo.com/data/dictation/harmony/sample_harmony1.json
 ```
 
 ## 9. 更新手順
@@ -265,7 +282,7 @@ https://seegmund-music-labo.com/data/dictation/melody/sample1.json
 
 1. `dictation-content` で再生成
 2. JSON検証
-3. `/data/dictation/melody/{id}.json` を置換
+3. `/data/dictation/melody/{id}.json` または `/data/dictation/harmony/{id}.json` を置換
 4. 本番URLから取得して内容を確認
 
 課題JSON更新後に古い内容が残るサーバーでは、キャッシュヘッダーを修正する。場当たり的な手動キャッシュ削除だけを運用にしない。

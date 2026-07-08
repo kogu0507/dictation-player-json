@@ -4,27 +4,33 @@
 
 ## 公開構成
 
-v1では、1課題につき1つのJSONを公開する。JSONには再生データと12調分のインラインSVGを含む。
+melody v1 / harmony v2 とも、1課題につき1つのJSONを公開する。JSONには再生データと12調分のインラインSVGを含む。
 
 ```text
 /data/dictation/
 ├─ README.md
-└─ melody/
-   ├─ sample1.json
-   ├─ M001.json
-   └─ M002.json
+├─ melody/
+│  ├─ sample1.json
+│  ├─ M001.json
+│  └─ M002.json
+└─ harmony/
+   ├─ sample_harmony1.json
+   ├─ H001.json
+   └─ H002.json
 ```
 
 公開URL:
 
 ```text
 /data/dictation/melody/{id}.json
+/data/dictation/harmony/{id}.json
 ```
 
 例:
 
 ```text
 /data/dictation/melody/sample1.json
+/data/dictation/harmony/sample_harmony1.json
 ```
 
 ## データ生成
@@ -37,8 +43,10 @@ MEI + 課題設定
 dictation-content
 ↓
 dist/melody/{id}.json
+dist/harmony/{id}.json
 ↓
 /data/dictation/melody/{id}.json
+/data/dictation/harmony/{id}.json
 ```
 
 生成済みJSONを手作業で修正しない。
@@ -49,6 +57,7 @@ dist/melody/{id}.json
 - 課題ID、タイトル、原調、モード、拍子、小節数
 - `measure_map`
 - 原調のMIDIノートとqstamp
+- harmony v2ではsoprano/alto/tenor/bassの4声note
 - 12調分のSVGと半音移調量
 - 試験再生用sequence
 

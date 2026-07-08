@@ -6,6 +6,7 @@ import {
   APP_RELEASE_PATH,
   createFtpRelease,
   DATA_RELEASE_PATH,
+  DATA_RELEASE_PATHS,
   hasNoindexMeta,
   listFiles,
   MANIFEST_NAME,
@@ -14,6 +15,9 @@ import {
 } from "../scripts/release-ftp-lib.mjs";
 
 const temporaryDirectories = [];
+const sortedDataReleasePaths = [...DATA_RELEASE_PATHS].sort((left, right) =>
+  left.localeCompare(right, "en"),
+);
 
 afterEach(async () => {
   await Promise.all(
@@ -27,13 +31,13 @@ describe("FTP release package", () => {
   it("distと生成元JSONから再現可能な公開構成とmanifestを作る", async () => {
     const workspace = await createTemporaryWorkspace();
     const distDir = resolve(workspace, "dist");
-    const sourceJson = resolve(workspace, "content/sample1.json");
+    const dataFiles = createFixtureDataFiles(workspace);
     const releaseRoot = resolve(workspace, "release/ftp-root");
-    await writeFixture(distDir, sourceJson);
+    await writeFixture(distDir, dataFiles);
 
     const first = await createFtpRelease({
       distDir,
-      sourceJson,
+      dataFiles,
       releaseRoot,
     });
     const firstManifest = await readFile(
@@ -42,7 +46,7 @@ describe("FTP release package", () => {
     );
     const second = await createFtpRelease({
       distDir,
-      sourceJson,
+      dataFiles,
       releaseRoot,
     });
 
@@ -50,32 +54,37 @@ describe("FTP release package", () => {
       `${APP_RELEASE_PATH}/assets/index.css`,
       `${APP_RELEASE_PATH}/assets/index.js`,
       `${APP_RELEASE_PATH}/index.html`,
-      DATA_RELEASE_PATH,
+      ...sortedDataReleasePaths,
       MANIFEST_NAME,
     ]);
     expect(second.manifest).toBe(firstManifest);
-    expect(first.sourceJsonHash).toBe(first.releasedJsonHash);
-    expect(second.sourceJsonHash).toBe(
-      await sha256(resolve(releaseRoot, DATA_RELEASE_PATH)),
-    );
+    expect(first.jsonResults).toHaveLength(2);
+    for (const jsonResult of first.jsonResults) {
+      expect(jsonResult.sourceHash).toBe(jsonResult.releasedHash);
+    }
+    for (const jsonResult of second.jsonResults) {
+      expect(jsonResult.sourceHash).toBe(
+        await sha256(resolve(releaseRoot, jsonResult.releasePath)),
+      );
+    }
     expect(first.entries.map(({ path }) => path)).toEqual([
       `${APP_RELEASE_PATH}/assets/index.css`,
       `${APP_RELEASE_PATH}/assets/index.js`,
       `${APP_RELEASE_PATH}/index.html`,
-      DATA_RELEASE_PATH,
+      ...sortedDataReleasePaths,
     ]);
   });
 
   it("manifestへ全公開ファイルを安定順序のSHA-256付きで出力する", async () => {
     const workspace = await createTemporaryWorkspace();
     const distDir = resolve(workspace, "dist");
-    const sourceJson = resolve(workspace, "content/sample1.json");
+    const dataFiles = createFixtureDataFiles(workspace);
     const releaseRoot = resolve(workspace, "release/ftp-root");
-    await writeFixture(distDir, sourceJson);
+    await writeFixture(distDir, dataFiles);
 
     const result = await createFtpRelease({
       distDir,
-      sourceJson,
+      dataFiles,
       releaseRoot,
     });
 
@@ -85,6 +94,7 @@ describe("FTP release package", () => {
       );
     }
     expect(result.manifest).not.toContain(MANIFEST_NAME);
+    expect(result.manifest).toContain(DATA_RELEASE_PATHS[1]);
   });
 
   it.each([
@@ -98,20 +108,30 @@ describe("FTP release package", () => {
       validatePayloadPaths([
         `${APP_RELEASE_PATH}/index.html`,
         forbiddenPath,
-        DATA_RELEASE_PATH,
+        ...DATA_RELEASE_PATHS,
       ]),
     ).toThrow("公開パッケージへ含められないファイル");
+  });
+
+  it("melody/harmony以外のdata pathを拒否する", () => {
+    expect(() =>
+      validatePayloadPaths([
+        `${APP_RELEASE_PATH}/index.html`,
+        ...DATA_RELEASE_PATHS,
+        "data/dictation/other/sample.json",
+      ]),
+    ).toThrow("公開先が許可されていません");
   });
 
   it("robots noindexがないproduction HTMLを拒否する", async () => {
     const workspace = await createTemporaryWorkspace();
     const distDir = resolve(workspace, "dist");
-    const sourceJson = resolve(workspace, "content/sample1.json");
+    const dataFiles = createFixtureDataFiles(workspace);
     const releaseRoot = resolve(workspace, "release/ftp-root");
-    await writeFixture(distDir, sourceJson, false);
+    await writeFixture(distDir, dataFiles, false);
 
     await expect(
-      createFtpRelease({ distDir, sourceJson, releaseRoot }),
+      createFtpRelease({ distDir, dataFiles, releaseRoot }),
     ).rejects.toThrow("robots noindex");
   });
 
@@ -129,9 +149,31 @@ async function createTemporaryWorkspace() {
   return workspace;
 }
 
-async function writeFixture(distDir, sourceJson, noindex = true) {
+function createFixtureDataFiles(workspace) {
+  return [
+    {
+      label: "melody sample1",
+      releasePath: DATA_RELEASE_PATH,
+      sourcePath: resolve(workspace, "content/melody/sample1.json"),
+    },
+    {
+      label: "harmony sample_harmony1",
+      releasePath: DATA_RELEASE_PATHS[1],
+      sourcePath: resolve(
+        workspace,
+        "content/harmony/sample_harmony1.json",
+      ),
+    },
+  ];
+}
+
+async function writeFixture(distDir, dataFiles, noindex = true) {
   await mkdir(resolve(distDir, "assets"), { recursive: true });
-  await mkdir(resolve(sourceJson, ".."), { recursive: true });
+  await Promise.all(
+    dataFiles.map((dataFile) =>
+      mkdir(resolve(dataFile.sourcePath, ".."), { recursive: true }),
+    ),
+  );
   const robotsMeta = noindex
     ? '<meta name="robots" content="noindex">'
     : "";
@@ -142,6 +184,13 @@ async function writeFixture(distDir, sourceJson, noindex = true) {
     ),
     writeFile(resolve(distDir, "assets/index.js"), "console.log('ok');"),
     writeFile(resolve(distDir, "assets/index.css"), "body{}"),
-    writeFile(sourceJson, '{"schema_version":1,"id":"sample1"}\n'),
+    writeFile(
+      dataFiles[0].sourcePath,
+      '{"schema_version":1,"id":"sample1"}\n',
+    ),
+    writeFile(
+      dataFiles[1].sourcePath,
+      '{"schema_version":2,"id":"sample_harmony1"}\n',
+    ),
   ]);
 }

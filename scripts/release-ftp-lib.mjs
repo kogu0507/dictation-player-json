@@ -12,8 +12,11 @@ import {
 import { basename, dirname, relative, resolve, sep } from "node:path";
 
 export const APP_RELEASE_PATH = "app/dictation-player-json";
-export const DATA_RELEASE_PATH =
-  "data/dictation/melody/sample1.json";
+export const DATA_RELEASE_PATHS = [
+  "data/dictation/melody/sample1.json",
+  "data/dictation/harmony/sample_harmony1.json",
+];
+export const DATA_RELEASE_PATH = DATA_RELEASE_PATHS[0];
 export const MANIFEST_NAME = "RELEASE_MANIFEST.txt";
 
 const FORBIDDEN_SEGMENTS = new Set([
@@ -33,23 +36,26 @@ const FORBIDDEN_FILES = new Set([
 
 export async function createFtpRelease({
   distDir,
+  dataFiles,
   sourceJson,
   releaseRoot,
 }) {
   const resolvedDist = resolve(distDir);
-  const resolvedSourceJson = resolve(sourceJson);
   const resolvedReleaseRoot = resolve(releaseRoot);
+  const releaseDataFiles = resolveReleaseDataFiles({
+    dataFiles,
+    sourceJson,
+  });
 
   await requireDirectory(resolvedDist, "production buildのdist");
-  await requireFile(
-    resolvedSourceJson,
-    "dictation-contentのsample1.json",
-  );
+  for (const dataFile of releaseDataFiles) {
+    await requireFile(dataFile.sourcePath, dataFile.label);
+  }
 
   const distFiles = await listFiles(resolvedDist);
   const projectedFiles = [
     ...distFiles.map((path) => `${APP_RELEASE_PATH}/${path}`),
-    DATA_RELEASE_PATH,
+    ...releaseDataFiles.map(({ releasePath }) => releasePath),
   ];
   validatePayloadPaths(projectedFiles);
 
@@ -69,22 +75,33 @@ export async function createFtpRelease({
     resolvedReleaseRoot,
     ...APP_RELEASE_PATH.split("/"),
   );
-  const dataDestination = resolve(
-    resolvedReleaseRoot,
-    ...DATA_RELEASE_PATH.split("/"),
-  );
   await cp(resolvedDist, appDestination, { recursive: true });
-  await mkdir(dirname(dataDestination), { recursive: true });
-  await copyFile(resolvedSourceJson, dataDestination);
 
-  const [sourceJsonHash, releasedJsonHash] = await Promise.all([
-    sha256(resolvedSourceJson),
-    sha256(dataDestination),
-  ]);
-  if (sourceJsonHash !== releasedJsonHash) {
-    throw new Error(
-      "公開用sample1.jsonのSHA-256が生成元と一致しません。",
+  const jsonResults = [];
+  for (const dataFile of releaseDataFiles) {
+    const dataDestination = resolve(
+      resolvedReleaseRoot,
+      ...dataFile.releasePath.split("/"),
     );
+    await mkdir(dirname(dataDestination), { recursive: true });
+    await copyFile(dataFile.sourcePath, dataDestination);
+
+    const [sourceHash, releasedHash] = await Promise.all([
+      sha256(dataFile.sourcePath),
+      sha256(dataDestination),
+    ]);
+    if (sourceHash !== releasedHash) {
+      throw new Error(
+        `公開用JSONのSHA-256が生成元と一致しません: ${dataFile.releasePath}`,
+      );
+    }
+    jsonResults.push({
+      label: dataFile.label,
+      releasePath: dataFile.releasePath,
+      releasedHash,
+      sourceHash,
+      sourcePath: dataFile.sourcePath,
+    });
   }
 
   const payloadFiles = await listFiles(resolvedReleaseRoot);
@@ -111,9 +128,10 @@ export async function createFtpRelease({
   return {
     entries,
     files: [...entries.map(({ path }) => path), MANIFEST_NAME],
+    jsonResults,
     manifest,
-    releasedJsonHash,
-    sourceJsonHash,
+    releasedJsonHash: jsonResults[0]?.releasedHash,
+    sourceJsonHash: jsonResults[0]?.sourceHash,
   };
 }
 
@@ -144,10 +162,7 @@ export function validatePayloadPaths(paths) {
         `公開パッケージへ含められないファイルです: ${path}`,
       );
     }
-    if (
-      !path.startsWith(`${APP_RELEASE_PATH}/`) &&
-      path !== DATA_RELEASE_PATH
-    ) {
+    if (!path.startsWith(`${APP_RELEASE_PATH}/`) && !isDataJsonPath(path)) {
       throw new Error(`公開先が許可されていません: ${path}`);
     }
   }
@@ -155,9 +170,35 @@ export function validatePayloadPaths(paths) {
   if (!normalizedPaths.includes(`${APP_RELEASE_PATH}/index.html`)) {
     throw new Error("公開パッケージにアプリのindex.htmlがありません。");
   }
-  if (!normalizedPaths.includes(DATA_RELEASE_PATH)) {
-    throw new Error("公開パッケージにsample1.jsonがありません。");
+  for (const releasePath of DATA_RELEASE_PATHS) {
+    if (!normalizedPaths.includes(releasePath)) {
+      throw new Error(`公開パッケージに${releasePath}がありません。`);
+    }
   }
+}
+
+function isDataJsonPath(path) {
+  return /^data\/dictation\/(?:melody|harmony)\/[A-Za-z0-9_-]+\.json$/.test(
+    path,
+  );
+}
+
+function resolveReleaseDataFiles({ dataFiles, sourceJson }) {
+  const configuredFiles = dataFiles ?? [
+    {
+      label: "dictation-contentのsample1.json",
+      releasePath: DATA_RELEASE_PATH,
+      sourcePath: sourceJson,
+    },
+  ];
+  if (!Array.isArray(configuredFiles) || configuredFiles.length === 0) {
+    throw new Error("公開用JSONが指定されていません。");
+  }
+  return configuredFiles.map((dataFile) => ({
+    label: dataFile.label ?? dataFile.releasePath,
+    releasePath: dataFile.releasePath,
+    sourcePath: resolve(dataFile.sourcePath),
+  }));
 }
 
 export async function listFiles(root) {

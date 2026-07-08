@@ -424,7 +424,7 @@ FTPアップロード後:
 - [x] 4声 `play.voices.soprano/alto/tenor/bass` をflattenして練習再生イベントを作る
 - [x] harmonyでも12調SVG表示と `keys.*.semitones` を利用する
 - [x] `sequence: []` を読み込み時に許可する
-- [ ] FTP release scriptで `/data/dictation/harmony/` を公開パッケージへ含める
+- [x] FTP release scriptで `/data/dictation/harmony/` を公開パッケージへ含める
 
 完了条件:
 
