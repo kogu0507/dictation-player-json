@@ -16,6 +16,10 @@ import {
   getPlaybackDuration,
 } from "./domain/playbackEvents";
 import { getMelodyKey } from "./domain/transposition";
+import {
+  formatJapaneseKeyName,
+  formatKeyOptionLabel,
+} from "./domain/keyDisplayName";
 import { ExamSequenceRunner } from "./exam/ExamSequenceRunner";
 import { validateExamSequence } from "./exam/validateSequence";
 import {
@@ -157,7 +161,7 @@ function renderSelectedScore(): void {
 
   score.replaceChildren();
   score.insertAdjacentHTML("afterbegin", key.svg);
-  scoreKey.textContent = selectedKey;
+  scoreKey.textContent = formatJapaneseKeyName(selectedKey, melody.mode);
 }
 
 function stopPracticePlayback(message = "停止しました。"): void {
@@ -431,11 +435,12 @@ async function initialize(): Promise<void> {
     title.textContent = melody.title;
 
     const keyNames = Object.keys(melody.keys);
+    const contentMode = melody.mode;
     keySelect.replaceChildren(
       ...keyNames.map((keyName) => {
         const option = document.createElement("option");
         option.value = keyName;
-        option.textContent = keyName;
+        option.textContent = formatKeyOptionLabel(keyName, contentMode);
         option.selected = keyName === melody?.base_key;
         return option;
       }),
@@ -524,7 +529,7 @@ function updatePracticeSummary(): void {
   }
   setStatus(
     "ready",
-    `${keySelect.value}調・${startMeasureSelect.value}〜${endMeasureSelect.value}小節・${playbackRateSelect.value}倍・基準${melody.play.bpm} BPM`,
+    `${formatJapaneseKeyName(keySelect.value, melody.mode)}・${startMeasureSelect.value}〜${endMeasureSelect.value}小節・${playbackRateSelect.value}倍・基準${melody.play.bpm} BPM`,
   );
 }
 
@@ -536,7 +541,7 @@ function updateExamSummary(): void {
     examOutcome === "not-started" ? "譜面非表示" : "譜面表示";
   setStatus(
     "ready",
-    `${keySelect.value}調・基準${melody.play.bpm} BPM・${scoreState}`,
+    `${formatJapaneseKeyName(keySelect.value, melody.mode)}・基準${melody.play.bpm} BPM・${scoreState}`,
   );
 }
 
