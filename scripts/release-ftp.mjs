@@ -8,7 +8,8 @@ import {
   MANIFEST_NAME,
 } from "./release-ftp-lib.mjs";
 
-const dataFiles = resolveDataFiles();
+const mode = resolveReleaseMode(process.argv.slice(2));
+const dataFiles = resolveDataFiles(mode);
 
 await runProductionBuild();
 
@@ -17,6 +18,7 @@ const result = await createFtpRelease({
   distDir: resolve("dist"),
   dataFiles,
   releaseRoot,
+  mode,
 });
 
 console.log("FTP release package created:");
@@ -59,18 +61,19 @@ async function runProductionBuild() {
   });
 }
 
-function resolveDataFiles() {
-  return [
-    {
-      label: "melody sample1",
-      releasePath: DATA_RELEASE_PATHS[0],
-      sourcePath: resolveContentJson(
-        "DICTATION_CONTENT_SAMPLE1",
-        "melody",
-        "sample1.json",
-      ),
-    },
-    {
+function resolveDataFiles(mode) {
+  const files = [{
+    label: "melody sample1",
+    releasePath: DATA_RELEASE_PATHS[0],
+    sourcePath: resolveContentJson(
+      "DICTATION_CONTENT_SAMPLE1",
+      "melody",
+      "sample1.json",
+    ),
+  }];
+
+  if (mode === "full") {
+    files.push({
       label: "harmony sample_harmony1",
       releasePath: DATA_RELEASE_PATHS[1],
       sourcePath: resolveContentJson(
@@ -78,8 +81,27 @@ function resolveDataFiles() {
         "harmony",
         "sample_harmony1.json",
       ),
-    },
-  ];
+    });
+  }
+
+  return files;
+}
+
+function resolveReleaseMode(arguments_) {
+  if (arguments_.length === 0) {
+    return "full";
+  }
+  if (arguments_.length === 2 && arguments_[0] === "--mode") {
+    if (arguments_[1] === "melody-only") {
+      return "melody-only";
+    }
+    if (arguments_[1] === "full") {
+      return "full";
+    }
+  }
+  throw new Error(
+    "利用方法: npm run release:ftp [-- --mode full|melody-only]",
+  );
 }
 
 function resolveContentJson(environmentVariable, contentType, fileName) {

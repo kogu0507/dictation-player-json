@@ -17,6 +17,10 @@ export const DATA_RELEASE_PATHS = [
   "data/dictation/harmony/sample_harmony1.json",
 ];
 export const DATA_RELEASE_PATH = DATA_RELEASE_PATHS[0];
+export const RELEASE_MODES = {
+  FULL: "full",
+  MELODY_ONLY: "melody-only",
+};
 export const MANIFEST_NAME = "RELEASE_MANIFEST.txt";
 
 const FORBIDDEN_SEGMENTS = new Set([
@@ -39,6 +43,7 @@ export async function createFtpRelease({
   dataFiles,
   sourceJson,
   releaseRoot,
+  mode = RELEASE_MODES.FULL,
 }) {
   const resolvedDist = resolve(distDir);
   const resolvedReleaseRoot = resolve(releaseRoot);
@@ -57,7 +62,7 @@ export async function createFtpRelease({
     ...distFiles.map((path) => `${APP_RELEASE_PATH}/${path}`),
     ...releaseDataFiles.map(({ releasePath }) => releasePath),
   ];
-  validatePayloadPaths(projectedFiles);
+  validatePayloadPaths(projectedFiles, mode);
 
   const distIndex = await readFile(
     resolve(resolvedDist, "index.html"),
@@ -105,7 +110,7 @@ export async function createFtpRelease({
   }
 
   const payloadFiles = await listFiles(resolvedReleaseRoot);
-  validatePayloadPaths(payloadFiles);
+  validatePayloadPaths(payloadFiles, mode);
   const entries = await Promise.all(
     payloadFiles.map(async (path) => ({
       path,
@@ -146,7 +151,8 @@ export function createManifest(entries) {
   return `${lines.join("\n")}\n`;
 }
 
-export function validatePayloadPaths(paths) {
+export function validatePayloadPaths(paths, mode = RELEASE_MODES.FULL) {
+  const requiredDataPaths = getRequiredDataPaths(mode);
   const normalizedPaths = [...paths].sort((left, right) =>
     left.localeCompare(right, "en"),
   );
@@ -165,16 +171,29 @@ export function validatePayloadPaths(paths) {
     if (!path.startsWith(`${APP_RELEASE_PATH}/`) && !isDataJsonPath(path)) {
       throw new Error(`公開先が許可されていません: ${path}`);
     }
+    if (isDataJsonPath(path) && !requiredDataPaths.includes(path)) {
+      throw new Error(`この公開モードでは許可されていないJSONです: ${path}`);
+    }
   }
 
   if (!normalizedPaths.includes(`${APP_RELEASE_PATH}/index.html`)) {
     throw new Error("公開パッケージにアプリのindex.htmlがありません。");
   }
-  for (const releasePath of DATA_RELEASE_PATHS) {
+  for (const releasePath of requiredDataPaths) {
     if (!normalizedPaths.includes(releasePath)) {
       throw new Error(`公開パッケージに${releasePath}がありません。`);
     }
   }
+}
+
+function getRequiredDataPaths(mode) {
+  if (mode === RELEASE_MODES.FULL) {
+    return DATA_RELEASE_PATHS;
+  }
+  if (mode === RELEASE_MODES.MELODY_ONLY) {
+    return [DATA_RELEASE_PATH];
+  }
+  throw new Error(`未対応の公開モードです: ${mode}`);
 }
 
 function isDataJsonPath(path) {

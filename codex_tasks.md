@@ -439,6 +439,20 @@ FTPアップロード後:
 - harmony testdata: `testdata/harmony/sample_harmony1.json`
 - roman numeral入力、cadence判定、chord_sequenceからの再生生成は対象外
 
+### D-031A melody-only FTP公開モード
+
+- [x] 既定の `release:ftp` を melody+harmony 完全パッケージとして維持する
+- [x] `release:ftp:melody-only` を追加し、appと `data/dictation/melody/sample1.json` だけを生成する
+- [x] モードごとの必須・許可JSONパスを検証し、melody-onlyにharmony JSONが混入した場合は拒否する
+- [x] SHA-256、manifest、noindex、危険な公開パス・ファイル種別の検証を両モードで継続する
+- [x] 両モードの自動テストと公開手順を更新する
+
+公開時は `release/ftp-root/app/` と `release/ftp-root/data/` の中身を
+`C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\public_html\app\` と
+`C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\public_html\data\` へ統合してから、
+同じ相対パスを本番のドキュメントルートへFTPアップロードする。melody-onlyでは
+`data/dictation/harmony/` を移動・削除しない。
+
 ## 将来候補
 
 - ピアノサンプラー

@@ -7,6 +7,7 @@ import {
   createFtpRelease,
   DATA_RELEASE_PATH,
   DATA_RELEASE_PATHS,
+  RELEASE_MODES,
   hasNoindexMeta,
   listFiles,
   MANIFEST_NAME,
@@ -97,6 +98,31 @@ describe("FTP release package", () => {
     expect(result.manifest).toContain(DATA_RELEASE_PATHS[1]);
   });
 
+  it("melody-onlyではアプリとmelody JSONだけを安全に公開する", async () => {
+    const workspace = await createTemporaryWorkspace();
+    const distDir = resolve(workspace, "dist");
+    const [melodyFile] = createFixtureDataFiles(workspace);
+    const releaseRoot = resolve(workspace, "release/ftp-root");
+    await writeFixture(distDir, [melodyFile]);
+
+    const result = await createFtpRelease({
+      distDir,
+      dataFiles: [melodyFile],
+      releaseRoot,
+      mode: RELEASE_MODES.MELODY_ONLY,
+    });
+
+    expect(await listFiles(releaseRoot)).toEqual([
+      `${APP_RELEASE_PATH}/assets/index.css`,
+      `${APP_RELEASE_PATH}/assets/index.js`,
+      `${APP_RELEASE_PATH}/index.html`,
+      DATA_RELEASE_PATH,
+      MANIFEST_NAME,
+    ]);
+    expect(result.jsonResults).toHaveLength(1);
+    expect(result.manifest).not.toContain(DATA_RELEASE_PATHS[1]);
+  });
+
   it.each([
     `${APP_RELEASE_PATH}/src/main.ts`,
     `${APP_RELEASE_PATH}/tests/app.test.ts`,
@@ -121,6 +147,18 @@ describe("FTP release package", () => {
         "data/dictation/other/sample.json",
       ]),
     ).toThrow("公開先が許可されていません");
+  });
+
+  it("melody-onlyではharmony JSONを拒否する", () => {
+    expect(() =>
+      validatePayloadPaths(
+        [
+          `${APP_RELEASE_PATH}/index.html`,
+          ...DATA_RELEASE_PATHS,
+        ],
+        RELEASE_MODES.MELODY_ONLY,
+      ),
+    ).toThrow("この公開モードでは許可されていないJSON");
   });
 
   it("robots noindexがないproduction HTMLを拒否する", async () => {
@@ -188,9 +226,11 @@ async function writeFixture(distDir, dataFiles, noindex = true) {
       dataFiles[0].sourcePath,
       '{"schema_version":1,"id":"sample1"}\n',
     ),
-    writeFile(
-      dataFiles[1].sourcePath,
-      '{"schema_version":2,"id":"sample_harmony1"}\n',
+    ...dataFiles.slice(1).map((dataFile) =>
+      writeFile(
+        dataFile.sourcePath,
+        '{"schema_version":2,"id":"sample_harmony1"}\n',
+      ),
     ),
   ]);
 }

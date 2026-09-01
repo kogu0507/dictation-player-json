@@ -71,7 +71,7 @@ production buildから配置した成果物だけとする。
 
 FTPでは、`seegmund-music-labo.com` のドキュメントルートを基準に上記構成を作る。FTP接続直後の絶対パス名は契約・サーバー設定により異なるため、既存サイトの `index` がある場所をドキュメントルートとして確認する。
 
-## 3. 公開前ビルド
+## 3. 公開前ビルドとリリースモード
 
 ```powershell
 npm ci
@@ -79,8 +79,16 @@ npm test
 npm run release:ftp
 ```
 
-`release:ftp` は内部で `npm run build` を実行し、成功した場合だけ
-公開パッケージを再生成する。生成元JSONの既定パスは次である。
+`release:ftp` は従来どおり melody+harmony の両方を含む完全パッケージを生成する。
+単旋律だけを公開する場合は、次を実行する。
+
+```powershell
+npm run release:ftp:melody-only
+```
+
+どちらのコマンドも内部で `npm run build` を実行し、成功した場合だけ
+公開パッケージを再生成する。melody-only は harmony生成元JSONを読まず、
+`data/dictation/harmony/` を含めない。生成元JSONの既定パスは次である。
 
 ```text
 C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-content\dist\melody\sample1.json
@@ -89,6 +97,7 @@ C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\dictation-cont
 
 別の作業環境では `DICTATION_CONTENT_SAMPLE1` と
 `DICTATION_CONTENT_HARMONY_SAMPLE1` に生成済みJSONの絶対パスを指定できる。
+melody-only で必要なのは `DICTATION_CONTENT_SAMPLE1` だけである。
 
 ```powershell
 $env:DICTATION_CONTENT_SAMPLE1 = "C:\path\to\dictation-content\dist\melody\sample1.json"
@@ -96,20 +105,18 @@ $env:DICTATION_CONTENT_HARMONY_SAMPLE1 = "C:\path\to\dictation-content\dist\harm
 npm run release:ftp
 ```
 
-スクリプトは次を自動確認する。
+スクリプトはモードに応じて次を自動確認する。
 
 - production HTMLに `meta name="robots" content="noindex"` がある
-- melody/harmony両方の公開用JSONと生成元JSONのSHA-256が一致する
+- 選択モードの公開用JSONと生成元JSONのSHA-256が一致する
 - `src/`、`tests/`、`testdata/`、`node_modules/`、`.git/`、
   `package.json`、`.htaccess` が含まれない
-- 公開先が `app/dictation-player-json/`、
-  `data/dictation/melody/*.json`、
-  `data/dictation/harmony/*.json` の範囲内である
+- 公開先が `app/dictation-player-json/` と選択モードに固定されたJSONパスだけである
 - シンボリックリンクや通常ファイル以外を含まない
 
 `base: "./"` のため、アプリを `/app/dictation-player-json/` へ配置しても、JSとCSSは同じディレクトリを基準に読み込まれる。
 
-成功後、次の構成が生成される。
+完全パッケージの構成は次のとおり。
 
 ```text
 release/
@@ -125,6 +132,20 @@ release/
    └─ RELEASE_MANIFEST.txt
 ```
 
+melody-only の構成は次のとおりで、harmony JSONは含まれない。
+
+```text
+release/
+└─ ftp-root/
+   ├─ app/
+   │  └─ dictation-player-json/
+   ├─ data/
+   │  └─ dictation/
+   │     └─ melody/
+   │        └─ sample1.json
+   └─ RELEASE_MANIFEST.txt
+```
+
 `RELEASE_MANIFEST.txt` は、公開対象ファイルを相対パス順に並べた
 SHA-256一覧である。manifest自身は自己ハッシュできないため一覧対象外とする。
 
@@ -134,16 +155,17 @@ FTPソフトでは `ftp-root/` 自体を1つのフォルダとしてアップロ
 サーバーへはアップロードしない。
 
 既存の `/app/` や `/data/` 全体を削除・置換しない。
-今回の `app/dictation-player-json/`、
+完全パッケージでは `app/dictation-player-json/`、
 `data/dictation/melody/sample1.json`、
 `data/dictation/harmony/sample_harmony1.json` だけを追加または更新する。
+melody-only では前2つだけを追加または更新し、既存harmony JSONの削除・置換は行わない。
 `.htaccess` はこの公開パッケージに含めない。
 
 ### FTPアップロード用チェックリスト
 
 1. `npm test` が成功している。
-2. `npm run release:ftp` が成功している。
-3. コマンド出力のmelody/harmony生成元JSONと公開用JSONのSHA-256が一致している。
+2. 選んだモードの `npm run release:ftp` または `npm run release:ftp:melody-only` が成功している。
+3. コマンド出力の選択モードの生成元JSONと公開用JSONのSHA-256が一致している。
 4. `RELEASE_MANIFEST.txt` の全ファイルが `ftp-root/` に存在する。
 5. `app/` と `data/` を既存ドキュメントルートへ統合する設定になっている。
 6. FTPソフトの「同期時に転送元にないファイルを削除する」機能を無効にする。
@@ -160,7 +182,7 @@ C:\Users\kogu0\Documents\seegmund-music-labo-repositorys\projects\
 └─ dictation-player-json\
 ```
 
-`release:ftp` は、環境変数で上書きしない場合、アプリプロジェクトの隣にある次のファイルを参照する。
+完全パッケージの `release:ftp` は、環境変数で上書きしない場合、アプリプロジェクトの隣にある次のファイルを参照する。melody-only は先頭のmelody JSONだけを参照する。
 
 ```text
 ../dictation-content/dist/melody/sample1.json

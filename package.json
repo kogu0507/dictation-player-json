@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "build:lan": "tsc -b && node scripts/build-lan.mjs",
     "release:ftp": "node scripts/release-ftp.mjs",
+    "release:ftp:melody-only": "node scripts/release-ftp.mjs --mode melody-only",
     "preview": "vite preview",
     "preview:lan": "vite preview --host 0.0.0.0 --port 4173 --strictPort",
     "test": "vitest run"
