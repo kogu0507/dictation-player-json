@@ -25,7 +25,7 @@ afterEach(async () => {
 describe("data-only melody release", () => {
   it("任意IDのmelody JSONだけをmanifest付きで公開パッケージ化する", async () => {
     const workspace = await createTemporaryWorkspace();
-    const id = "solfege2026_01_c44";
+    const id = "melody001";
     const sourceJson = resolve(workspace, "content", `${id}.json`);
     const releaseRoot = resolve(workspace, "release/ftp-root");
     await mkdir(resolve(sourceJson, ".."), { recursive: true });

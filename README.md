@@ -14,7 +14,7 @@ JSON駆動の旋律・和声聴音プレイヤーです。
 生成済みの旋律JSONを任意IDで**データだけ追加公開**する場合は、次を使う。
 
 ```powershell
-npm run release:data -- --id solfege2026_01_c44
+npm run release:data -- --id melody001
 ```
 
 このコマンドはアプリを再ビルドせず、`dictation-content/dist/melody/<id>.json` から `release/ftp-root/data/dictation/melody/<id>.json` と `RELEASE_MANIFEST.txt` だけを生成する。`id` は半角英数字・ハイフン・アンダースコアのみ許可する。既定位置以外の生成済みJSONを使う場合は `DICTATION_CONTENT_MELODY_DIR` に `dist/melody` ディレクトリを指定する。

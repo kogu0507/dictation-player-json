@@ -23,7 +23,7 @@ $env:DICTATION_CONTENT_MELODY_DIR = "C:\path\to\dictation-content\dist\melody"
 ## パッケージ生成
 
 ```powershell
-npm run release:data -- --id solfege2026_01_c44
+npm run release:data -- --id melody001
 ```
 
 許可するID文字は半角英数字、ハイフン、アンダースコアだけとする。
@@ -36,7 +36,7 @@ release/
    ├─ data/
    │  └─ dictation/
    │     └─ melody/
-   │        └─ solfege2026_01_c44.json
+   │        └─ melody001.json
    └─ RELEASE_MANIFEST.txt
 ```
 
@@ -58,8 +58,8 @@ release/
 例:
 
 ```text
-https://seegmund-music-labo.com/data/dictation/melody/solfege2026_01_c44.json
-https://seegmund-music-labo.com/app/dictation-player-json/?id=solfege2026_01_c44
+https://seegmund-music-labo.com/data/dictation/melody/melody001.json
+https://seegmund-music-labo.com/app/dictation-player-json/?id=melody001
 ```
 
 確認項目:
@@ -70,10 +70,10 @@ https://seegmund-music-labo.com/app/dictation-player-json/?id=solfege2026_01_c44
 4. 既存の `sample1` や他教材が削除されていない。
 5. JSONを更新した場合、古いキャッシュが残っていない。
 
-## 2026後期ソルフェージュ候補ID
+## 一般公開用の旋律聴音ID
 
 ```text
-solfege2026_01_c44
-solfege2026_02_g34
-solfege2026_03_f68
+melody001
+melody002
+melody003
 ```
