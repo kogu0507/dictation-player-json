@@ -78,6 +78,23 @@ describe("data-only melody release", () => {
       );
     },
   );
+
+  it("生成元JSONがftp-root内にある場合は削除せず拒否する", async () => {
+    const workspace = await createTemporaryWorkspace();
+    const releaseRoot = resolve(workspace, "release/ftp-root");
+    const sourceJson = resolve(releaseRoot, "source.json");
+    await mkdir(releaseRoot, { recursive: true });
+    await writeFile(sourceJson, '{"schema_version":1}\n', "utf8");
+
+    await expect(
+      createDataOnlyRelease({
+        sourceJson,
+        id: "sample1",
+        releaseRoot,
+      }),
+    ).rejects.toThrow("生成元JSONをrelease/ftp-root内に置くことはできません");
+    await expect(readFile(sourceJson, "utf8")).resolves.toContain("schema_version");
+  });
 });
 
 async function createTemporaryWorkspace() {

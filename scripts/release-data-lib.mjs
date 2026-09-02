@@ -1,5 +1,5 @@
 import { copyFile, mkdir, rm, stat, writeFile } from "node:fs/promises";
-import { basename, dirname, resolve } from "node:path";
+import { basename, dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import {
   createManifest,
   listFiles,
@@ -24,6 +24,7 @@ export async function createDataOnlyRelease({ sourceJson, id, releaseRoot }) {
   const releasePath = buildMelodyDataReleasePath(id);
 
   await requireFile(resolvedSourceJson, `dictation-contentの${id}.json`);
+  assertSourceOutsideReleaseRoot(resolvedSourceJson, resolvedReleaseRoot);
   await resetReleaseRoot(resolvedReleaseRoot);
 
   const destination = resolve(
@@ -81,6 +82,20 @@ async function requireFile(path, label) {
   const entry = await stat(path).catch(() => undefined);
   if (!entry?.isFile()) {
     throw new Error(`${label}が見つかりません: ${path}`);
+  }
+}
+
+function assertSourceOutsideReleaseRoot(sourcePath, releaseRoot) {
+  const sourceRelativePath = relative(releaseRoot, sourcePath);
+  const isInsideReleaseRoot =
+    sourceRelativePath === "" ||
+    (!sourceRelativePath.startsWith(`..${sep}`) &&
+      sourceRelativePath !== ".." &&
+      !isAbsolute(sourceRelativePath));
+  if (isInsideReleaseRoot) {
+    throw new Error(
+      "生成元JSONをrelease/ftp-root内に置くことはできません。",
+    );
   }
 }
 
