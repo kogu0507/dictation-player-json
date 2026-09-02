@@ -19,7 +19,7 @@ npm run release:data -- --id solfege2026_01_c44
 
 このコマンドはアプリを再ビルドせず、`dictation-content/dist/melody/<id>.json` から `release/ftp-root/data/dictation/melody/<id>.json` と `RELEASE_MANIFEST.txt` だけを生成する。`id` は半角英数字・ハイフン・アンダースコアのみ許可する。既定位置以外の生成済みJSONを使う場合は `DICTATION_CONTENT_MELODY_DIR` に `dist/melody` ディレクトリを指定する。
 
-詳しいFTP手順、アップロード対象、確認方法は [DEPLOYMENT.md](DEPLOYMENT.md) を参照する。
+任意IDのデータ単体公開は [DATA_ONLY_RELEASE.md](DATA_ONLY_RELEASE.md)、アプリを含む通常のFTP手順は [DEPLOYMENT.md](DEPLOYMENT.md) を参照する。
 
 ## 調名の表示
 
