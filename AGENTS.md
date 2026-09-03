@@ -1,6 +1,6 @@
 # AGENTS.md
 
-このリポジトリは、JSON駆動の旋律聴音プレイヤーを実装する。
+このリポジトリは、JSON駆動の旋律・和声聴音プレイヤーを実装する。
 
 ローカル配置は `projects/dictation-player-json/` とし、公開用の `public_html/app/dictation-player-json/` にはproduction build成果物だけを置く。
 
@@ -17,17 +17,26 @@
 
 仕様変更時は、コードだけでなく該当資料とテストも同じ変更内で更新する。
 
-## v1の制約
+## melody v1の制約
 
-- 単声旋律だけを扱う。
+- melody v1では単声旋律だけを扱う。
 - Vanilla TypeScript、Vite、Web Audio APIを基本構成とする。
 - UIフレームワークや音声ライブラリを無断で追加しない。
 - v1音源はOscillatorNodeによる三角波とサイン波とし、既定値は三角波にする。
 - ブラウザ対象はPC Chromium系、Android Chrome、iOS Safari 16.4以降とする。
 - 古いiOS Safariはベストエフォートとし、専用の大規模ポリフィルを無断で追加しない。
-- 一時停止、採点、履歴保存、和声対応を追加しない。
+- 一時停止、採点、履歴保存は追加しない。
 - JSON生成ツールは別プロジェクトであり、このリポジトリへ実装しない。
 - 画面文言は日本語にする。
+
+## harmony v2の追加範囲
+
+- `?type=harmony&id={id}` で schema v2 / `type: "harmony"` のJSONを読み込む。
+- `play.voices.soprano/alto/tenor/bass` の4声を読み込み境界で検証し、同一の再生イベント列へflattenして再生する。
+- melody v1と同じ12調SVG表示、`keys.*.semitones` による移調、小節範囲再生を扱う。
+- `harmony.chord_sequence`、`key_regions`、`cadences` は現段階では読み込み時の配列検証のみとし、画面表示・採点・再生生成には使わない。
+- harmony v2では `sequence: []` を許可する。harmonyの試験sequence実行は現行必須範囲外とする。
+- ローマ数字入力、和声採点、カデンツ判定、声部ごとの個別操作は追加しない。
 
 ## 設計原則
 
@@ -39,7 +48,7 @@
 - DOMタイマーだけで音符を逐次発音しない。
 - 再生と試験実行は必ず中止可能にする。
 - URLパラメータから任意URLを読み込ませない。
-- 本番JSONは `/data/dictation/melody/{id}.json` から取得する。
+- 本番JSONは `/data/dictation/{type}/{id}.json` から取得する。
 - 公開するアプリ成果物はproduction buildの `dist/` の中身だけとし、ソースや依存パッケージを公開しない。
 - 公開・キャッシュ・圧縮の判断は `DEPLOYMENT.md` に従う。
 - プレイヤーURLはSEO対象にせず、production HTMLへ `noindex` を設定する。
@@ -61,7 +70,7 @@
 - アプリ本体でキー名から半音数を推測しない。
 - アプリ本体で拍子から小節境界を推測しない。
 - 埋め込みSVGを手作業で編集しない。
-- スキーマを変更する場合は `schema_version`、`sample1.json`、検証コード、テストを同時に扱う。
+- スキーマを変更する場合は `schema_version`、該当testdata、検証コード、テストを同時に扱う。
 
 ## 実装の進め方
 
