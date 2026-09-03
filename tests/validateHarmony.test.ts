@@ -6,6 +6,7 @@ import {
 } from "../src/data/types";
 import { validateHarmonyData } from "../src/data/validateMelody";
 
+// Harmony v2 contract requires exactly the four canonical SATB voice names.
 const HARMONY_VOICE_ERROR =
   "play.voices は soprano/alto/tenor/bass を含む必要があります。";
 
