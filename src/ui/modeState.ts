@@ -7,6 +7,7 @@ export interface ModeStateInput {
   activity: AppActivity;
   examOutcome: ExamOutcome;
   hasMelody: boolean;
+  examAvailable: boolean;
 }
 
 export interface ModeUiState {
@@ -23,7 +24,7 @@ export interface ModeUiState {
 }
 
 export function getModeUiState(input: ModeStateInput): ModeUiState {
-  const { mode, activity, examOutcome, hasMelody } = input;
+  const { mode, activity, examOutcome, hasMelody, examAvailable } = input;
   const busy = activity !== "idle";
   const unavailable = !hasMelody;
 
@@ -40,7 +41,8 @@ export function getModeUiState(input: ModeStateInput): ModeUiState {
     practicePlayDisabled:
       unavailable || busy || mode !== "practice",
     practiceStopDisabled: activity !== "practice",
-    examStartDisabled: unavailable || busy || mode !== "exam",
+    examStartDisabled:
+      unavailable || !examAvailable || busy || mode !== "exam",
     examCancelDisabled: activity !== "exam",
   };
 }
