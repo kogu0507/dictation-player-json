@@ -1,4 +1,5 @@
 import {
+  HARMONY_VOICE_NAMES,
   TARGET_KEY_NAMES,
   type ContentData,
   type ContentType,
@@ -15,9 +16,6 @@ import {
 } from "../exam/validateSequence";
 
 type JsonObject = Record<string, unknown>;
-const HARMONY_MIN_VOICE_COUNT = 3;
-const HARMONY_MAX_VOICE_COUNT = 4;
-const VOICE_NAME_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 export type MelodyValidationErrorCode =
   | "unsupported-schema"
@@ -215,20 +213,7 @@ function validateHarmonyVoices(
   value: unknown,
   measureMap: MeasureBoundary[],
 ): Record<string, MelodyNote[]> {
-  const voicesObject = requireObject(value, "play.voices");
-  const voiceNames = Object.keys(voicesObject);
-
-  if (
-    voiceNames.length < HARMONY_MIN_VOICE_COUNT ||
-    voiceNames.length > HARMONY_MAX_VOICE_COUNT
-  ) {
-    fail("play.voices は3声または4声である必要があります。");
-  }
-  if (voiceNames.some((voiceName) => !VOICE_NAME_PATTERN.test(voiceName))) {
-    fail("play.voices の声部名に使用できない文字が含まれています。");
-  }
-
-  return validateVoices(value, measureMap, voiceNames);
+  return validateVoices(value, measureMap, HARMONY_VOICE_NAMES);
 }
 
 function validateKeys(value: unknown): Record<string, MelodyKey> {

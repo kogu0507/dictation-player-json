@@ -6,6 +6,10 @@ import {
 } from "../src/data/types";
 import { validateHarmonyData } from "../src/data/validateMelody";
 
+// Harmony v2 contract requires exactly the four canonical SATB voice names.
+const HARMONY_VOICE_ERROR =
+  "play.voices は soprano/alto/tenor/bass を含む必要があります。";
+
 describe("validateHarmonyData", () => {
   it("sample_harmony1のschema v2 harmonyデータを受け入れる", () => {
     const harmony = validateHarmonyData(
@@ -20,7 +24,7 @@ describe("validateHarmonyData", () => {
     expect(Object.keys(harmony.play.voices)).toEqual(HARMONY_VOICE_NAMES);
   });
 
-  it("3声のschema v2 harmonyデータも受け入れる", () => {
+  it("3声のschema v2 harmonyデータを拒否する", () => {
     const threePartHarmonyJson = {
       ...sampleHarmonyJson,
       play: {
@@ -33,33 +37,45 @@ describe("validateHarmonyData", () => {
       },
     };
 
-    const harmony = validateHarmonyData(
-      threePartHarmonyJson,
-      "sample_harmony1",
-    );
-
-    expect(Object.keys(harmony.play.voices)).toEqual([
-      "soprano",
-      "alto",
-      "bass",
-    ]);
+    expect(() =>
+      validateHarmonyData(threePartHarmonyJson, "sample_harmony1"),
+    ).toThrow(HARMONY_VOICE_ERROR);
   });
 
-  it("2声以下または5声以上のharmonyデータを拒否する", () => {
-    const twoPartHarmonyJson = {
+  it("余剰voiceを含む5声のschema v2 harmonyデータを拒否する", () => {
+    const fivePartHarmonyJson = {
       ...sampleHarmonyJson,
       play: {
         ...sampleHarmonyJson.play,
         voices: {
-          soprano: sampleHarmonyJson.play.voices.soprano,
-          bass: sampleHarmonyJson.play.voices.bass,
+          ...sampleHarmonyJson.play.voices,
+          extra: sampleHarmonyJson.play.voices.soprano,
         },
       },
     };
 
     expect(() =>
-      validateHarmonyData(twoPartHarmonyJson, "sample_harmony1"),
-    ).toThrow("play.voices は3声または4声である必要があります。");
+      validateHarmonyData(fivePartHarmonyJson, "sample_harmony1"),
+    ).toThrow(HARMONY_VOICE_ERROR);
+  });
+
+  it("4声でも正規voice名から外れるschema v2 harmonyデータを拒否する", () => {
+    const renamedHarmonyJson = {
+      ...sampleHarmonyJson,
+      play: {
+        ...sampleHarmonyJson.play,
+        voices: {
+          soprano: sampleHarmonyJson.play.voices.soprano,
+          alto: sampleHarmonyJson.play.voices.alto,
+          tenor: sampleHarmonyJson.play.voices.tenor,
+          baritone: sampleHarmonyJson.play.voices.bass,
+        },
+      },
+    };
+
+    expect(() =>
+      validateHarmonyData(renamedHarmonyJson, "sample_harmony1"),
+    ).toThrow(HARMONY_VOICE_ERROR);
   });
 
   it("4声すべてのnoteに再生用フィールドがある", () => {
