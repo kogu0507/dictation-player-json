@@ -25,6 +25,7 @@ export function renderAppShell(root: HTMLElement): void {
             <option value="exam">試験</option>
           </select>
         </label>
+        <p id="mode-guidance" class="exam-guidance" role="note" hidden></p>
         <label>
           <span>調</span>
           <select id="key-select" disabled></select>
