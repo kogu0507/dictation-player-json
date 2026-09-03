@@ -56,6 +56,11 @@ const status = requireElement<HTMLElement>(appRoot, "#status");
 const statusLabel = requireElement<HTMLElement>(appRoot, "#status-label");
 const statusMessage = requireElement<HTMLElement>(appRoot, "#status-message");
 const modeSelect = requireElement<HTMLSelectElement>(appRoot, "#mode-select");
+const examModeOption = requireElement<HTMLOptionElement>(
+  modeSelect,
+  'option[value="exam"]',
+);
+const modeGuidance = requireElement<HTMLElement>(appRoot, "#mode-guidance");
 const keySelect = requireElement<HTMLSelectElement>(appRoot, "#key-select");
 const timbreSelect = requireElement<HTMLSelectElement>(
   appRoot,
@@ -134,6 +139,7 @@ function applyModeUiState(): void {
     activity,
     examOutcome,
     hasMelody: melody !== undefined,
+    examAvailable: melody !== undefined && melody.sequence.length > 0,
   });
 
   applyModeVisibility(
@@ -141,6 +147,12 @@ function applyModeUiState(): void {
     state,
   );
   modeSelect.disabled = state.modeDisabled;
+  examModeOption.disabled =
+    melody !== undefined && melody.sequence.length === 0;
+  modeGuidance.hidden = !examModeOption.disabled;
+  modeGuidance.textContent = examModeOption.disabled
+    ? "この課題は練習モードのみ利用できます。"
+    : "";
   keySelect.disabled = state.commonSettingsDisabled;
   timbreSelect.disabled = state.commonSettingsDisabled;
   playbackRateSelect.disabled = state.practiceSettingsDisabled;
@@ -286,6 +298,15 @@ examStartButton.addEventListener("click", async () => {
     return;
   }
   const currentMelody = melody;
+  if (currentMelody.sequence.length === 0) {
+    mode = "practice";
+    modeSelect.value = "practice";
+    applyModeUiState();
+    updatePracticeSummary();
+    setStatus("ready", "この課題は練習モードのみ利用できます。");
+    playButton.focus();
+    return;
+  }
 
   let sequence: SequenceStep[];
   try {
