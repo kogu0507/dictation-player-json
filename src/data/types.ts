@@ -107,7 +107,7 @@ export interface HarmonyData {
   measure_map: MeasureBoundary[];
   play: {
     bpm: number;
-    voices: Record<string, MelodyNote[]>;
+    voices: Record<HarmonyVoiceName, MelodyNote[]>;
   };
   harmony: {
     chord_sequence: unknown[];
