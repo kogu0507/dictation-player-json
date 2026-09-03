@@ -8,6 +8,7 @@ describe("getModeUiState", () => {
       activity: "idle",
       examOutcome: "not-started",
       hasMelody: true,
+      examAvailable: true,
     });
     expect(state.practiceControlsHidden).toBe(false);
     expect(state.examControlsHidden).toBe(true);
@@ -22,6 +23,7 @@ describe("getModeUiState", () => {
         activity: "idle",
         examOutcome: "not-started",
         hasMelody: true,
+      examAvailable: true,
       }).scoreHidden,
     ).toBe(true);
     const running = getModeUiState({
@@ -29,12 +31,24 @@ describe("getModeUiState", () => {
       activity: "exam",
       examOutcome: "not-started",
       hasMelody: true,
+      examAvailable: true,
     });
     expect(running.scoreHidden).toBe(true);
     expect(running.modeDisabled).toBe(true);
     expect(running.commonSettingsDisabled).toBe(true);
     expect(running.examStartDisabled).toBe(true);
     expect(running.examCancelDisabled).toBe(false);
+  });
+
+  it("試験手順がない課題では試験開始を無効化する", () => {
+    const state = getModeUiState({
+      mode: "exam",
+      activity: "idle",
+      examOutcome: "not-started",
+      hasMelody: true,
+      examAvailable: false,
+    });
+    expect(state.examStartDisabled).toBe(true);
   });
 
   it.each(["completed", "cancelled"] as const)(
@@ -45,6 +59,7 @@ describe("getModeUiState", () => {
         activity: "idle",
         examOutcome,
         hasMelody: true,
+      examAvailable: true,
       });
       expect(state.scoreHidden).toBe(false);
       expect(state.modeDisabled).toBe(false);

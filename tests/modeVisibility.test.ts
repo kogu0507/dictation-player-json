@@ -24,6 +24,7 @@ describe("applyModeVisibility", () => {
         activity: "idle",
         examOutcome: "not-started",
         hasMelody: true,
+        examAvailable: true,
       }),
     );
     expect(targets.practiceControls.hidden).toBe(false);
@@ -37,6 +38,7 @@ describe("applyModeVisibility", () => {
         activity: "idle",
         examOutcome: "not-started",
         hasMelody: true,
+        examAvailable: true,
       }),
     );
     expect(targets.practiceControls.hidden).toBe(true);
@@ -50,6 +52,7 @@ describe("applyModeVisibility", () => {
         activity: "idle",
         examOutcome: "not-started",
         hasMelody: true,
+        examAvailable: true,
       }),
     );
     expect(targets.practiceControls.hidden).toBe(false);
@@ -66,6 +69,7 @@ describe("applyModeVisibility", () => {
         activity: "exam",
         examOutcome: "not-started",
         hasMelody: true,
+        examAvailable: true,
       }),
     );
 
