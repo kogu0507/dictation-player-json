@@ -17,6 +17,28 @@
 
 仕様変更時は、コードだけでなく該当資料とテストも同じ変更内で更新する。
 
+## GitHubでのChatGPT / Codex受け渡し
+
+実装単位の受け渡しはGitHubを正とし、別の作業台帳を増やさない。
+
+- **Issue = task contract**: 目的、根拠、正本、scope、acceptance criteria、machine verification、人間判断境界を置く。
+- **専用branch = implementation workspace**: Issueと無関係な変更を混ぜない。
+- **PR = implementation return package**: Issueをリンクし、変更内容、検証結果、逸脱、新規発見、production/publication影響を返す。
+- **Issue / PR comment = triage / independent review / follow-up**: 実装詳細の会話はGitHubへ残す。
+- **Google Drive = long-term project state**: プロジェクト横断の判断や現在地だけを反映し、Issue/PR本文を重複保存しない。
+
+標準フロー:
+
+`Observe/Audit → IssueでTriage/契約化 → Implement → Machine verify → PR → Independent review → 必要なら修正/再検証 → Issue close → HANDOFFへ長期状態だけ反映`
+
+実装担当はIssue URLまたは番号だけで着手できる状態を前提とする。Issueに未解決の仕様・UX・教育・意味づけ・互換性判断が残る場合は推測で補完せず停止して報告する。
+
+- 小さく局所的で仕様判断不要な変更は、ChatGPT実装 → Codex独立レビューを優先する。
+- 複数ファイル横断、長い実装、リファクタリング、テスト拡充等は、ChatGPTがIssue/acceptance criteriaを整備 → Codex実装 → ChatGPT独立レビューを優先する。
+- 監査で見つけた別問題は、現在Issueの意味を変えるなら別Issue候補として分離する。
+- production/publication、FTP、本番環境変更、削除などはIssueがあっても人間承認なしに実行しない。
+- 新規Issueには `.github/ISSUE_TEMPLATE/ai-implementation.md`、PRには `.github/pull_request_template.md` を利用する。
+
 ## melody v1の制約
 
 - melody v1では単声旋律だけを扱う。
