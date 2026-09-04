@@ -31,6 +31,74 @@ describe("loadMelody", () => {
     );
   });
 
+  it.each([
+    ["melody001", "melody-bass-001"],
+    ["melody002", "melody-bass-002"],
+    ["melody003", "melody-bass-003"],
+  ])(
+    "旧ID %sでcanonical JSON %sを取得・検証する",
+    async (legacyId, canonicalId) => {
+      const fetchMock = vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: vi.fn().mockResolvedValue({
+          ...sample1Json,
+          id: canonicalId,
+        }),
+      });
+      vi.stubGlobal("fetch", fetchMock);
+
+      await expect(loadMelody(legacyId)).resolves.toMatchObject({
+        id: canonicalId,
+        type: "melody",
+      });
+      expect(fetchMock.mock.calls[0]?.[0]).toContain(
+        `/testdata/melody/${canonicalId}.json`,
+      );
+    },
+  );
+
+  it.each([
+    "melody-bass-001",
+    "melody-bass-002",
+    "melody-bass-003",
+  ])("canonical melody ID %sをそのまま取得する", async (canonicalId) => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockResolvedValue({
+        ...sample1Json,
+        id: canonicalId,
+      }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(loadMelody(canonicalId)).resolves.toMatchObject({
+      id: canonicalId,
+    });
+    expect(fetchMock.mock.calls[0]?.[0]).toContain(
+      `/testdata/melody/${canonicalId}.json`,
+    );
+  });
+
+  it("旧ID URLでもcanonical IDではないJSONを拒否する", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: vi.fn().mockResolvedValue({
+          ...sample1Json,
+          id: "melody001",
+        }),
+      }),
+    );
+
+    await expect(loadMelody("melody001")).rejects.toMatchObject({
+      code: "invalid-data",
+    } satisfies Partial<MelodyLoadError>);
+  });
+
   it("不正なIDをfetch前に拒否する", async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
@@ -75,6 +143,28 @@ describe("loadMelody", () => {
     });
     expect(fetchMock.mock.calls[0]?.[0]).toContain(
       "/testdata/harmony/sample_harmony1.json",
+    );
+  });
+
+  it("melodyの旧ID aliasをharmonyへ適用しない", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockResolvedValue({
+        ...sampleHarmonyJson,
+        id: "melody001",
+      }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(
+      loadContent({ id: "melody001", type: "harmony" }),
+    ).resolves.toMatchObject({
+      id: "melody001",
+      type: "harmony",
+    });
+    expect(fetchMock.mock.calls[0]?.[0]).toContain(
+      "/testdata/harmony/melody001.json",
     );
   });
 
