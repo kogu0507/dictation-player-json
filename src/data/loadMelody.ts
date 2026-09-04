@@ -1,4 +1,5 @@
 import { getDataBaseUrl } from "../config/dataSource";
+import { resolveContentIdAlias } from "./contentIdAlias";
 import type { ContentData, ContentType, MelodyData } from "./types";
 import {
   MelodyValidationError,
@@ -55,7 +56,9 @@ export async function loadContent(
 ): Promise<ContentData> {
   const { id, type = "melody" } = options;
   validateMelodyId(id);
-  const url = `${getDataBaseUrl(type)}/${id}.json`;
+  const resolvedId = resolveContentIdAlias(id, type);
+  validateMelodyId(resolvedId);
+  const url = `${getDataBaseUrl(type)}/${resolvedId}.json`;
 
   let response: Response;
   try {
@@ -90,7 +93,7 @@ export async function loadContent(
   }
 
   try {
-    return validateContentData(json, id, type);
+    return validateContentData(json, resolvedId, type);
   } catch (error) {
     if (error instanceof MelodyValidationError) {
       throw new MelodyLoadError(error.code, error.message);
@@ -101,5 +104,8 @@ export async function loadContent(
 
 export async function loadMelody(id: string): Promise<MelodyData> {
   const content = await loadContent({ id, type: "melody" });
-  return validateMelodyData(content, id);
+  return validateMelodyData(
+    content,
+    resolveContentIdAlias(id, "melody"),
+  );
 }
