@@ -110,3 +110,30 @@ describe("OscillatorAudioPlayer", () => {
     expect(context.gains[1]?.disconnected).toBe(true);
   });
 });
+
+describe("OscillatorAudioPlayer note ending", () => {
+  it("releases only in the final 5ms and reaches silence at the exact note end", async () => {
+    const context = new FakeAudioContext();
+    const player = new OscillatorAudioPlayer(
+      () => context as unknown as AudioContext,
+    );
+    await player.resume();
+    player.play([{ pitch: 70, startSeconds: 0, durationSeconds: 1, velocity: 90 }]);
+    const gainValues = context.gains[0]?.gain.values;
+    expect(gainValues?.[2]?.[2]).toBeCloseTo(11.045);
+    expect(gainValues?.[3]).toEqual(["ramp", 0, 11.05]);
+  });
+
+  it("preserves the final 5ms of a sixteenth note at quarter BPM 144", async () => {
+    const context = new FakeAudioContext();
+    const player = new OscillatorAudioPlayer(
+      () => context as unknown as AudioContext,
+    );
+    await player.resume();
+    const duration = 60 / 144 / 4;
+    player.play([{ pitch: 70, startSeconds: 0, durationSeconds: duration, velocity: 90 }]);
+    const gainValues = context.gains[0]?.gain.values;
+    expect(gainValues?.[3]?.[2]).toBeCloseTo(10.05 + duration);
+    expect((gainValues?.[3]?.[2] ?? 0) - (gainValues?.[2]?.[2] ?? 0)).toBeCloseTo(0.005);
+  });
+});

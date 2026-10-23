@@ -13,6 +13,7 @@ import type {
 import { resolvePlaybackRate } from "./domain/playbackRate";
 import {
   createContentPlaybackEvents,
+  getMeasurePlaybackDuration,
   getPlaybackDuration,
 } from "./domain/playbackEvents";
 import { getMelodyKey } from "./domain/transposition";
@@ -259,9 +260,16 @@ playButton.addEventListener("click", async () => {
     });
     const scheduledDuration = audioPlayer.play(events);
     const eventDuration = getPlaybackDuration(events);
+    const measureDuration = getMeasurePlaybackDuration(
+      melody,
+      { startMeasure, endMeasure },
+      playbackRate,
+    );
+    const fullScheduledDuration =
+      scheduledDuration + Math.max(0, measureDuration - eventDuration);
     setStatus(
       "playing",
-      `再生中（${startMeasure}〜${endMeasure}小節・${playbackRate}倍・約${Math.ceil(eventDuration)}秒）`,
+      `再生中（${startMeasure}〜${endMeasure}小節・${playbackRate}倍・約${Math.ceil(measureDuration)}秒）`,
     );
 
     completionTimer = window.setTimeout(() => {
@@ -273,7 +281,7 @@ playButton.addEventListener("click", async () => {
       applyModeUiState();
       setStatus("completed", "再生が終了しました。");
       playButton.focus();
-    }, (scheduledDuration + 0.1) * 1000);
+    }, (fullScheduledDuration + 0.1) * 1000);
   } catch (error) {
     if (currentRun !== practiceRun) {
       return;
@@ -350,6 +358,12 @@ examStartButton.addEventListener("click", async () => {
       semitones: selectedKey.semitones,
       createPlayEvents: (step) =>
         createExamPlayEvents(currentMelody, step),
+      getPlayDuration: (step) =>
+        getMeasurePlaybackDuration(
+          currentMelody,
+          { startMeasure: step.start_measure, endMeasure: step.end_measure },
+          1,
+        ),
       onStep: (stepState) => {
         if (currentRequest !== examRequest || activity !== "exam") {
           return;

@@ -8,7 +8,7 @@ interface ActiveVoice {
 
 const START_DELAY_SECONDS = 0.05;
 const ATTACK_SECONDS = 0.01;
-const RELEASE_SECONDS = 0.03;
+const RELEASE_SECONDS = 0.005;
 const MAX_GAIN = 0.18;
 
 export class OscillatorAudioPlayer implements AudioPlayer {
