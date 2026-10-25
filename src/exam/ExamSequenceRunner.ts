@@ -3,7 +3,7 @@ import type {
   PlaySequenceStep,
   SequenceStep,
 } from "../data/types";
-import type { PlaybackEvent } from "../domain/playbackEvents";
+import { getPlaybackDuration, type PlaybackEvent } from "../domain/playbackEvents";
 import {
   createChordPlaybackEvents,
   createSignalPlaybackEvents,
@@ -20,6 +20,8 @@ export interface ExamStepState {
 export interface ExamRunOptions {
   semitones: number;
   createPlayEvents(step: PlaySequenceStep): PlaybackEvent[];
+  /** Complete selected window, including silence in its last measure. */
+  getPlayDuration?(step: PlaySequenceStep): number;
   onStep?(state: ExamStepState): void;
   onComplete?(): void;
   onCancelled?(): void;
@@ -115,7 +117,16 @@ export class ExamSequenceRunner {
           ? options.createPlayEvents(step)
           : createSignalPlaybackEvents(step);
     const durationSeconds = this.audioPlayer.play(events);
-    await this.wait(durationSeconds, execution.controller.signal);
+    const trailingRestSeconds =
+      step.type === "play"
+        ? Math.max(
+            0,
+            (options.getPlayDuration?.(step) ?? getPlaybackDuration(events)) -
+              getPlaybackDuration(events),
+          )
+        : 0;
+    // Do not extend the note itself; wait for the silent remainder of the bar.
+    await this.wait(durationSeconds + trailingRestSeconds, execution.controller.signal);
   }
 
   private assertActive(execution: ActiveExecution): void {

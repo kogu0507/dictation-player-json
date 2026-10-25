@@ -3,6 +3,7 @@ import type { MelodyData } from "../src/data/types";
 import {
   createPlaybackEvents,
   createFullSongEvents,
+  getMeasurePlaybackDuration,
   qstampToSeconds,
 } from "../src/domain/playbackEvents";
 import { transposePitch } from "../src/domain/transposition";
@@ -213,5 +214,15 @@ describe("createFullSongEvents", () => {
         velocity: 100,
       },
     ]);
+  });
+});
+
+describe("measure window timing", () => {
+  it("includes a trailing rest beyond the final note end", () => {
+    // The sample note occupies qstamp 1..3 of a 0..4 measure.
+    expect(getMeasurePlaybackDuration(melody, { startMeasure: 1, endMeasure: 1 }, 1)).toBe(4);
+  });
+  it("respects playbackRate without rewriting note durations", () => {
+    expect(getMeasurePlaybackDuration(melody, { startMeasure: 1, endMeasure: 1 }, 2)).toBe(2);
   });
 });

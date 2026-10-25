@@ -125,6 +125,23 @@ export function createContentPlaybackEvents(
 
 export const createMelodyPlaybackEvents = createContentPlaybackEvents;
 
+/** The full selected measure window, including silent time after the final note. */
+export function getMeasurePlaybackDuration(
+  content: ContentData,
+  range: MeasureRange,
+  playbackRate: number,
+): number {
+  const { startQstamp, endQstamp } = getMeasureQstampRange(
+    content.measure_map,
+    range,
+  );
+  return qstampToSeconds(
+    endQstamp - startQstamp,
+    content.play.bpm,
+    playbackRate,
+  );
+}
+
 export function getPlaybackDuration(events: PlaybackEvent[]): number {
   return events.reduce(
     (duration, event) =>

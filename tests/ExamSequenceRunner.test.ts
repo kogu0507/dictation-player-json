@@ -264,3 +264,40 @@ describe("waitForSeconds", () => {
     }
   });
 });
+
+describe("ExamSequenceRunner trailing rest timing", () => {
+  it("waits until the measure end without stretching the sounding note", async () => {
+    const audioPlayer = createAudioPlayer();
+    const waitedDurations: number[] = [];
+    const runner = new ExamSequenceRunner(
+      audioPlayer,
+      async (seconds) => { waitedDurations.push(seconds); },
+    );
+    const result = await runner.run(
+      [{ step: 1, type: "play", start_measure: 2, end_measure: 2 }],
+      {
+        semitones: 0,
+        createPlayEvents: () => [
+          { pitch: 70, startSeconds: 0, durationSeconds: 5 / 3, velocity: 90 },
+        ],
+        getPlayDuration: () => 2.5,
+      },
+    );
+    expect(result).toBe("completed");
+    expect(audioPlayer.play).toHaveBeenCalledOnce();
+    expect(waitedDurations[0]).toBeCloseTo(2.5);
+  });
+
+  it("continues to use the last note end when a legacy caller does not provide the measure window", async () => {
+    const waits: number[] = [];
+    const runner = new ExamSequenceRunner(createAudioPlayer(), async (n) => { waits.push(n); });
+    await runner.run(
+      [{ step: 1, type: "play", start_measure: 1, end_measure: 1 }],
+      {
+        semitones: 0,
+        createPlayEvents: () => [{ pitch: 60, startSeconds: 0, durationSeconds: 1, velocity: 90 }],
+      },
+    );
+    expect(waits[0]).toBeCloseTo(1);
+  });
+});
