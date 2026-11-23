@@ -1,12 +1,11 @@
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
-import { homedir } from "node:os";
 import { resolve } from "node:path";
 import {
   createFtpRelease,
   DATA_RELEASE_PATHS,
   MANIFEST_NAME,
 } from "./release-ftp-lib.mjs";
+import { resolveReleaseSource } from "./release-inputs.mjs";
 
 const mode = resolveReleaseMode(process.argv.slice(2));
 const dataFiles = resolveDataFiles(mode);
@@ -65,22 +64,14 @@ function resolveDataFiles(mode) {
   const files = [{
     label: "melody sample1",
     releasePath: DATA_RELEASE_PATHS[0],
-    sourcePath: resolveContentJson(
-      "DICTATION_CONTENT_SAMPLE1",
-      "melody",
-      "sample1.json",
-    ),
+    sourcePath: resolveReleaseSource({ type: "melody", id: "sample1" }),
   }];
 
   if (mode === "full") {
     files.push({
       label: "harmony sample_harmony1",
       releasePath: DATA_RELEASE_PATHS[1],
-      sourcePath: resolveContentJson(
-        "DICTATION_CONTENT_HARMONY_SAMPLE1",
-        "harmony",
-        "sample_harmony1.json",
-      ),
+      sourcePath: resolveReleaseSource({ type: "harmony", id: "sample_harmony1" }),
     });
   }
 
@@ -102,31 +93,4 @@ function resolveReleaseMode(arguments_) {
   throw new Error(
     "利用方法: npm run release:ftp [-- --mode full|melody-only]",
   );
-}
-
-function resolveContentJson(environmentVariable, contentType, fileName) {
-  const configured = process.env[environmentVariable]?.trim();
-  if (configured) {
-    return resolve(configured);
-  }
-
-  const candidates = [
-    resolve(
-      "..",
-      "dictation-content",
-      "dist",
-      contentType,
-      fileName,
-    ),
-    resolve(
-      homedir(),
-      "OneDrive",
-      "ドキュメント",
-      "dictation-content",
-      "dist",
-      contentType,
-      fileName,
-    ),
-  ];
-  return candidates.find((path) => existsSync(path)) ?? candidates[0];
 }

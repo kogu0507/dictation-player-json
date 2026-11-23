@@ -1,7 +1,9 @@
 import { readFile, rm, writeFile, mkdir, mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { resolveReleaseSource } from "../scripts/release-inputs.mjs";
+import { approvedBytes } from "./releaseBaselineFixtures.mjs";
 import {
   APP_RELEASE_PATH,
   createFtpRelease,
@@ -21,6 +23,7 @@ const sortedDataReleasePaths = [...DATA_RELEASE_PATHS].sort((left, right) =>
 );
 
 afterEach(async () => {
+  vi.unstubAllEnvs();
   await Promise.all(
     temporaryDirectories.splice(0).map((path) =>
       rm(path, { recursive: true, force: true }),
@@ -173,9 +176,60 @@ describe("FTP release package", () => {
     ).rejects.toThrow("robots noindex");
   });
 
+  it.each([
+    [0, "melody", "sample1", "DICTATION_CONTENT_SAMPLE1", false],
+    [1, "harmony", "sample_harmony1", "DICTATION_CONTENT_HARMONY_SAMPLE1", false],
+    [0, "melody", "sample1", "DICTATION_CONTENT_SAMPLE1", true],
+    [1, "harmony", "sample_harmony1", "DICTATION_CONTENT_HARMONY_SAMPLE1", true],
+  ])("対象%d（%s %s）の基準外データを拒否する（環境変数: %s, 使用: %s）",
+    async (index, type, id, variable, useOverride) => {
+      const workspace = await createTemporaryWorkspace();
+      const distDir = resolve(workspace, "dist");
+      const dataFiles = createFixtureDataFiles(workspace);
+      const releaseRoot = resolve(workspace, "release/ftp-root");
+      await writeFixture(distDir, dataFiles);
+      await mkdir(releaseRoot, { recursive: true });
+      await writeFile(resolve(releaseRoot, "previous.txt"), "keep");
+      const expected = (await sha256(dataFiles[index].sourcePath)).toLowerCase();
+      const sourcePath = useOverride
+        ? resolve(workspace, "override.json")
+        : dataFiles[index].sourcePath;
+      const approved = await approvedBytes(type, id);
+      const stale = type === "melody"
+        ? approved.replaceAll("\n", "\r\n")
+        : approved.replace('"time_signature": "4/4"', '"time_signature": "2/2"');
+      await writeFile(sourcePath, stale);
+      if (useOverride) {
+        vi.stubEnv(variable, sourcePath);
+        dataFiles[index].sourcePath = resolveReleaseSource({ type, id });
+      }
+      const actual = (await sha256(sourcePath)).toLowerCase();
+      await expect(createFtpRelease({ distDir, dataFiles, releaseRoot })).rejects.toThrow(
+        `入力: ${sourcePath}\n期待: ${expected}\n実測: ${actual}`,
+      );
+      expect(await listFiles(releaseRoot)).toEqual(["previous.txt"]);
+    },
+  );
+
   it("リポジトリのindex.htmlにrobots noindexがある", async () => {
     const html = await readFile(resolve("index.html"), "utf8");
     expect(hasNoindexMeta(html)).toBe(true);
+  });
+
+  it("通常版に未登録の課題を混ぜると出力前に拒否する", async () => {
+    const workspace = await createTemporaryWorkspace();
+    const distDir = resolve(workspace, "dist");
+    const dataFiles = createFixtureDataFiles(workspace);
+    const releaseRoot = resolve(workspace, "release/ftp-root");
+    await writeFixture(distDir, dataFiles);
+    dataFiles.push({
+      releasePath: "data/dictation/melody/unapproved.json",
+      sourcePath: dataFiles[0].sourcePath,
+    });
+    await expect(createFtpRelease({ distDir, dataFiles, releaseRoot })).rejects.toThrow(
+      "この公開モードでは許可されていないJSON",
+    );
+    await expect(listFiles(releaseRoot)).rejects.toMatchObject({ code: "ENOENT" });
   });
 });
 
@@ -222,15 +276,9 @@ async function writeFixture(distDir, dataFiles, noindex = true) {
     ),
     writeFile(resolve(distDir, "assets/index.js"), "console.log('ok');"),
     writeFile(resolve(distDir, "assets/index.css"), "body{}"),
-    writeFile(
-      dataFiles[0].sourcePath,
-      '{"schema_version":1,"id":"sample1"}\n',
-    ),
-    ...dataFiles.slice(1).map((dataFile) =>
-      writeFile(
-        dataFile.sourcePath,
-        '{"schema_version":2,"id":"sample_harmony1"}\n',
-      ),
-    ),
+    ...dataFiles.map(async (dataFile) => {
+      const [, , type, filename] = dataFile.releasePath.split("/");
+      await writeFile(dataFile.sourcePath, await approvedBytes(type, filename.slice(0, -5)));
+    }),
   ]);
 }

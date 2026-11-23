@@ -1,4 +1,4 @@
-import { copyFile, mkdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, rm, stat, writeFile } from "node:fs/promises";
 import { basename, dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import {
   createManifest,
@@ -7,24 +7,30 @@ import {
   sha256,
 } from "./release-ftp-lib.mjs";
 
-export const MELODY_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
+import {
+  buildDataReleasePath,
+  CONTENT_ID_PATTERN,
+  readApprovedInput,
+  readReleaseBaselines,
+} from "./release-inputs.mjs";
+
+export const MELODY_ID_PATTERN = CONTENT_ID_PATTERN;
 
 export function buildMelodyDataReleasePath(id) {
-  if (!MELODY_ID_PATTERN.test(id)) {
-    throw new Error(
-      "課題IDは半角英数字、ハイフン、アンダースコアだけを使用できます。",
-    );
-  }
-  return `data/dictation/melody/${id}.json`;
+  return buildDataReleasePath("melody", id);
 }
 
-export async function createDataOnlyRelease({ sourceJson, id, releaseRoot }) {
+export async function createDataOnlyRelease({ sourceJson, id, releaseRoot, type = "melody" }) {
   const resolvedSourceJson = resolve(sourceJson);
   const resolvedReleaseRoot = resolve(releaseRoot);
-  const releasePath = buildMelodyDataReleasePath(id);
+  const releasePath = buildDataReleasePath(type, id);
 
   await requireFile(resolvedSourceJson, `dictation-contentの${id}.json`);
   assertSourceOutsideReleaseRoot(resolvedSourceJson, resolvedReleaseRoot);
+  const baselines = await readReleaseBaselines();
+  const { bytes, sourceHash } = await readApprovedInput(
+    baselines, releasePath, resolvedSourceJson,
+  );
   await resetReleaseRoot(resolvedReleaseRoot);
 
   const destination = resolve(
@@ -32,12 +38,9 @@ export async function createDataOnlyRelease({ sourceJson, id, releaseRoot }) {
     ...releasePath.split("/"),
   );
   await mkdir(dirname(destination), { recursive: true });
-  await copyFile(resolvedSourceJson, destination);
+  await writeFile(destination, bytes);
 
-  const [sourceHash, releasedHash] = await Promise.all([
-    sha256(resolvedSourceJson),
-    sha256(destination),
-  ]);
+  const releasedHash = await sha256(destination);
   if (sourceHash !== releasedHash) {
     throw new Error(
       `公開用JSONのSHA-256が生成元と一致しません: ${releasePath}`,

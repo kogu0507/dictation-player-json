@@ -7,6 +7,9 @@
 ## 前提
 
 対象JSONは `dictation-content` のビルド生成物であり、手作業で編集しない。
+パッケージ生成前に課題の公開先と承認済みSHA-256を
+[公開基準一覧](scripts/release-baselines.json) に登録する。登録手順は
+[公開手順](DEPLOYMENT.md#承認済みjsonの登録とパッケージ生成)を参照。
 
 既定のローカル配置:
 
@@ -27,6 +30,9 @@ npm run release:data -- --id melody001
 ```
 
 許可するID文字は半角英数字、ハイフン、アンダースコアだけとする。
+上の例は `melody001` の基準を登録してから実行する。和声は
+`--type harmony` を指定し、上書きする場合は
+`DICTATION_CONTENT_HARMONY_DIR` に `dist/harmony` の場所を指定する。
 
 生成物:
 
@@ -40,7 +46,7 @@ release/
    └─ RELEASE_MANIFEST.txt
 ```
 
-スクリプトは生成元JSONと公開パッケージ内JSONのSHA-256一致を確認する。アプリ本体、他の教材JSON、ソース、テスト、依存パッケージは含めない。
+スクリプトは生成元JSONのバイト列を承認済みSHA-256と照合してからパッケージを生成し、出力先のSHA-256も確認する。アプリ本体、他の教材JSON、ソース、テスト、依存パッケージは含めない。
 
 ## FTPアップロード
 

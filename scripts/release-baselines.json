@@ -1,0 +1,14 @@
+[
+  {
+    "releasePath": "data/dictation/melody/sample1.json",
+    "id": "sample1",
+    "type": "melody",
+    "sha256": "47b80fb0d2133c946651db3cfffab53ce99a9e952bf91034e90433f5eff7fcd3"
+  },
+  {
+    "releasePath": "data/dictation/harmony/sample_harmony1.json",
+    "id": "sample_harmony1",
+    "type": "harmony",
+    "sha256": "593b1e2ca9c0fa2c9198d641eac6c74840fe6e7b9683641a5e91fe96d7b3a02a"
+  }
+]

@@ -1,6 +1,5 @@
 import { createHash } from "node:crypto";
 import {
-  copyFile,
   cp,
   mkdir,
   readFile,
@@ -10,6 +9,7 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { basename, dirname, relative, resolve, sep } from "node:path";
+import { readApprovedInput, readReleaseBaselines } from "./release-inputs.mjs";
 
 export const APP_RELEASE_PATH = "app/dictation-player-json";
 export const DATA_RELEASE_PATHS = [
@@ -74,6 +74,13 @@ export async function createFtpRelease({
     );
   }
 
+  const baselines = await readReleaseBaselines();
+  const approvedInputs = await Promise.all(
+    releaseDataFiles.map(async (dataFile) => ({
+      ...dataFile,
+      ...await readApprovedInput(baselines, dataFile.releasePath, dataFile.sourcePath),
+    })),
+  );
   await resetReleaseRoot(resolvedReleaseRoot);
 
   const appDestination = resolve(
@@ -83,18 +90,16 @@ export async function createFtpRelease({
   await cp(resolvedDist, appDestination, { recursive: true });
 
   const jsonResults = [];
-  for (const dataFile of releaseDataFiles) {
+  for (const dataFile of approvedInputs) {
     const dataDestination = resolve(
       resolvedReleaseRoot,
       ...dataFile.releasePath.split("/"),
     );
     await mkdir(dirname(dataDestination), { recursive: true });
-    await copyFile(dataFile.sourcePath, dataDestination);
+    await writeFile(dataDestination, dataFile.bytes);
 
-    const [sourceHash, releasedHash] = await Promise.all([
-      sha256(dataFile.sourcePath),
-      sha256(dataDestination),
-    ]);
+    const { sourceHash } = dataFile;
+    const releasedHash = await sha256(dataDestination);
     if (sourceHash !== releasedHash) {
       throw new Error(
         `公開用JSONのSHA-256が生成元と一致しません: ${dataFile.releasePath}`,

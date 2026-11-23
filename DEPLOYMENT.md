@@ -308,3 +308,26 @@ https://seegmund-music-labo.com/data/dictation/harmony/sample_harmony1.json
 4. 本番URLから取得して内容を確認
 
 課題JSON更新後に古い内容が残るサーバーでは、キャッシュヘッダーを修正する。場当たり的な手動キャッシュ削除だけを運用にしない。
+
+## 承認済みJSONの登録とパッケージ生成
+
+通常版・データ専用版の両方で [公開基準一覧](scripts/release-baselines.json)
+を参照する。基準に未登録の課題や、ハッシュが異なる入力は停止する。
+照合はファイルの生バイト列に対するSHA-256で行う。改行、文字コード、
+末尾改行は変換しない。既存の承認済み形式は `sample1` がLF、
+`sample_harmony1` がCRLF。
+
+1. dictation-contentの承認済み入力を `scripts/build.py` でビルドし、
+   内容と回帰結果を確認する。PowerShellの
+   `Get-FileHash -Algorithm SHA256 <生成されたJSON>` で公開するファイルそのものを計測する。
+2. `scripts/release-baselines.json` に
+   `releasePath: "data/dictation/<type>/<id>.json"`、`id`、`type`、
+   `sha256`（小文字64桁）を登録する。既存課題を更新するときも、
+   承認済みの新しい生成結果に基準を更新する。
+3. 個別課題は `npm run release:data -- --id <id>` で生成する。
+   和声は `npm run release:data -- --id <id> --type harmony`。
+   データ専用版の入力ディレクトリ上書きは旋律が
+   `DICTATION_CONTENT_MELODY_DIR`、和声が `DICTATION_CONTENT_HARMONY_DIR`。
+   通常版の対象は従来どおり同梱サンプルで、新規登録だけで同梱対象は増えない。
+4. パッケージ側の `RELEASE_MANIFEST.txt` で、対象の公開先パスと
+   ハッシュが登録値と一致することを確認する。
