@@ -20,7 +20,9 @@ export function buildMelodyDataReleasePath(id) {
   return buildDataReleasePath("melody", id);
 }
 
-export async function createDataOnlyRelease({ sourceJson, id, releaseRoot, type = "melody" }) {
+export async function createDataOnlyRelease({
+  sourceJson, id, releaseRoot, type = "melody", dryRun = false,
+}) {
   const resolvedSourceJson = resolve(sourceJson);
   const resolvedReleaseRoot = resolve(releaseRoot);
   const releasePath = buildDataReleasePath(type, id);
@@ -31,6 +33,10 @@ export async function createDataOnlyRelease({ sourceJson, id, releaseRoot, type 
   const { bytes, sourceHash } = await readApprovedInput(
     baselines, releasePath, resolvedSourceJson,
   );
+  const files = [releasePath, MANIFEST_NAME];
+  if (dryRun) {
+    return { files, releasePath, sourceHash, sourcePath: resolvedSourceJson };
+  }
   await resetReleaseRoot(resolvedReleaseRoot);
 
   const destination = resolve(
@@ -72,7 +78,7 @@ export async function createDataOnlyRelease({ sourceJson, id, releaseRoot, type 
 
   return {
     entries,
-    files: [releasePath, MANIFEST_NAME],
+    files,
     manifest,
     releasePath,
     releasedHash,

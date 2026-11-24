@@ -10,5 +10,11 @@
     "id": "sample_harmony1",
     "type": "harmony",
     "sha256": "593b1e2ca9c0fa2c9198d641eac6c74840fe6e7b9683641a5e91fe96d7b3a02a"
+  },
+  {
+    "releasePath": "data/dictation/grand_staff/gymnopedie-1-1-12.json",
+    "id": "gymnopedie-1-1-12",
+    "type": "grand_staff",
+    "sha256": "b3f976af774bf723481f3d8f90456765f4a94be5dd1417d28f50a74c6ce686b4"
   }
 ]

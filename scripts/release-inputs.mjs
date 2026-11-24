@@ -7,7 +7,7 @@ import { resolve } from "node:path";
 export const CONTENT_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 export function buildDataReleasePath(type, id) {
-  if (!["melody", "harmony"].includes(type)) {
+  if (!["melody", "harmony", "grand_staff"].includes(type)) {
     throw new Error(`未対応の課題種別です: ${type}`);
   }
   if (typeof id !== "string" || !CONTENT_ID_PATTERN.test(id)) {
@@ -41,6 +41,15 @@ export async function readApprovedInput(baselines, releasePath, sourcePath) {
     throw new Error(
       `承認済みSHA-256と一致しません: ${releasePath}\n入力: ${sourcePath}\n期待: ${expected}\n実測: ${actual}`,
     );
+  }
+  if (releasePath.startsWith("data/dictation/grand_staff/")) {
+    const data = JSON.parse(bytes.toString("utf8"));
+    const id = releasePath.split("/").at(-1).slice(0, -5);
+    if (data?.schema_version !== 3 || data.type !== "grand_staff" || data.id !== id ||
+        typeof data.score?.svg !== "string" ||
+        !/^\s*<svg(?:\s|>)[\s\S]*<\/svg>\s*$/.test(data.score.svg)) {
+      throw new Error(`公開用の大譜表には対応するv3 JSONとscore.svgが必要です: ${sourcePath}`);
+    }
   }
   return { bytes, sourceHash: actual.toUpperCase() };
 }

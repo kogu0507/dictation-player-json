@@ -83,3 +83,20 @@ melody001
 melody002
 melody003
 ```
+
+## 大譜表データと公開前ドライラン
+
+`--type grand_staff` で、承認済みの大譜表v3 JSONを
+`data/dictation/grand_staff/<id>.json` に書き出す。公開用データには原調の
+`score.svg` が必要。既定の入力は `dictation-content/dist/grand_staff/<id>.json`。
+note出力など別の場所を使う場合は `DICTATION_CONTENT_GRAND_STAFF_DIR` に
+JSONが置かれたディレクトリを指定する。
+
+```powershell
+npm run release:data -- --id gymnopedie-1-1-12 --type grand_staff --dry-run
+npm run release:data -- --id gymnopedie-1-1-12 --type grand_staff
+```
+
+`--dry-run` は旋律・和声・大譜表で利用できる。通常生成と同じ入力解決と
+承認済みSHA-256照合を行い、入力パス・照合結果・出力予定を表示する。
+既存のパッケージやファイルには書き込まない。

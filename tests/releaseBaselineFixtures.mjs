@@ -5,5 +5,5 @@ import { readFile } from "node:fs/promises";
 export async function approvedBytes(type, id) {
   const path = new URL(`../testdata/${type}/${id}.json`, import.meta.url);
   const lf = (await readFile(path, "utf8")).replaceAll("\r\n", "\n");
-  return type === "harmony" ? lf.replaceAll("\n", "\r\n") : lf;
+  return type === "melody" ? lf : lf.replaceAll("\n", "\r\n");
 }

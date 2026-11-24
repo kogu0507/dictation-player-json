@@ -1,8 +1,12 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { fileURLToPath } from "node:url";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { buildDataReleasePath, resolveReleaseSource } from "../scripts/release-inputs.mjs";
+import { buildDataReleasePath, readApprovedInput, resolveReleaseSource } from "../scripts/release-inputs.mjs";
 import { approvedBytes } from "./releaseBaselineFixtures.mjs";
 import {
   buildMelodyDataReleasePath,
@@ -29,6 +33,7 @@ describe("data-only release", () => {
   it.each([
     ["melody", "sample1"],
     ["harmony", "sample_harmony1"],
+    ["grand_staff", "gymnopedie-1-1-12"],
   ])("承認済みの%s %sをmanifest付きで公開パッケージ化する", async (type, id) => {
     const workspace = await createTemporaryWorkspace();
     const sourceJson = resolve(workspace, "content", `${id}.json`);
@@ -128,7 +133,7 @@ describe("data-only release", () => {
     await expect(listFiles(releaseRoot)).rejects.toMatchObject({ code: "ENOENT" });
   });
 
-  it.each(["melody", "harmony"])("未登録の%s課題を拒否する", async (type) => {
+  it.each(["melody", "harmony", "grand_staff"])("未登録の%s課題を拒否する", async (type) => {
     const workspace = await createTemporaryWorkspace();
     const sourceJson = resolve(workspace, "unapproved.json");
     const releaseRoot = resolve(workspace, "release/ftp-root");
@@ -137,6 +142,58 @@ describe("data-only release", () => {
       sourceJson, type, id: "unapproved", releaseRoot,
     })).rejects.toThrow("公開基準に未登録");
     await expect(listFiles(releaseRoot)).rejects.toMatchObject({ code: "ENOENT" });
+  });
+
+  it.each([
+    ["melody", "sample1"],
+    ["harmony", "sample_harmony1"],
+    ["grand_staff", "gymnopedie-1-1-12"],
+  ])("%s の CLI ドライランは既存出力を書き換えない", async (type, id) => {
+    const workspace = await createTemporaryWorkspace();
+    const releaseRoot = resolve(workspace, "release/ftp-root");
+    const source = resolve(workspace, `${id}.json`);
+    await mkdir(releaseRoot, { recursive: true });
+    await writeFile(resolve(releaseRoot, "keep.txt"), "old package");
+    await writeFile(source, await approvedBytes(type, id));
+    const cli = fileURLToPath(new URL("../scripts/release-data.mjs", import.meta.url));
+    const { stdout } = await promisify(execFile)(process.execPath,
+      [cli, "--id", id, "--type", type, "--dry-run"], {
+        cwd: workspace,
+        env: { ...process.env, [`DICTATION_CONTENT_${type.toUpperCase()}_DIR`]: workspace },
+      },
+    );
+    expect(stdout).toContain(source);
+    expect(stdout).toContain("承認済みSHA-256と一致");
+    expect(stdout).toContain(buildDataReleasePath(type, id));
+    expect(stdout).toContain(MANIFEST_NAME);
+    expect(await listFiles(releaseRoot)).toEqual(["keep.txt"]);
+    expect(await readFile(resolve(releaseRoot, "keep.txt"), "utf8")).toBe("old package");
+  });
+
+  it("大譜表の旧ハッシュは通常版とドライランのどちらでも拒否する", async () => {
+    const workspace = await createTemporaryWorkspace();
+    const sourceJson = resolve(workspace, "old.json");
+    const releaseRoot = resolve(workspace, "release/ftp-root");
+    const id = "gymnopedie-1-1-12";
+    await writeFile(sourceJson, (await approvedBytes("grand_staff", id)).replaceAll("\r\n", "\n"));
+    for (const dryRun of [false, true]) {
+      await expect(createDataOnlyRelease({
+        sourceJson, id, releaseRoot, type: "grand_staff", dryRun,
+      })).rejects.toThrow("承認済みSHA-256と一致しません");
+    }
+    await expect(listFiles(releaseRoot)).rejects.toMatchObject({ code: "ENOENT" });
+  });
+
+  it("ハッシュが登録されても score.svg のない大譜表は拒否する", async () => {
+    const workspace = await createTemporaryWorkspace();
+    const source = resolve(workspace, "no-svg.json");
+    const id = "gymnopedie-1-1-12";
+    const { score: ignored, ...withoutScore } = JSON.parse(await approvedBytes("grand_staff", id));
+    const bytes = JSON.stringify(withoutScore);
+    await writeFile(source, bytes);
+    const path = buildDataReleasePath("grand_staff", id);
+    const baselines = new Map([[path, createHash("sha256").update(bytes).digest("hex")]]);
+    await expect(readApprovedInput(baselines, path, source)).rejects.toThrow("score.svgが必要");
   });
 });
 
