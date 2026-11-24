@@ -1,4 +1,4 @@
-import type { ContentData, MelodyNote } from "../data/types";
+import type { ContentData, GrandStaffNote, MelodyNote } from "../data/types";
 import {
   getMeasureQstampRange,
   type MeasureRange,
@@ -42,7 +42,7 @@ export function qstampToSeconds(
 }
 
 export function createPlaybackEvents(
-  notes: MelodyNote[],
+  notes: ReadonlyArray<MelodyNote | GrandStaffNote>,
   options: PlaybackEventOptions,
 ): PlaybackEvent[] {
   const {
@@ -115,7 +115,10 @@ export function createContentPlaybackEvents(
     endMeasure,
   });
 
-  return createPlaybackEvents(Object.values(melody.play.voices).flat(), {
+  const notes = melody.type === "grand_staff"
+    ? melody.play.layers.flatMap((layer) => layer.notes)
+    : Object.values(melody.play.voices).flat();
+  return createPlaybackEvents(notes, {
     bpm: melody.play.bpm,
     playbackRate,
     semitones: key.semitones,

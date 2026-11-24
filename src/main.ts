@@ -173,7 +173,15 @@ function renderSelectedScore(): void {
   const key = getMelodyKey(melody, selectedKey);
 
   score.replaceChildren();
-  score.insertAdjacentHTML("afterbegin", key.svg);
+  const svg = melody.type === "grand_staff" ? melody.score?.svg : key.svg;
+  if (svg) {
+    score.insertAdjacentHTML("afterbegin", svg);
+  } else {
+    const placeholder = document.createElement("p");
+    placeholder.className = "placeholder";
+    placeholder.textContent = "この課題には表示用の楽譜がありません。";
+    score.append(placeholder);
+  }
   scoreKey.textContent = formatJapaneseKeyName(selectedKey, melody.mode);
 }
 

@@ -1,0 +1,935 @@
+{
+  "schema_version": 3,
+  "type": "grand_staff",
+  "id": "gymnopedie-1-1-12",
+  "title": "Gymnopedie No. 1 - bars 1-12",
+  "base_key": "D",
+  "mode": "major",
+  "time_signature": "3/4",
+  "measures": 12,
+  "measure_map": [
+    {
+      "measure": 1,
+      "start_qstamp": 0.0,
+      "end_qstamp": 3.0
+    },
+    {
+      "measure": 2,
+      "start_qstamp": 3.0,
+      "end_qstamp": 6.0
+    },
+    {
+      "measure": 3,
+      "start_qstamp": 6.0,
+      "end_qstamp": 9.0
+    },
+    {
+      "measure": 4,
+      "start_qstamp": 9.0,
+      "end_qstamp": 12.0
+    },
+    {
+      "measure": 5,
+      "start_qstamp": 12.0,
+      "end_qstamp": 15.0
+    },
+    {
+      "measure": 6,
+      "start_qstamp": 15.0,
+      "end_qstamp": 18.0
+    },
+    {
+      "measure": 7,
+      "start_qstamp": 18.0,
+      "end_qstamp": 21.0
+    },
+    {
+      "measure": 8,
+      "start_qstamp": 21.0,
+      "end_qstamp": 24.0
+    },
+    {
+      "measure": 9,
+      "start_qstamp": 24.0,
+      "end_qstamp": 27.0
+    },
+    {
+      "measure": 10,
+      "start_qstamp": 27.0,
+      "end_qstamp": 30.0
+    },
+    {
+      "measure": 11,
+      "start_qstamp": 30.0,
+      "end_qstamp": 33.0
+    },
+    {
+      "measure": 12,
+      "start_qstamp": 33.0,
+      "end_qstamp": 36.0
+    }
+  ],
+  "play": {
+    "bpm": 60,
+    "mix_gain": 0.3,
+    "layers": [
+      {
+        "id": "melody",
+        "staff": 1,
+        "layer": 1,
+        "velocity": 90,
+        "notes": [
+          {
+            "pitch": 78,
+            "qstamp": 13.0,
+            "duration": 1.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m5-s1-l1-e2-n1",
+                "measure": 5,
+                "qstamp": 13.0,
+                "duration": 1.0
+              }
+            ]
+          },
+          {
+            "pitch": 81,
+            "qstamp": 14.0,
+            "duration": 1.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m5-s1-l1-e3-n1",
+                "measure": 5,
+                "qstamp": 14.0,
+                "duration": 1.0
+              }
+            ]
+          },
+          {
+            "pitch": 79,
+            "qstamp": 15.0,
+            "duration": 1.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m6-s1-l1-e1-n1",
+                "measure": 6,
+                "qstamp": 15.0,
+                "duration": 1.0
+              }
+            ]
+          },
+          {
+            "pitch": 78,
+            "qstamp": 16.0,
+            "duration": 1.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m6-s1-l1-e2-n1",
+                "measure": 6,
+                "qstamp": 16.0,
+                "duration": 1.0
+              }
+            ]
+          },
+          {
+            "pitch": 73,
+            "qstamp": 17.0,
+            "duration": 1.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m6-s1-l1-e3-n1",
+                "measure": 6,
+                "qstamp": 17.0,
+                "duration": 1.0
+              }
+            ]
+          },
+          {
+            "pitch": 71,
+            "qstamp": 18.0,
+            "duration": 1.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m7-s1-l1-e1-n1",
+                "measure": 7,
+                "qstamp": 18.0,
+                "duration": 1.0
+              }
+            ]
+          },
+          {
+            "pitch": 73,
+            "qstamp": 19.0,
+            "duration": 1.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m7-s1-l1-e2-n1",
+                "measure": 7,
+                "qstamp": 19.0,
+                "duration": 1.0
+              }
+            ]
+          },
+          {
+            "pitch": 74,
+            "qstamp": 20.0,
+            "duration": 1.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m7-s1-l1-e3-n1",
+                "measure": 7,
+                "qstamp": 20.0,
+                "duration": 1.0
+              }
+            ]
+          },
+          {
+            "pitch": 69,
+            "qstamp": 21.0,
+            "duration": 3.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m8-s1-l1-e1-n1",
+                "measure": 8,
+                "qstamp": 21.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 24.0,
+            "duration": 12.0,
+            "velocity": 90,
+            "segments": [
+              {
+                "source_id": "gs-m9-s1-l1-e1-n1",
+                "measure": 9,
+                "qstamp": 24.0,
+                "duration": 3.0
+              },
+              {
+                "source_id": "gs-m10-s1-l1-e1-n1",
+                "measure": 10,
+                "qstamp": 27.0,
+                "duration": 3.0
+              },
+              {
+                "source_id": "gs-m11-s1-l1-e1-n1",
+                "measure": 11,
+                "qstamp": 30.0,
+                "duration": 3.0
+              },
+              {
+                "source_id": "gs-m12-s1-l1-e1-n1",
+                "measure": 12,
+                "qstamp": 33.0,
+                "duration": 3.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "accompaniment",
+        "staff": 1,
+        "layer": 2,
+        "velocity": 65,
+        "notes": [
+          {
+            "pitch": 59,
+            "qstamp": 1.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m1-s1-l2-e2-n1",
+                "measure": 1,
+                "qstamp": 1.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 62,
+            "qstamp": 1.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m1-s1-l2-e2-n2",
+                "measure": 1,
+                "qstamp": 1.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 1.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m1-s1-l2-e2-n3",
+                "measure": 1,
+                "qstamp": 1.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 57,
+            "qstamp": 4.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m2-s1-l2-e2-n1",
+                "measure": 2,
+                "qstamp": 4.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 61,
+            "qstamp": 4.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m2-s1-l2-e2-n2",
+                "measure": 2,
+                "qstamp": 4.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 4.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m2-s1-l2-e2-n3",
+                "measure": 2,
+                "qstamp": 4.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 59,
+            "qstamp": 7.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m3-s1-l2-e2-n1",
+                "measure": 3,
+                "qstamp": 7.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 62,
+            "qstamp": 7.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m3-s1-l2-e2-n2",
+                "measure": 3,
+                "qstamp": 7.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 7.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m3-s1-l2-e2-n3",
+                "measure": 3,
+                "qstamp": 7.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 57,
+            "qstamp": 10.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m4-s1-l2-e2-n1",
+                "measure": 4,
+                "qstamp": 10.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 61,
+            "qstamp": 10.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m4-s1-l2-e2-n2",
+                "measure": 4,
+                "qstamp": 10.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 10.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m4-s1-l2-e2-n3",
+                "measure": 4,
+                "qstamp": 10.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 59,
+            "qstamp": 13.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m5-s1-l2-e2-n1",
+                "measure": 5,
+                "qstamp": 13.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 62,
+            "qstamp": 13.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m5-s1-l2-e2-n2",
+                "measure": 5,
+                "qstamp": 13.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 13.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m5-s1-l2-e2-n3",
+                "measure": 5,
+                "qstamp": 13.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 57,
+            "qstamp": 16.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m6-s1-l2-e2-n1",
+                "measure": 6,
+                "qstamp": 16.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 61,
+            "qstamp": 16.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m6-s1-l2-e2-n2",
+                "measure": 6,
+                "qstamp": 16.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 16.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m6-s1-l2-e2-n3",
+                "measure": 6,
+                "qstamp": 16.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 59,
+            "qstamp": 19.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m7-s1-l2-e2-n1",
+                "measure": 7,
+                "qstamp": 19.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 62,
+            "qstamp": 19.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m7-s1-l2-e2-n2",
+                "measure": 7,
+                "qstamp": 19.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 19.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m7-s1-l2-e2-n3",
+                "measure": 7,
+                "qstamp": 19.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 57,
+            "qstamp": 22.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m8-s1-l2-e2-n1",
+                "measure": 8,
+                "qstamp": 22.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 61,
+            "qstamp": 22.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m8-s1-l2-e2-n2",
+                "measure": 8,
+                "qstamp": 22.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 22.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m8-s1-l2-e2-n3",
+                "measure": 8,
+                "qstamp": 22.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 59,
+            "qstamp": 25.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m9-s1-l2-e2-n1",
+                "measure": 9,
+                "qstamp": 25.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 62,
+            "qstamp": 25.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m9-s1-l2-e2-n2",
+                "measure": 9,
+                "qstamp": 25.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 25.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m9-s1-l2-e2-n3",
+                "measure": 9,
+                "qstamp": 25.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 57,
+            "qstamp": 28.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m10-s1-l2-e2-n1",
+                "measure": 10,
+                "qstamp": 28.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 61,
+            "qstamp": 28.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m10-s1-l2-e2-n2",
+                "measure": 10,
+                "qstamp": 28.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 28.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m10-s1-l2-e2-n3",
+                "measure": 10,
+                "qstamp": 28.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 59,
+            "qstamp": 31.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m11-s1-l2-e2-n1",
+                "measure": 11,
+                "qstamp": 31.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 62,
+            "qstamp": 31.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m11-s1-l2-e2-n2",
+                "measure": 11,
+                "qstamp": 31.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 31.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m11-s1-l2-e2-n3",
+                "measure": 11,
+                "qstamp": 31.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 57,
+            "qstamp": 34.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m12-s1-l2-e2-n1",
+                "measure": 12,
+                "qstamp": 34.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 61,
+            "qstamp": 34.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m12-s1-l2-e2-n2",
+                "measure": 12,
+                "qstamp": 34.0,
+                "duration": 2.0
+              }
+            ]
+          },
+          {
+            "pitch": 66,
+            "qstamp": 34.0,
+            "duration": 2.0,
+            "velocity": 65,
+            "segments": [
+              {
+                "source_id": "gs-m12-s1-l2-e2-n3",
+                "measure": 12,
+                "qstamp": 34.0,
+                "duration": 2.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bass",
+        "staff": 2,
+        "layer": 1,
+        "velocity": 78,
+        "notes": [
+          {
+            "pitch": 43,
+            "qstamp": 0.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m1-s2-l1-e1-n1",
+                "measure": 1,
+                "qstamp": 0.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 38,
+            "qstamp": 3.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m2-s2-l1-e1-n1",
+                "measure": 2,
+                "qstamp": 3.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 43,
+            "qstamp": 6.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m3-s2-l1-e1-n1",
+                "measure": 3,
+                "qstamp": 6.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 38,
+            "qstamp": 9.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m4-s2-l1-e1-n1",
+                "measure": 4,
+                "qstamp": 9.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 43,
+            "qstamp": 12.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m5-s2-l1-e1-n1",
+                "measure": 5,
+                "qstamp": 12.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 38,
+            "qstamp": 15.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m6-s2-l1-e1-n1",
+                "measure": 6,
+                "qstamp": 15.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 43,
+            "qstamp": 18.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m7-s2-l1-e1-n1",
+                "measure": 7,
+                "qstamp": 18.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 38,
+            "qstamp": 21.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m8-s2-l1-e1-n1",
+                "measure": 8,
+                "qstamp": 21.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 43,
+            "qstamp": 24.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m9-s2-l1-e1-n1",
+                "measure": 9,
+                "qstamp": 24.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 38,
+            "qstamp": 27.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m10-s2-l1-e1-n1",
+                "measure": 10,
+                "qstamp": 27.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 43,
+            "qstamp": 30.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m11-s2-l1-e1-n1",
+                "measure": 11,
+                "qstamp": 30.0,
+                "duration": 3.0
+              }
+            ]
+          },
+          {
+            "pitch": 38,
+            "qstamp": 33.0,
+            "duration": 3.0,
+            "velocity": 78,
+            "segments": [
+              {
+                "source_id": "gs-m12-s2-l1-e1-n1",
+                "measure": 12,
+                "qstamp": 33.0,
+                "duration": 3.0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "score": {
+    "svg": "<svg viewBox=\"0 0 1092 1334\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" overflow=\"visible\" id=\"l19nj5e9\">\n   <desc>Engraved by Verovio 6.2.1[undefined]</desc>\n   <defs>\n      <g id=\"E050-l19nj5e9\">\n         <path transform=\"scale(1,-1)\" d=\"M441 -245c-23 -4 -48 -6 -76 -6c-59 0 -102 7 -130 20c-88 42 -150 93 -187 154c-26 44 -43 103 -48 176c0 6 -1 13 -1 19c0 54 15 111 45 170c29 57 65 106 110 148s96 85 153 127c-3 16 -8 46 -13 92c-4 43 -5 73 -5 89c0 117 16 172 69 257c34 54 64 82 89 82 c21 0 43 -30 69 -92s39 -115 41 -159v-15c0 -109 -21 -162 -67 -241c-13 -20 -63 -90 -98 -118c-13 -9 -25 -19 -37 -29l31 -181c8 1 18 2 28 2c58 0 102 -12 133 -35c59 -43 92 -104 98 -184c1 -7 1 -15 1 -22c0 -123 -87 -209 -181 -248c8 -57 17 -110 25 -162 c5 -31 6 -58 6 -80c0 -30 -5 -53 -14 -70c-35 -64 -88 -99 -158 -103c-5 0 -11 -1 -16 -1c-37 0 -72 10 -108 27c-50 24 -77 59 -80 105v11c0 29 7 55 20 76c18 28 45 42 79 44h6c49 0 93 -42 97 -87v-9c0 -51 -34 -86 -105 -106c17 -24 51 -36 102 -36c62 0 116 43 140 85 c9 16 13 41 13 74c0 20 -1 42 -5 67c-8 53 -18 106 -26 159zM461 939c-95 0 -135 -175 -135 -286c0 -24 2 -48 5 -71c50 39 92 82 127 128c40 53 60 100 60 140v8c-4 53 -22 81 -55 81h-2zM406 119l54 -326c73 25 110 78 110 161c0 7 0 15 -1 23c-7 95 -57 142 -151 142h-12 zM382 117c-72 -2 -128 -47 -128 -120v-7c2 -46 43 -99 75 -115c-3 -2 -7 -5 -10 -10c-70 33 -116 88 -123 172v11c0 68 44 126 88 159c23 17 49 29 78 36l-29 170c-21 -13 -52 -37 -92 -73c-50 -44 -86 -84 -109 -119c-45 -69 -67 -130 -67 -182v-13c5 -68 35 -127 93 -176 s125 -73 203 -73c25 0 50 3 75 9c-19 111 -36 221 -54 331z\" />\n      </g>\n      <g id=\"E262-l19nj5e9\">\n         <path transform=\"scale(1,-1)\" d=\"M136 186v169h17v-164l44 14v-91l-44 -14v-165l44 12v-91l-44 -13v-155h-17v150l-76 -22v-155h-17v149l-43 -13v90l43 14v167l-43 -14v92l43 13v169h17v-163zM60 73v-167l76 22v168z\" />\n      </g>\n      <g id=\"E083-l19nj5e9\">\n         <path transform=\"scale(1,-1)\" d=\"M208 250c97 0 177 -52 177 -116c0 -69 -40 -111 -118 -125c56 -5 125 -44 125 -116c0 -31 -10 -57 -31 -78c-19 -21 -45 -38 -78 -49l-50 -11c-15 -3 -36 -7 -55 -7c-50 0 -86 16 -113 38c-16 10 -23 18 -34 34c-7 13 -11 25 -11 38c0 43 27 83 68 83l3 -2 c61 0 75 -42 75 -70c0 -19 -24 -42 -26 -57c7 -17 20 -25 37 -25c44 0 94 29 94 78c0 75 -34 125 -138 125v36c84 0 131 22 131 98c0 54 -37 88 -87 88c-26 0 -43 -7 -51 -22c15 -22 44 -16 44 -70c0 -37 -37 -62 -71 -62c-22 0 -69 15 -69 76c0 79 101 116 178 116z\" />\n      </g>\n      <g id=\"E084-l19nj5e9\">\n         <path transform=\"scale(1,-1)\" d=\"M20 -78c84 97 114 180 134 329h170c-13 -32 -82 -132 -99 -151l-84 -97c-33 -36 -59 -63 -80 -81h162v102l127 123v-225h57v-39h-57v-34c0 -43 19 -65 57 -65v-34h-244v36c48 0 60 26 60 70v27h-203v39z\" />\n      </g>\n      <g id=\"E4E3-l19nj5e9\">\n         <path transform=\"scale(1,-1)\" d=\"M0 -115v105c0 9 1 10 10 10h280c9 0 10 -1 10 -10v-105c0 -9 -1 -10 -10 -10h-280c-9 0 -10 1 -10 10z\" />\n      </g>\n      <g id=\"E4E5-l19nj5e9\">\n         <path transform=\"scale(1,-1)\" d=\"M107 292c-13 24 -30 49 -52 71c-1 1 0 2 0 3l-2 2c3 3 4 4 6 4c12 0 26 -7 40 -20s44 -40 89 -81c26 -24 28 -29 46 -47c4 -4 8 -9 10 -14c6 -8 8 -16 8 -27c0 -19 -12 -40 -36 -61c-28 -23 -49 -38 -61 -73c-4 -11 -7 -27 -10 -50c13 -43 34 -83 59 -121 c31 -47 59 -79 101 -129c-8 0 -26 7 -54 20l-62 29l-21 6l-23 1c-25 0 -45 -10 -60 -30l-4 -14l-1 -12c0 -33 20 -56 39 -78c8 -9 17 -18 26 -26c17 -15 27 -24 28 -30l-3 -3c-11 5 -19 10 -25 15c-9 3 -37 21 -45 26c-24 14 -45 32 -63 51c-19 21 -37 44 -37 71 c0 63 27 95 80 95c41 0 86 -18 136 -52c-19 26 -37 48 -55 66c-23 23 -48 44 -73 65c-28 23 -47 40 -58 53s-17 26 -18 39c75 64 113 125 113 183c0 27 -7 48 -18 68z\" />\n      </g>\n      <g id=\"E0A3-l19nj5e9\">\n         <path transform=\"scale(1,-1)\" d=\"M278 64c0 22 -17 39 -43 39c-12 0 -26 -3 -41 -10c-85 -43 -165 -94 -165 -156c5 -25 15 -32 49 -32c67 11 200 95 200 159zM0 -36c0 68 73 174 200 174c66 0 114 -39 114 -97c0 -84 -106 -173 -218 -173c-64 0 -96 32 -96 96z\" />\n      </g>\n      <g id=\"E062-l19nj5e9\">\n         <path transform=\"scale(1,-1)\" d=\"M582 -120c0 32 26 58 58 58s58 -26 58 -58s-26 -58 -58 -58s-58 26 -58 58zM582 120c0 32 26 58 58 58s58 -26 58 -58s-26 -58 -58 -58s-58 26 -58 58zM158 96c51 0 73 -14 88 -49l16 -39c0 -17 -2 -30 -7 -40c-3 -11 -10 -21 -19 -31c-17 -18 -49 -43 -84 -43 c-55 0 -77 13 -112 44c-24 21 -35 55 -35 100c0 46 14 81 32 112c30 52 71 79 137 93l36 6l26 2c154 0 235 -68 274 -182c11 -32 18 -68 18 -107c0 -103 -26 -182 -68 -250c-89 -145 -234 -230 -412 -288l-30 -5c-9 0 -14 3 -14 8c3 10 5 11 10 16c35 15 70 30 96 44l78 43 c96 57 162 136 197 258c9 33 17 60 22 100c3 22 5 35 6 39c-7 69 -16 115 -23 140s-4 22 -16 40c-8 12 -19 23 -31 34c-24 21 -62 44 -118 44c-48 0 -84 -8 -113 -28c-28 -19 -42 -44 -42 -73v-16c2 -5 3 -9 4 -11c24 22 52 39 84 39z\" />\n      </g>\n      <g id=\"E0A4-l19nj5e9\">\n         <path transform=\"scale(1,-1)\" d=\"M0 -39c0 68 73 172 200 172c66 0 114 -37 114 -95c0 -84 -106 -171 -218 -171c-64 0 -96 30 -96 94z\" />\n      </g>\n   </defs>\n   <style type=\"text/css\">#l19nj5e9 g.ending, #l19nj5e9 g.fing, #l19nj5e9 g.reh, #l19nj5e9 g.tempo {font-weight:bold;}#l19nj5e9 g.dir, #l19nj5e9 g.dynam, #l19nj5e9 g.mNum {font-style:italic;}#l19nj5e9 g.label {font-weight:normal;}#l19nj5e9 ellipse, #l19nj5e9 path, #l19nj5e9 polygon, #l19nj5e9 polyline, #l19nj5e9 rect {stroke:currentColor}</style>\n   <svg class=\"definition-scale\" color=\"black\" font-family=\"Times, serif\" viewBox=\"0 0 10920 13340\">\n      <g class=\"page-margin\" transform=\"translate(500, 500)\">\n         <g id=\"moqsi69\" class=\"mdiv pageMilestone\" />\n         <g id=\"njft1g2\" class=\"score pageMilestone\" />\n         <g id=\"x1izu1ut\" class=\"system\">\n            <path d=\"M13 1269 L13 3789\" stroke-width=\"27\" />\n            <g id=\"f1ng8c8c\" class=\"grpSym\">\n               <path d=\"M-72,3771 C-432,3231 18,2709 -252,2529 C81,2709 -369,3231 -72,3771\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n               <path d=\"M-72,1287 C-369,1827 81,2349 -252,2529 C18,2349 -432,1827 -72,1287\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n            </g>\n            <g id=\"lzosgrv\" class=\"section systemMilestone\" />\n            <g id=\"m1q84ocf\" class=\"measure\">\n               <g id=\"va734np\" class=\"staff\">\n                  <path d=\"M0 1269 L3598 1269\" stroke-width=\"13\" />\n                  <path d=\"M0 1449 L3598 1449\" stroke-width=\"13\" />\n                  <path d=\"M0 1629 L3598 1629\" stroke-width=\"13\" />\n                  <path d=\"M0 1809 L3598 1809\" stroke-width=\"13\" />\n                  <path d=\"M0 1989 L3598 1989\" stroke-width=\"13\" />\n                  <g id=\"c1b1nc7q\" class=\"clef\">\n                     <use xlink:href=\"#E050-l19nj5e9\" transform=\"translate(117, 1809) scale(0.72, 0.72)\" />\n                  </g>\n                  <g id=\"d16owzst\" class=\"keySig\">\n                     <g id=\"e1n0mplg\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(798, 1269) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"f14qshbu\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(976, 1539) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g id=\"gwbkcg4\" class=\"meterSig\">\n                     <use xlink:href=\"#E083-l19nj5e9\" transform=\"translate(1289, 1449) scale(0.72, 0.72)\" />\n                     <use xlink:href=\"#E084-l19nj5e9\" transform=\"translate(1283, 1809) scale(0.72, 0.72)\" />\n                  </g>\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M2487 2169 L2809 2169\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"w1cybpcc\" class=\"layer\">\n                     <g id=\"x15wwqth\" class=\"mRest\">\n                        <use xlink:href=\"#E4E3-l19nj5e9\" transform=\"translate(2510, 1449) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g id=\"yv3lqdm\" class=\"layer\">\n                     <g id=\"z2gqwr3\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(1845, 1989) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"a1pfogn4\" class=\"chord\">\n                        <g id=\"kixhv1k\" class=\"stem\">\n                           <path d=\"M2544 1924 L2544 2709\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m1-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(2535, 2259) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m1-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(2535, 2079) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m1-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(2535, 1899) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"erbcoh7\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"fmlv5y5\" class=\"staff\">\n                  <path d=\"M0 3069 L3598 3069\" stroke-width=\"13\" />\n                  <path d=\"M0 3249 L3598 3249\" stroke-width=\"13\" />\n                  <path d=\"M0 3429 L3598 3429\" stroke-width=\"13\" />\n                  <path d=\"M0 3609 L3598 3609\" stroke-width=\"13\" />\n                  <path d=\"M0 3789 L3598 3789\" stroke-width=\"13\" />\n                  <g id=\"h1qvx3vi\" class=\"clef\">\n                     <use xlink:href=\"#E062-l19nj5e9\" transform=\"translate(117, 3249) scale(0.72, 0.72)\" />\n                  </g>\n                  <g id=\"iaez2bp\" class=\"keySig\">\n                     <g id=\"jg8c5pr\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(798, 3249) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"k9207q4\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(976, 3519) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g id=\"l1jqh9rm\" class=\"meterSig\">\n                     <use xlink:href=\"#E083-l19nj5e9\" transform=\"translate(1289, 3249) scale(0.72, 0.72)\" />\n                     <use xlink:href=\"#E084-l19nj5e9\" transform=\"translate(1283, 3609) scale(0.72, 0.72)\" />\n                  </g>\n                  <g id=\"g14xmp24\" class=\"layer\">\n                     <g id=\"gs-m1-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(1845, 3789) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"ms5zkt1\" class=\"dots\">\n                           <ellipse cx=\"2161\" cy=\"3699\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"l1w1r9q1\" class=\"stem\">\n                           <path d=\"M2062 3761 L2062 3159\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"ushell2\" class=\"barLine\">\n                  <path d=\"M3585 1269 L3585 1989\" stroke-width=\"27\" />\n                  <path d=\"M3585 3069 L3585 3789\" stroke-width=\"27\" />\n                  <path d=\"M3585 1989 L3585 3069\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"izodm98\" class=\"measure\">\n               <g id=\"rgx8bjh\" class=\"staff\">\n                  <path d=\"M3598 1269 L5531 1269\" stroke-width=\"13\" />\n                  <path d=\"M3598 1449 L5531 1449\" stroke-width=\"13\" />\n                  <path d=\"M3598 1629 L5531 1629\" stroke-width=\"13\" />\n                  <path d=\"M3598 1809 L5531 1809\" stroke-width=\"13\" />\n                  <path d=\"M3598 1989 L5531 1989\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M4420 2169 L4742 2169\" stroke-width=\"22\" />\n                     <path d=\"M4420 2349 L4742 2349\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"s82fpt\" class=\"layer\">\n                     <g id=\"t3elz0m\" class=\"mRest\">\n                        <use xlink:href=\"#E4E3-l19nj5e9\" transform=\"translate(4443, 1449) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g id=\"u1bb0tuc\" class=\"layer\">\n                     <g id=\"v6sh6uc\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(3778, 1989) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"wgj8qwy\" class=\"chord\">\n                        <g id=\"n1xjm7ca\" class=\"stem\">\n                           <path d=\"M4477 1924 L4477 2799\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m2-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(4468, 2349) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m2-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(4468, 2169) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"zfx25hn\" class=\"accid\" />\n                        </g>\n                        <g id=\"gs-m2-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(4468, 1899) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"b37hn12\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"c1kyp1ws\" class=\"staff\">\n                  <path d=\"M3598 3069 L5531 3069\" stroke-width=\"13\" />\n                  <path d=\"M3598 3249 L5531 3249\" stroke-width=\"13\" />\n                  <path d=\"M3598 3429 L5531 3429\" stroke-width=\"13\" />\n                  <path d=\"M3598 3609 L5531 3609\" stroke-width=\"13\" />\n                  <path d=\"M3598 3789 L5531 3789\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M3730 3969 L4052 3969\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"d1eyoooy\" class=\"layer\">\n                     <g id=\"gs-m2-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(3778, 4059) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"p71jc3c\" class=\"dots\">\n                           <ellipse cx=\"4094\" cy=\"4059\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"o1ut7bzm\" class=\"stem\">\n                           <path d=\"M3995 4031 L3995 3429\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"qhghzyb\" class=\"barLine\">\n                  <path d=\"M5518 1269 L5518 1989\" stroke-width=\"27\" />\n                  <path d=\"M5518 3069 L5518 3789\" stroke-width=\"27\" />\n                  <path d=\"M5518 1989 L5518 3069\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"f12ecyql\" class=\"measure\">\n               <g id=\"o1nwbnw5\" class=\"staff\">\n                  <path d=\"M5531 1269 L7464 1269\" stroke-width=\"13\" />\n                  <path d=\"M5531 1449 L7464 1449\" stroke-width=\"13\" />\n                  <path d=\"M5531 1629 L7464 1629\" stroke-width=\"13\" />\n                  <path d=\"M5531 1809 L7464 1809\" stroke-width=\"13\" />\n                  <path d=\"M5531 1989 L7464 1989\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M6353 2169 L6675 2169\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"p1r78e3w\" class=\"layer\">\n                     <g id=\"qjepdrb\" class=\"mRest\">\n                        <use xlink:href=\"#E4E3-l19nj5e9\" transform=\"translate(6376, 1449) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g id=\"r1y47wy7\" class=\"layer\">\n                     <g id=\"sqqgytg\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(5711, 1989) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"tmeaduc\" class=\"chord\">\n                        <g id=\"q1iuwyps\" class=\"stem\">\n                           <path d=\"M6410 1924 L6410 2709\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m3-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(6401, 2259) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m3-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(6401, 2079) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m3-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(6401, 1899) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"x1oxd4nf\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"y23h8om\" class=\"staff\">\n                  <path d=\"M5531 3069 L7464 3069\" stroke-width=\"13\" />\n                  <path d=\"M5531 3249 L7464 3249\" stroke-width=\"13\" />\n                  <path d=\"M5531 3429 L7464 3429\" stroke-width=\"13\" />\n                  <path d=\"M5531 3609 L7464 3609\" stroke-width=\"13\" />\n                  <path d=\"M5531 3789 L7464 3789\" stroke-width=\"13\" />\n                  <g id=\"z16wv72r\" class=\"layer\">\n                     <g id=\"gs-m3-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(5711, 3789) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"s1q4sot3\" class=\"dots\">\n                           <ellipse cx=\"6027\" cy=\"3699\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"r1o3ghkp\" class=\"stem\">\n                           <path d=\"M5928 3761 L5928 3159\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"ndvl5ld\" class=\"barLine\">\n                  <path d=\"M7451 1269 L7451 1989\" stroke-width=\"27\" />\n                  <path d=\"M7451 3069 L7451 3789\" stroke-width=\"27\" />\n                  <path d=\"M7451 1989 L7451 3069\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"b13viyd2\" class=\"measure\">\n               <g id=\"kgtp1zt\" class=\"staff\">\n                  <path d=\"M7464 1269 L9397 1269\" stroke-width=\"13\" />\n                  <path d=\"M7464 1449 L9397 1449\" stroke-width=\"13\" />\n                  <path d=\"M7464 1629 L9397 1629\" stroke-width=\"13\" />\n                  <path d=\"M7464 1809 L9397 1809\" stroke-width=\"13\" />\n                  <path d=\"M7464 1989 L9397 1989\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M8286 2169 L8608 2169\" stroke-width=\"22\" />\n                     <path d=\"M8286 2349 L8608 2349\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"l1wb3e2s\" class=\"layer\">\n                     <g id=\"m1c77hfv\" class=\"mRest\">\n                        <use xlink:href=\"#E4E3-l19nj5e9\" transform=\"translate(8309, 1449) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g id=\"n1p91bt0\" class=\"layer\">\n                     <g id=\"o1hn97h8\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(7644, 1989) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"pmwmthe\" class=\"chord\">\n                        <g id=\"tn60b9w\" class=\"stem\">\n                           <path d=\"M8343 1924 L8343 2799\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m4-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(8334, 2349) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m4-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(8334, 2169) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"s1f31sgl\" class=\"accid\" />\n                        </g>\n                        <g id=\"gs-m4-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(8334, 1899) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"u6oscn4\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"vyt4ad\" class=\"staff\">\n                  <path d=\"M7464 3069 L9397 3069\" stroke-width=\"13\" />\n                  <path d=\"M7464 3249 L9397 3249\" stroke-width=\"13\" />\n                  <path d=\"M7464 3429 L9397 3429\" stroke-width=\"13\" />\n                  <path d=\"M7464 3609 L9397 3609\" stroke-width=\"13\" />\n                  <path d=\"M7464 3789 L9397 3789\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M7596 3969 L7918 3969\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"w19obtds\" class=\"layer\">\n                     <g id=\"gs-m4-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(7644, 4059) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"v1v5lexf\" class=\"dots\">\n                           <ellipse cx=\"7960\" cy=\"4059\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"ue19588\" class=\"stem\">\n                           <path d=\"M7861 4031 L7861 3429\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"jo3qcsy\" class=\"barLine\">\n                  <path d=\"M9384 1269 L9384 1989\" stroke-width=\"27\" />\n                  <path d=\"M9384 3069 L9384 3789\" stroke-width=\"27\" />\n                  <path d=\"M9384 1989 L9384 3069\" stroke-width=\"27\" />\n               </g>\n            </g>\n         </g>\n         <g id=\"amrv7tg\" class=\"system\">\n            <path d=\"M13 5328 L13 7848\" stroke-width=\"27\" />\n            <g id=\"tb7ssaa\" class=\"grpSym\">\n               <path d=\"M-72,7830 C-432,7290 18,6768 -252,6588 C81,6768 -369,7290 -72,7830\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n               <path d=\"M-72,5346 C-369,5886 81,6408 -252,6588 C18,6408 -432,5886 -72,5346\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n            </g>\n            <g id=\"yvzjjlx\" class=\"sb\" />\n            <g id=\"z4bj489\" class=\"measure\">\n               <g id=\"s1yv9rff\" class=\"mNum autogenerated\">\n                  <text y=\"5085\" text-anchor=\"middle\" font-size=\"0px\">\n                     <tspan id=\"t1y61bsk\" class=\"text\">\n                        <tspan font-size=\"324px\">5</tspan>\n                     </tspan>\n                  </text>\n               </g>\n               <g id=\"i4vs11m\" class=\"staff\">\n                  <path d=\"M0 5328 L3470 5328\" stroke-width=\"13\" />\n                  <path d=\"M0 5508 L3470 5508\" stroke-width=\"13\" />\n                  <path d=\"M0 5688 L3470 5688\" stroke-width=\"13\" />\n                  <path d=\"M0 5868 L3470 5868\" stroke-width=\"13\" />\n                  <path d=\"M0 6048 L3470 6048\" stroke-width=\"13\" />\n                  <g id=\"q1onhpjr\" class=\"clef\">\n                     <use xlink:href=\"#E050-l19nj5e9\" transform=\"translate(117, 5868) scale(0.72, 0.72)\" />\n                  </g>\n                  <g id=\"r1nj6dg5\" class=\"keySig\">\n                     <g id=\"s1tundqg\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(798, 5328) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"t1d4eu7d\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(976, 5598) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g class=\"ledgerLines above\">\n                     <path d=\"M2719 5148 L3041 5148\" stroke-width=\"22\" />\n                  </g>\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M2029 6228 L2351 6228\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"j1s8kxne\" class=\"layer\">\n                     <g id=\"k19a056m\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(1387, 5148) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"gs-m5-s1-l1-e2-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A4-l19nj5e9\" transform=\"translate(2077, 5328) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"wzzljyr\" class=\"stem\">\n                           <path d=\"M2294 5300 L2294 4848\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"mlwp7zq\" class=\"accid\" />\n                     </g>\n                     <g id=\"gs-m5-s1-l1-e3-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A4-l19nj5e9\" transform=\"translate(2767, 5148) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"x1cv5vuf\" class=\"stem\">\n                           <path d=\"M2984 5120 L2984 4698\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n                  <g id=\"o1awc8ol\" class=\"layer\">\n                     <g id=\"p1ufntge\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(1387, 6048) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"qg6e4o\" class=\"chord\">\n                        <g id=\"y1j419jh\" class=\"stem\">\n                           <path d=\"M2086 5983 L2086 6768\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m5-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(2077, 6318) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m5-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(2077, 6138) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m5-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(2077, 5958) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"ulubfbi\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"v1n4j8tk\" class=\"staff\">\n                  <path d=\"M0 7128 L3470 7128\" stroke-width=\"13\" />\n                  <path d=\"M0 7308 L3470 7308\" stroke-width=\"13\" />\n                  <path d=\"M0 7488 L3470 7488\" stroke-width=\"13\" />\n                  <path d=\"M0 7668 L3470 7668\" stroke-width=\"13\" />\n                  <path d=\"M0 7848 L3470 7848\" stroke-width=\"13\" />\n                  <g id=\"uu8kaot\" class=\"clef\">\n                     <use xlink:href=\"#E062-l19nj5e9\" transform=\"translate(117, 7308) scale(0.72, 0.72)\" />\n                  </g>\n                  <g id=\"v1bjsup8\" class=\"keySig\">\n                     <g id=\"w1ad52vh\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(798, 7308) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"x1hsj1ve\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(976, 7578) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g id=\"w1qijfro\" class=\"layer\">\n                     <g id=\"gs-m5-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(1387, 7848) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"a1s98so9\" class=\"dots\">\n                           <ellipse cx=\"1703\" cy=\"7758\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"z1x7m9c2\" class=\"stem\">\n                           <path d=\"M1604 7820 L1604 7218\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"h1a2rmes\" class=\"barLine\">\n                  <path d=\"M3457 5328 L3457 6048\" stroke-width=\"27\" />\n                  <path d=\"M3457 7128 L3457 7848\" stroke-width=\"27\" />\n                  <path d=\"M3457 6048 L3457 7128\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"y1ccvmbx\" class=\"measure\">\n               <g id=\"h1hwlyfa\" class=\"staff\">\n                  <path d=\"M3470 5328 L5733 5328\" stroke-width=\"13\" />\n                  <path d=\"M3470 5508 L5733 5508\" stroke-width=\"13\" />\n                  <path d=\"M3470 5688 L5733 5688\" stroke-width=\"13\" />\n                  <path d=\"M3470 5868 L5733 5868\" stroke-width=\"13\" />\n                  <path d=\"M3470 6048 L5733 6048\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M4292 6228 L4614 6228\" stroke-width=\"22\" />\n                     <path d=\"M4292 6408 L4614 6408\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"ipk7z6m\" class=\"layer\">\n                     <g id=\"gs-m6-s1-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A4-l19nj5e9\" transform=\"translate(3650, 5238) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"bouscjb\" class=\"stem\">\n                           <path d=\"M3867 5210 L3867 4788\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                     <g id=\"gs-m6-s1-l1-e2-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A4-l19nj5e9\" transform=\"translate(4340, 5328) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"crqel9v\" class=\"stem\">\n                           <path d=\"M4557 5300 L4557 4848\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"l1lqnom3\" class=\"accid\" />\n                     </g>\n                     <g id=\"gs-m6-s1-l1-e3-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A4-l19nj5e9\" transform=\"translate(5030, 5598) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"d1b5nlj4\" class=\"stem\">\n                           <path d=\"M5247 5570 L5247 5028\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"n1t7t9o8\" class=\"accid\" />\n                     </g>\n                  </g>\n                  <g id=\"o186unp8\" class=\"layer\">\n                     <g id=\"p1vt5nji\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(3650, 6048) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"qqy4i76\" class=\"chord\">\n                        <g id=\"e1sjd0p7\" class=\"stem\">\n                           <path d=\"M4349 5983 L4349 6858\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m6-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(4340, 6408) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m6-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(4340, 6228) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"t12l1c7g\" class=\"accid\" />\n                        </g>\n                        <g id=\"gs-m6-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(4340, 5958) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"v1gxitk\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"w1905d68\" class=\"staff\">\n                  <path d=\"M3470 7128 L5733 7128\" stroke-width=\"13\" />\n                  <path d=\"M3470 7308 L5733 7308\" stroke-width=\"13\" />\n                  <path d=\"M3470 7488 L5733 7488\" stroke-width=\"13\" />\n                  <path d=\"M3470 7668 L5733 7668\" stroke-width=\"13\" />\n                  <path d=\"M3470 7848 L5733 7848\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M3602 8028 L3924 8028\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"xz5i2aa\" class=\"layer\">\n                     <g id=\"gs-m6-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(3650, 8118) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"g1b41ken\" class=\"dots\">\n                           <ellipse cx=\"3966\" cy=\"8118\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"fi81gdq\" class=\"stem\">\n                           <path d=\"M3867 8090 L3867 7488\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"g1wpyvd\" class=\"barLine\">\n                  <path d=\"M5720 5328 L5720 6048\" stroke-width=\"27\" />\n                  <path d=\"M5720 7128 L5720 7848\" stroke-width=\"27\" />\n                  <path d=\"M5720 6048 L5720 7128\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"z11huxwv\" class=\"measure\">\n               <g id=\"i12zs17z\" class=\"staff\">\n                  <path d=\"M5733 5328 L7996 5328\" stroke-width=\"13\" />\n                  <path d=\"M5733 5508 L7996 5508\" stroke-width=\"13\" />\n                  <path d=\"M5733 5688 L7996 5688\" stroke-width=\"13\" />\n                  <path d=\"M5733 5868 L7996 5868\" stroke-width=\"13\" />\n                  <path d=\"M5733 6048 L7996 6048\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M6555 6228 L6877 6228\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"j1rmtrje\" class=\"layer\">\n                     <g id=\"gs-m7-s1-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A4-l19nj5e9\" transform=\"translate(5913, 5688) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"h1evnohv\" class=\"stem\">\n                           <path d=\"M6130 5660 L6130 5088\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                     <g id=\"gs-m7-s1-l1-e2-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A4-l19nj5e9\" transform=\"translate(6603, 5598) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"i1i53k8\" class=\"stem\">\n                           <path d=\"M6820 5570 L6820 5028\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"m1sctd0l\" class=\"accid\" />\n                     </g>\n                     <g id=\"gs-m7-s1-l1-e3-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A4-l19nj5e9\" transform=\"translate(7293, 5508) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"jlteqnp\" class=\"stem\">\n                           <path d=\"M7510 5480 L7510 4968\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n                  <g id=\"owlajgs\" class=\"layer\">\n                     <g id=\"p1pgsif9\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(5913, 6228) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"q1m10xie\" class=\"chord\">\n                        <g id=\"k18bi7ed\" class=\"stem\">\n                           <path d=\"M6612 5983 L6612 6768\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m7-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(6603, 6318) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m7-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(6603, 6138) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m7-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(6603, 5958) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"u1w3vevx\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"v12wj9cg\" class=\"staff\">\n                  <path d=\"M5733 7128 L7996 7128\" stroke-width=\"13\" />\n                  <path d=\"M5733 7308 L7996 7308\" stroke-width=\"13\" />\n                  <path d=\"M5733 7488 L7996 7488\" stroke-width=\"13\" />\n                  <path d=\"M5733 7668 L7996 7668\" stroke-width=\"13\" />\n                  <path d=\"M5733 7848 L7996 7848\" stroke-width=\"13\" />\n                  <g id=\"w164cdfr\" class=\"layer\">\n                     <g id=\"gs-m7-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(5913, 7848) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"mthzzc0\" class=\"dots\">\n                           <ellipse cx=\"6229\" cy=\"7758\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"l1l16zx8\" class=\"stem\">\n                           <path d=\"M6130 7820 L6130 7218\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"h3i55up\" class=\"barLine\">\n                  <path d=\"M7983 5328 L7983 6048\" stroke-width=\"27\" />\n                  <path d=\"M7983 7128 L7983 7848\" stroke-width=\"27\" />\n                  <path d=\"M7983 6048 L7983 7128\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"yjaxy2q\" class=\"measure\">\n               <g id=\"hpvbxwl\" class=\"staff\">\n                  <path d=\"M7996 5328 L9929 5328\" stroke-width=\"13\" />\n                  <path d=\"M7996 5508 L9929 5508\" stroke-width=\"13\" />\n                  <path d=\"M7996 5688 L9929 5688\" stroke-width=\"13\" />\n                  <path d=\"M7996 5868 L9929 5868\" stroke-width=\"13\" />\n                  <path d=\"M7996 6048 L9929 6048\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M8818 6228 L9140 6228\" stroke-width=\"22\" />\n                     <path d=\"M8818 6408 L9140 6408\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"i1yz9fdu\" class=\"layer\">\n                     <g id=\"gs-m8-s1-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(8176, 5778) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"osg2r92\" class=\"dots\">\n                           <ellipse cx=\"8492\" cy=\"5778\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"n14v1yax\" class=\"stem\">\n                           <path d=\"M8393 5750 L8393 5148\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n                  <g id=\"k16e8mly\" class=\"layer\">\n                     <g id=\"l1b9tw60\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(8176, 6228) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"m13k1pa7\" class=\"chord\">\n                        <g id=\"pta0fg4\" class=\"stem\">\n                           <path d=\"M8875 5983 L8875 6858\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m8-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(8866, 6408) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m8-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(8866, 6228) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"p13e44d5\" class=\"accid\" />\n                        </g>\n                        <g id=\"gs-m8-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(8866, 5958) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"r1ymreae\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"sbicarv\" class=\"staff\">\n                  <path d=\"M7996 7128 L9929 7128\" stroke-width=\"13\" />\n                  <path d=\"M7996 7308 L9929 7308\" stroke-width=\"13\" />\n                  <path d=\"M7996 7488 L9929 7488\" stroke-width=\"13\" />\n                  <path d=\"M7996 7668 L9929 7668\" stroke-width=\"13\" />\n                  <path d=\"M7996 7848 L9929 7848\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M8128 8028 L8450 8028\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"tf1nsqr\" class=\"layer\">\n                     <g id=\"gs-m8-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(8176, 8118) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"rrc25pl\" class=\"dots\">\n                           <ellipse cx=\"8492\" cy=\"8118\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"q158rxyr\" class=\"stem\">\n                           <path d=\"M8393 8090 L8393 7488\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"g1gv1amb\" class=\"barLine\">\n                  <path d=\"M9916 5328 L9916 6048\" stroke-width=\"27\" />\n                  <path d=\"M9916 7128 L9916 7848\" stroke-width=\"27\" />\n                  <path d=\"M9916 6048 L9916 7128\" stroke-width=\"27\" />\n               </g>\n            </g>\n         </g>\n         <g id=\"d18wlm3l\" class=\"system\">\n            <path d=\"M13 9288 L13 11808\" stroke-width=\"27\" />\n            <g id=\"f13vfeaa\" class=\"grpSym\">\n               <path d=\"M-72,11790 C-432,11250 18,10728 -252,10548 C81,10728 -369,11250 -72,11790\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n               <path d=\"M-72,9306 C-369,9846 81,10368 -252,10548 C18,10368 -432,9846 -72,9306\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n            </g>\n            <g id=\"v7t36q5\" class=\"sb\" />\n            <g id=\"wa4bnz4\" class=\"measure\">\n               <g id=\"a1xd8ah\" class=\"mNum autogenerated\">\n                  <text y=\"9045\" text-anchor=\"middle\" font-size=\"0px\">\n                     <tspan id=\"b15on24b\" class=\"text\">\n                        <tspan font-size=\"324px\">9</tspan>\n                     </tspan>\n                  </text>\n               </g>\n               <g id=\"f9n3x7f\" class=\"staff\">\n                  <path d=\"M0 9288 L3140 9288\" stroke-width=\"13\" />\n                  <path d=\"M0 9468 L3140 9468\" stroke-width=\"13\" />\n                  <path d=\"M0 9648 L3140 9648\" stroke-width=\"13\" />\n                  <path d=\"M0 9828 L3140 9828\" stroke-width=\"13\" />\n                  <path d=\"M0 10008 L3140 10008\" stroke-width=\"13\" />\n                  <g id=\"c10yzw6g\" class=\"clef\">\n                     <use xlink:href=\"#E050-l19nj5e9\" transform=\"translate(117, 9828) scale(0.72, 0.72)\" />\n                  </g>\n                  <g id=\"d3ugc4u\" class=\"keySig\">\n                     <g id=\"ej0djdy\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(798, 9288) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"f74smvy\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(976, 9558) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M2029 10188 L2351 10188\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"g1a9x3r7\" class=\"layer\">\n                     <g id=\"gs-m9-s1-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(1387, 9918) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"tsavegi\" class=\"dots\">\n                           <ellipse cx=\"1703\" cy=\"9918\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"sfnrdhh\" class=\"stem\">\n                           <path d=\"M1604 9890 L1604 9288\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"ilwctc6\" class=\"accid\" />\n                     </g>\n                  </g>\n                  <g id=\"j1y2tg4n\" class=\"layer\">\n                     <g id=\"k17r2sbn\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(1387, 10368) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"lklwdg\" class=\"chord\">\n                        <g id=\"u15pnom9\" class=\"stem\">\n                           <path d=\"M2086 9943 L2086 10728\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m9-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(2077, 10278) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m9-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(2077, 10098) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m9-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(2077, 9918) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"p13wmgga\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"q2mj26n\" class=\"staff\">\n                  <path d=\"M0 11088 L3140 11088\" stroke-width=\"13\" />\n                  <path d=\"M0 11268 L3140 11268\" stroke-width=\"13\" />\n                  <path d=\"M0 11448 L3140 11448\" stroke-width=\"13\" />\n                  <path d=\"M0 11628 L3140 11628\" stroke-width=\"13\" />\n                  <path d=\"M0 11808 L3140 11808\" stroke-width=\"13\" />\n                  <g id=\"g1ovwln8\" class=\"clef\">\n                     <use xlink:href=\"#E062-l19nj5e9\" transform=\"translate(117, 11268) scale(0.72, 0.72)\" />\n                  </g>\n                  <g id=\"h1xp8qtq\" class=\"keySig\">\n                     <g id=\"i1a1n1z0\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(798, 11268) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"j1cn2q4z\" class=\"keyAccid\">\n                        <use xlink:href=\"#E262-l19nj5e9\" transform=\"translate(976, 11538) scale(0.72, 0.72)\" />\n                     </g>\n                  </g>\n                  <g id=\"r1mn9a82\" class=\"layer\">\n                     <g id=\"gs-m9-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(1387, 11808) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"wx7peg6\" class=\"dots\">\n                           <ellipse cx=\"1703\" cy=\"11718\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"vxhqvds\" class=\"stem\">\n                           <path d=\"M1604 11780 L1604 11178\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"w1pkmxhl\" class=\"tie\">\n                  <path d=\"M1658,9806 C2058,9653 2873,9653 3275,9806 C2866,9701 2065,9701 1658,9806\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n               </g>\n               <g id=\"edjxg5p\" class=\"barLine\">\n                  <path d=\"M3127 9288 L3127 10008\" stroke-width=\"27\" />\n                  <path d=\"M3127 11088 L3127 11808\" stroke-width=\"27\" />\n                  <path d=\"M3127 10008 L3127 11088\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"tbrzaff\" class=\"measure\">\n               <g id=\"c194ijhb\" class=\"staff\">\n                  <path d=\"M3140 9288 L5073 9288\" stroke-width=\"13\" />\n                  <path d=\"M3140 9468 L5073 9468\" stroke-width=\"13\" />\n                  <path d=\"M3140 9648 L5073 9648\" stroke-width=\"13\" />\n                  <path d=\"M3140 9828 L5073 9828\" stroke-width=\"13\" />\n                  <path d=\"M3140 10008 L5073 10008\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M3962 10188 L4284 10188\" stroke-width=\"22\" />\n                     <path d=\"M3962 10368 L4284 10368\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"d1mc3yi9\" class=\"layer\">\n                     <g id=\"gs-m10-s1-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(3320, 9918) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"y2catwd\" class=\"dots\">\n                           <ellipse cx=\"3636\" cy=\"9918\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"xi1hr8\" class=\"stem\">\n                           <path d=\"M3537 9890 L3537 9288\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"f4ez1j9\" class=\"accid\" />\n                     </g>\n                  </g>\n                  <g id=\"gfmd4j\" class=\"layer\">\n                     <g id=\"h18et2sh\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(3320, 10368) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"i1lorvfs\" class=\"chord\">\n                        <g id=\"z1qaq39k\" class=\"stem\">\n                           <path d=\"M4019 9943 L4019 10818\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m10-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(4010, 10368) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m10-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(4010, 10188) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"lwj58e8\" class=\"accid\" />\n                        </g>\n                        <g id=\"gs-m10-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(4010, 9918) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"n114aunr\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"ojdvior\" class=\"staff\">\n                  <path d=\"M3140 11088 L5073 11088\" stroke-width=\"13\" />\n                  <path d=\"M3140 11268 L5073 11268\" stroke-width=\"13\" />\n                  <path d=\"M3140 11448 L5073 11448\" stroke-width=\"13\" />\n                  <path d=\"M3140 11628 L5073 11628\" stroke-width=\"13\" />\n                  <path d=\"M3140 11808 L5073 11808\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M3272 11988 L3594 11988\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"p1lbogsu\" class=\"layer\">\n                     <g id=\"gs-m10-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(3320, 12078) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"b1esd1s5\" class=\"dots\">\n                           <ellipse cx=\"3636\" cy=\"12078\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"a18ja7ym\" class=\"stem\">\n                           <path d=\"M3537 12050 L3537 11448\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"x13rs43l\" class=\"tie\">\n                  <path d=\"M3591,9806 C3991,9653 4806,9653 5208,9806 C4799,9701 3998,9701 3591,9806\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n               </g>\n               <g id=\"bcl6eok\" class=\"barLine\">\n                  <path d=\"M5060 9288 L5060 10008\" stroke-width=\"27\" />\n                  <path d=\"M5060 11088 L5060 11808\" stroke-width=\"27\" />\n                  <path d=\"M5060 10008 L5060 11088\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"r11fu5of\" class=\"measure\">\n               <g id=\"a1vn47bf\" class=\"staff\">\n                  <path d=\"M5073 9288 L7006 9288\" stroke-width=\"13\" />\n                  <path d=\"M5073 9468 L7006 9468\" stroke-width=\"13\" />\n                  <path d=\"M5073 9648 L7006 9648\" stroke-width=\"13\" />\n                  <path d=\"M5073 9828 L7006 9828\" stroke-width=\"13\" />\n                  <path d=\"M5073 10008 L7006 10008\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M5895 10188 L6217 10188\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"b1kz42q6\" class=\"layer\">\n                     <g id=\"gs-m11-s1-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(5253, 9918) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"d94u6tm\" class=\"dots\">\n                           <ellipse cx=\"5569\" cy=\"9918\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"c1ls12f3\" class=\"stem\">\n                           <path d=\"M5470 9890 L5470 9288\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"d32l04c\" class=\"accid\" />\n                     </g>\n                  </g>\n                  <g id=\"efdh2og\" class=\"layer\">\n                     <g id=\"fjakmhx\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(5253, 10368) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"gg37udu\" class=\"chord\">\n                        <g id=\"eiy8kk4\" class=\"stem\">\n                           <path d=\"M5952 9943 L5952 10728\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m11-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(5943, 10278) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m11-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(5943, 10098) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m11-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(5943, 9918) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"kccwrwf\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"l1sve6dq\" class=\"staff\">\n                  <path d=\"M5073 11088 L7006 11088\" stroke-width=\"13\" />\n                  <path d=\"M5073 11268 L7006 11268\" stroke-width=\"13\" />\n                  <path d=\"M5073 11448 L7006 11448\" stroke-width=\"13\" />\n                  <path d=\"M5073 11628 L7006 11628\" stroke-width=\"13\" />\n                  <path d=\"M5073 11808 L7006 11808\" stroke-width=\"13\" />\n                  <g id=\"mb06m4d\" class=\"layer\">\n                     <g id=\"gs-m11-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(5253, 11808) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"g1fmtxfr\" class=\"dots\">\n                           <ellipse cx=\"5569\" cy=\"11718\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"fj9tvs9\" class=\"stem\">\n                           <path d=\"M5470 11780 L5470 11178\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"y1o7o13m\" class=\"tie\">\n                  <path d=\"M5524,9806 C5924,9653 6739,9653 7141,9806 C6732,9701 5931,9701 5524,9806\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n               </g>\n               <g id=\"zdhioz2\" class=\"barLine\">\n                  <path d=\"M6993 9288 L6993 10008\" stroke-width=\"27\" />\n                  <path d=\"M6993 11088 L6993 11808\" stroke-width=\"27\" />\n                  <path d=\"M6993 10008 L6993 11088\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"o16z2swc\" class=\"measure\">\n               <g id=\"xlw6597\" class=\"staff\">\n                  <path d=\"M7006 9288 L8939 9288\" stroke-width=\"13\" />\n                  <path d=\"M7006 9468 L8939 9468\" stroke-width=\"13\" />\n                  <path d=\"M7006 9648 L8939 9648\" stroke-width=\"13\" />\n                  <path d=\"M7006 9828 L8939 9828\" stroke-width=\"13\" />\n                  <path d=\"M7006 10008 L8939 10008\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M7828 10188 L8150 10188\" stroke-width=\"22\" />\n                     <path d=\"M7828 10368 L8150 10368\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"y115m6re\" class=\"layer\">\n                     <g id=\"gs-m12-s1-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(7186, 9918) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"i1jr5o5t\" class=\"dots\">\n                           <ellipse cx=\"7502\" cy=\"9918\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"h1wzlugz\" class=\"stem\">\n                           <path d=\"M7403 9890 L7403 9288\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"a1b3yb8\" class=\"accid\" />\n                     </g>\n                  </g>\n                  <g id=\"b179xb8m\" class=\"layer\">\n                     <g id=\"codpwfc\" class=\"rest\">\n                        <use xlink:href=\"#E4E5-l19nj5e9\" transform=\"translate(7186, 10368) scale(0.72, 0.72)\" />\n                     </g>\n                     <g id=\"dvn23fz\" class=\"chord\">\n                        <g id=\"j1sntez7\" class=\"stem\">\n                           <path d=\"M7885 9943 L7885 10818\" stroke-width=\"18\" />\n                        </g>\n                        <g id=\"gs-m12-s1-l2-e2-n1\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(7876, 10368) scale(0.72, 0.72)\" />\n                           </g>\n                        </g>\n                        <g id=\"gs-m12-s1-l2-e2-n2\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(7876, 10188) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"g14vagd9\" class=\"accid\" />\n                        </g>\n                        <g id=\"gs-m12-s1-l2-e2-n3\" class=\"note\">\n                           <g class=\"notehead\">\n                              <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(7876, 9918) scale(0.72, 0.72)\" />\n                           </g>\n                           <g id=\"i12soi0\" class=\"accid\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"jrbgpnr\" class=\"staff\">\n                  <path d=\"M7006 11088 L8939 11088\" stroke-width=\"13\" />\n                  <path d=\"M7006 11268 L8939 11268\" stroke-width=\"13\" />\n                  <path d=\"M7006 11448 L8939 11448\" stroke-width=\"13\" />\n                  <path d=\"M7006 11628 L8939 11628\" stroke-width=\"13\" />\n                  <path d=\"M7006 11808 L8939 11808\" stroke-width=\"13\" />\n                  <g class=\"ledgerLines below\">\n                     <path d=\"M7138 11988 L7460 11988\" stroke-width=\"22\" />\n                  </g>\n                  <g id=\"kc2e38p\" class=\"layer\">\n                     <g id=\"gs-m12-s2-l1-e1-n1\" class=\"note\">\n                        <g class=\"notehead\">\n                           <use xlink:href=\"#E0A3-l19nj5e9\" transform=\"translate(7186, 12078) scale(0.72, 0.72)\" />\n                        </g>\n                        <g id=\"l12i123s\" class=\"dots\">\n                           <ellipse cx=\"7502\" cy=\"12078\" rx=\"36\" ry=\"36\" />\n                        </g>\n                        <g id=\"k1p4eiuf\" class=\"stem\">\n                           <path d=\"M7403 12050 L7403 11448\" stroke-width=\"18\" />\n                        </g>\n                     </g>\n                  </g>\n               </g>\n               <g id=\"w1lra14t\" class=\"barLine\">\n                  <path d=\"M8926 9288 L8926 10008\" stroke-width=\"27\" />\n                  <path d=\"M8926 11088 L8926 11808\" stroke-width=\"27\" />\n                  <path d=\"M8926 10008 L8926 11088\" stroke-width=\"27\" />\n               </g>\n            </g>\n            <g id=\"t6ie1om\" class=\"systemMilestoneEnd lzosgrv\" />\n         </g>\n         <g id=\"uqycxek\" class=\"pageMilestoneEnd njft1g2\" />\n         <g id=\"vh4hyvb\" class=\"pageMilestoneEnd moqsi69\" />\n         <g id=\"z855ag\" class=\"pgHead autogenerated\">\n            <text font-size=\"0px\">\n               <tspan id=\"aavnt97\" class=\"rend\" x=\"4964\" y=\"417\" text-anchor=\"middle\">\n                  <title class=\"labelAttr\">title</title>\n                  <tspan id=\"bfnxpbz\" class=\"rend\">\n                     <tspan id=\"cjxbu3k\" class=\"text\">\n                        <tspan font-size=\"607px\">Gymnopédie No.1 — original piano score, bars 1-12</tspan>\n                     </tspan>\n                  </tspan>\n               </tspan>\n            </text>\n         </g>\n      </g>\n   </svg>\n</svg>\n"
+  }
+}

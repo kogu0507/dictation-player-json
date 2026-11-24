@@ -3,6 +3,7 @@ import {
   TARGET_KEY_NAMES,
   type ContentData,
   type ContentType,
+  type GrandStaffData,
   type HarmonyData,
   type MeasureBoundary,
   type MelodyData,
@@ -249,6 +250,7 @@ function validateCommonFields(
   root: JsonObject,
   requestedId: string,
   expectedType: ContentType,
+  scoreKeys?: Record<string, MelodyKey>,
 ): CommonDataFields {
   const id = requireString(root.id, "id");
   if (id !== requestedId) {
@@ -270,7 +272,7 @@ function validateCommonFields(
     fail("play.bpm は0より大きい必要があります。");
   }
 
-  const keys = validateKeys(root.keys);
+  const keys = scoreKeys ?? validateKeys(root.keys);
   const mode = requireString(root.mode, "mode");
   if (mode !== "major" && mode !== "minor") {
     fail("mode は major または minor である必要があります。");
@@ -420,11 +422,99 @@ export function validateHarmonyData(
   };
 }
 
+export function validateGrandStaffData(value: unknown, requestedId: string): GrandStaffData {
+  const root = requireObject(value, "JSON");
+  if (root.schema_version !== 3) {
+    throw new MelodyValidationError("unsupported-schema", "対応していないschema_versionです。");
+  }
+  const baseKey = requireString(root.base_key, "base_key");
+  const score = root.score === undefined ? undefined : {
+    svg: requireString(requireObject(root.score, "score").svg, "score.svg"),
+  };
+  if (score && !/^\s*<svg(?:\s|>)[\s\S]*<\/svg>\s*$/.test(score.svg)) {
+    fail("score.svg はSVG文字列である必要があります。");
+  }
+  const common = validateCommonFields(root, requestedId, "grand_staff", {
+    [baseKey]: { svg: score?.svg ?? "", semitones: 0 },
+  });
+  const play = requireObject(root.play, "play");
+  const mixGain = requireNumber(play.mix_gain, "play.mix_gain");
+  if (mixGain <= 0 || mixGain > 1) {
+    fail("play.mix_gain は0より大きく1以下である必要があります。");
+  }
+  const layerIds = new Set<string>();
+  const positions = new Set<string>();
+  const staves = new Set<number>();
+  const sourceIds = new Set<string>();
+  const layers = requireArray(play.layers, "play.layers").map((rawLayer, index) => {
+    const path = `play.layers[${index}]`;
+    const row = requireObject(rawLayer, path);
+    const id = requireString(row.id, `${path}.id`);
+    const staff = requireInteger(row.staff, `${path}.staff`);
+    const layer = requireInteger(row.layer, `${path}.layer`);
+    const velocity = requireMidiValue(row.velocity, `${path}.velocity`);
+    const position = `${staff}:${layer}`;
+    if (staff < 1 || layer < 1 || layerIds.has(id) || positions.has(position)) {
+      fail(`${path} のIDまたは段・レイヤーの組が不正です。`);
+    }
+    layerIds.add(id);
+    positions.add(position);
+    staves.add(staff);
+    const notes = requireArray(row.notes, `${path}.notes`).map((rawNote, noteIndex) => {
+      const notePath = `${path}.notes[${noteIndex}]`;
+      const note = requireObject(rawNote, notePath);
+      const pitch = requireMidiValue(note.pitch, `${notePath}.pitch`);
+      const noteVelocity = requireMidiValue(note.velocity, `${notePath}.velocity`);
+      const qstamp = requireNumber(note.qstamp, `${notePath}.qstamp`);
+      const duration = requireNumber(note.duration, `${notePath}.duration`);
+      const epsilon = 1e-8;
+      let cursor = qstamp;
+      const segments = requireArray(note.segments, `${notePath}.segments`).map((raw, segmentIndex) => {
+        const segmentPath = `${notePath}.segments[${segmentIndex}]`;
+        const segment = requireObject(raw, segmentPath);
+        const measure = requireInteger(segment.measure, `${segmentPath}.measure`);
+        const start = requireNumber(segment.qstamp, `${segmentPath}.qstamp`);
+        const length = requireNumber(segment.duration, `${segmentPath}.duration`);
+        const sourceId = requireString(segment.source_id, `${segmentPath}.source_id`);
+        const boundary = common.measure_map[measure - 1];
+        if (!boundary || length <= 0 || start < boundary.start_qstamp - epsilon
+            || start >= boundary.end_qstamp || start + length > boundary.end_qstamp + epsilon
+            || Math.abs(start - cursor) > epsilon || sourceIds.has(sourceId)) {
+          fail(`${segmentPath} の小節内時刻、連続性またはIDが不正です。`);
+        }
+        sourceIds.add(sourceId);
+        cursor = start + length;
+        return { source_id: sourceId, measure, qstamp: start, duration: length };
+      });
+      if (qstamp < 0 || duration <= 0 || segments.length === 0 || noteVelocity !== velocity
+          || Math.abs(cursor - (qstamp + duration)) > epsilon) {
+        fail(`${notePath} がレイヤーのvelocityまたは区間と一致しません。`);
+      }
+      return { pitch, qstamp, duration, velocity: noteVelocity, segments };
+    });
+    return { id, staff, layer, velocity, notes };
+  });
+  if (staves.size !== 2 || !layers.some((layer) => layer.notes.length > 0)) {
+    fail("大譜表には2段と1音以上が必要です。");
+  }
+  return {
+    ...common,
+    schema_version: 3,
+    type: "grand_staff",
+    score,
+    play: { bpm: common.bpm, mix_gain: mixGain, layers },
+    sequence: [],
+  };
+}
+
 export function validateContentData(
   value: unknown,
   requestedId: string,
   contentType: ContentType,
 ): ContentData {
+  if (contentType === "grand_staff") {
+    return validateGrandStaffData(value, requestedId);
+  }
   return contentType === "harmony"
     ? validateHarmonyData(value, requestedId)
     : validateMelodyData(value, requestedId);

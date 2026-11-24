@@ -37,12 +37,12 @@ export function validateMelodyId(id: string): void {
 }
 
 export function validateContentType(contentType: string): ContentType {
-  if (contentType === "melody" || contentType === "harmony") {
+  if (contentType === "melody" || contentType === "harmony" || contentType === "grand_staff") {
     return contentType;
   }
   throw new MelodyLoadError(
     "invalid-type",
-    "課題typeは melody または harmony を指定してください。",
+    "課題typeは melody、harmony、grand_staff のいずれかを指定してください。",
   );
 }
 

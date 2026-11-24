@@ -22,7 +22,7 @@ export const HARMONY_VOICE_NAMES = [
 
 export type TargetKeyName = (typeof TARGET_KEY_NAMES)[number];
 export type HarmonyVoiceName = (typeof HARMONY_VOICE_NAMES)[number];
-export type ContentType = "melody" | "harmony";
+export type ContentType = "melody" | "harmony" | "grand_staff";
 
 export interface MeasureBoundary {
   measure: number;
@@ -118,4 +118,31 @@ export interface HarmonyData {
   sequence: SequenceStep[];
 }
 
-export type ContentData = MelodyData | HarmonyData;
+export interface GrandStaffSegment {
+  source_id: string;
+  measure: number;
+  qstamp: number;
+  duration: number;
+}
+
+export interface GrandStaffNote extends Omit<MelodyNote, "measure"> {
+  segments: GrandStaffSegment[];
+}
+
+export interface GrandStaffLayer {
+  id: string;
+  staff: number;
+  layer: number;
+  velocity: number;
+  notes: GrandStaffNote[];
+}
+
+export interface GrandStaffData extends Omit<MelodyData, "schema_version" | "type" | "play" | "sequence"> {
+  schema_version: 3;
+  type: "grand_staff";
+  score?: { svg: string };
+  play: { bpm: number; mix_gain: number; layers: GrandStaffLayer[] };
+  sequence: [];
+}
+
+export type ContentData = MelodyData | HarmonyData | GrandStaffData;
